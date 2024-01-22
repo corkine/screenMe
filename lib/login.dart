@@ -55,6 +55,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           border: UnderlineInputBorder(), labelText: "用户名")),
                   TextField(
                       controller: password,
+                      obscureText: true,
                       decoration: const InputDecoration(
                           border: UnderlineInputBorder(), labelText: "密码")),
                   TextField(

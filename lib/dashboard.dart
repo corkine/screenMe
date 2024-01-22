@@ -24,6 +24,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(
+            onLongPress: () => showDebugBar(context, d?.lastError ?? "没有错误消息"),
             onDoubleTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const LoginView())),
             child: Stack(fit: StackFit.expand, children: [
@@ -50,8 +51,9 @@ class ClockWidget extends ConsumerStatefulWidget {
 }
 
 class _ClockWidgetState extends ConsumerState<ClockWidget> {
+  static const size = 100.0;
   Widget time =
-      const Text("", style: TextStyle(fontFamily: "DoHyen", fontSize: 90));
+      const Text("", style: TextStyle(fontFamily: "DoHyen", fontSize: size));
   StreamController controller = StreamController();
   StreamSubscription? subscription;
 
@@ -87,11 +89,11 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
       time = Text(DateFormat("HH:mm").format(now),
           style: TextStyle(
               fontFamily: "DoHyen",
-              fontSize: 90,
+              fontSize: size,
               color: Colors.white.withOpacity(0.5)));
     } else {
       time = Text(DateFormat("HH:mm").format(now),
-          style: const TextStyle(fontFamily: "DoHyen", fontSize: 90));
+          style: const TextStyle(fontFamily: "DoHyen", fontSize: size));
     }
     setState(() {});
   }

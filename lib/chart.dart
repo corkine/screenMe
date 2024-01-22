@@ -7,8 +7,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 SfCircularChart buildChart(DashInfo? dashInfo) {
   final mindfulMin = dashInfo?.fitnessInfo.mindful ?? 0.0;
   final mindful100 = max(mindfulMin, 0.5) / 5 * 100;
-  final exec100 = max(dashInfo?.fitnessInfo.exercise ?? 0, 0.5) / 30 * 100;
-  final workout100 = max((dashInfo?.fitnessInfo.active ?? 0.0), 0.5) /
+  final exec100 = max(dashInfo?.fitnessInfo.exercise ?? 3, 3) / 30 * 100;
+  final workout100 = max((dashInfo?.fitnessInfo.active ?? 50), 50) /
       (dashInfo?.fitnessInfo.globalActive ?? 500.0) *
       100;
   return SfCircularChart(

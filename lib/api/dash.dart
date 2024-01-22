@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screen_me/api/common.dart';
+import 'package:screen_me/version.dart';
 
 part 'dash.freezed.dart';
 part 'dash.g.dart';
@@ -56,19 +57,19 @@ class DashTodo with _$DashTodo {
 
 @freezed
 class DashInfo with _$DashInfo {
-  factory DashInfo({
-    @Default(0) int updateAt,
-    @Default(false) bool needDiaryReport,
-    @Default("") String weatherInfo,
-    @Default(false) bool needPlantWater,
-    @Default([]) List<String> cardCheck,
-    @Default([]) List<DashTodo> todo,
-    @Default(false) bool offWork,
-    @Default("") String workStatus,
-    @Default(DashTemp()) DashTemp tempInfo,
-    @Default(DashTemp()) DashTemp tempFutureInfo,
-    @Default(DashFit()) DashFit fitnessInfo,
-  }) = _DashInfo;
+  factory DashInfo(
+      {@Default(0) int updateAt,
+      @Default(false) bool needDiaryReport,
+      @Default("") String weatherInfo,
+      @Default(false) bool needPlantWater,
+      @Default([]) List<String> cardCheck,
+      @Default([]) List<DashTodo> todo,
+      @Default(false) bool offWork,
+      @Default("") String workStatus,
+      @Default(DashTemp()) DashTemp tempInfo,
+      @Default(DashTemp()) DashTemp tempFutureInfo,
+      @Default(DashFit()) DashFit fitnessInfo,
+      @Default("") String lastError}) = _DashInfo;
 
   factory DashInfo.fromJson(Map<String, dynamic> json) =>
       _$DashInfoFromJson(json);
@@ -78,11 +79,16 @@ class DashInfo with _$DashInfo {
 Future<DashInfo> getDash(GetDashRef ref) async {
   debugPrint("req for dash");
   try {
-    final (res, _) =
+    final (res, d) =
         await requestFromRaw("/cyber/client/ios-widget", DashInfo.fromJson);
-    return res ?? DashInfo();
+    return res ??
+        DashInfo(
+            lastError:
+                "ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d");
   } catch (e, st) {
     debugPrintStack(stackTrace: st);
-    return DashInfo();
+    return DashInfo(
+        lastError:
+            "ver: $version, error: $e, stack: ${st.toString()}, req ${Configs.data.copyWith(password: "***")}");
   }
 }
