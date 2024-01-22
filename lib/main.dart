@@ -15,7 +15,7 @@ main() async {
   if (!kIsWeb && (Platform.isWindows || Platform.isMacOS)) {
     await windowManager.ensureInitialized();
     windowManager.waitUntilReadyToShow(
-        const WindowOptions(size: Size(520, 330)), () async {
+        const WindowOptions(size: Size(540, 350)), () async {
       await windowManager.show();
       await windowManager.focus();
     });

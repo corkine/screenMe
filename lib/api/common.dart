@@ -15,6 +15,7 @@ class Config with _$Config {
       {@Default("") String user,
       @Default("") String password,
       @Default(60) int fetchSeconds,
+      @Default(false) bool showBingWallpaper,
       @Default("") String cyberPass}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
@@ -48,12 +49,13 @@ class Configs extends _$Configs {
     return data;
   }
 
-  set(String user, String pass, int duration) async {
+  set(String user, String pass, int duration, bool showWallpaper) async {
     final c = Config(
         user: user,
         password: pass,
         cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
-        fetchSeconds: duration);
+        fetchSeconds: duration,
+        showBingWallpaper: showWallpaper);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

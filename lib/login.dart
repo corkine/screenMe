@@ -15,6 +15,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final username = TextEditingController();
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
+  bool showWallpaper = false;
   @override
   void dispose() {
     username.dispose();
@@ -24,25 +25,25 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ref.read(configsProvider.future).then((c) {
+      username.text = c.user;
+      fetchDuration.text = c.fetchSeconds.toString();
+      password.text = c.password;
+      showWallpaper = c.showBingWallpaper;
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final c = ref.watch(configsProvider).value;
-    if (c != null) {
-      if (username.text.isEmpty) {
-        username.text = c.user;
-      }
-      if (fetchDuration.text.isEmpty) {
-        fetchDuration.text = c.fetchSeconds.toString();
-      }
-      if (password.text.isEmpty) {
-        password.text = c.password;
-      }
-    }
     return Scaffold(
-        appBar: AppBar(title: const Text("登录"), actions: [
+        appBar: AppBar(title: const Text("设置"), actions: [
           TextButton.icon(
               onPressed: handleLogin,
-              icon: const Icon(Icons.login),
-              label: const Text("登录"))
+              icon: const Icon(Icons.save),
+              label: const Text("保存"))
         ]),
         body: SingleChildScrollView(
             child: Padding(
@@ -62,7 +63,16 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       controller: fetchDuration,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                          border: UnderlineInputBorder(), labelText: "刷新间隔(秒)"))
+                          border: UnderlineInputBorder(),
+                          labelText: "刷新间隔(秒)")),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    const Text("显示 Bing 壁纸"),
+                    const Spacer(),
+                    Switch(
+                        value: showWallpaper,
+                        onChanged: (v) => setState(() => showWallpaper = v))
+                  ])
                 ]))));
   }
 
@@ -74,7 +84,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         d != null) {
       await ref
           .read(configsProvider.notifier)
-          .set(username.text, password.text, d);
+          .set(username.text, password.text, d, showWallpaper);
       await showSimpleMessage(context, content: "设置已更新");
       Navigator.of(context).pop();
     } else {

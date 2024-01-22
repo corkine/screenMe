@@ -120,7 +120,7 @@ Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getDashHash() => r'a0b039501bd6f5ede4205412abefd65f208684c0';
+String _$getDashHash() => r'f4452eab2fe591ac82136d099254106cf2079cfd';
 
 /// See also [getDash].
 @ProviderFor(getDash)

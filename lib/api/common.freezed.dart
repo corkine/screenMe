@@ -23,6 +23,7 @@ mixin _$Config {
   String get user => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   int get fetchSeconds => throw _privateConstructorUsedError;
+  bool get showBingWallpaper => throw _privateConstructorUsedError;
   String get cyberPass => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,12 @@ abstract class $ConfigCopyWith<$Res> {
   factory $ConfigCopyWith(Config value, $Res Function(Config) then) =
       _$ConfigCopyWithImpl<$Res, Config>;
   @useResult
-  $Res call({String user, String password, int fetchSeconds, String cyberPass});
+  $Res call(
+      {String user,
+      String password,
+      int fetchSeconds,
+      bool showBingWallpaper,
+      String cyberPass});
 }
 
 /// @nodoc
@@ -54,6 +60,7 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? user = null,
     Object? password = null,
     Object? fetchSeconds = null,
+    Object? showBingWallpaper = null,
     Object? cyberPass = null,
   }) {
     return _then(_value.copyWith(
@@ -69,6 +76,10 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.fetchSeconds
           : fetchSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      showBingWallpaper: null == showBingWallpaper
+          ? _value.showBingWallpaper
+          : showBingWallpaper // ignore: cast_nullable_to_non_nullable
+              as bool,
       cyberPass: null == cyberPass
           ? _value.cyberPass
           : cyberPass // ignore: cast_nullable_to_non_nullable
@@ -84,7 +95,12 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       __$$ConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String user, String password, int fetchSeconds, String cyberPass});
+  $Res call(
+      {String user,
+      String password,
+      int fetchSeconds,
+      bool showBingWallpaper,
+      String cyberPass});
 }
 
 /// @nodoc
@@ -101,6 +117,7 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? user = null,
     Object? password = null,
     Object? fetchSeconds = null,
+    Object? showBingWallpaper = null,
     Object? cyberPass = null,
   }) {
     return _then(_$ConfigImpl(
@@ -116,6 +133,10 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.fetchSeconds
           : fetchSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      showBingWallpaper: null == showBingWallpaper
+          ? _value.showBingWallpaper
+          : showBingWallpaper // ignore: cast_nullable_to_non_nullable
+              as bool,
       cyberPass: null == cyberPass
           ? _value.cyberPass
           : cyberPass // ignore: cast_nullable_to_non_nullable
@@ -131,6 +152,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       {this.user = "",
       this.password = "",
       this.fetchSeconds = 60,
+      this.showBingWallpaper = false,
       this.cyberPass = ""});
 
   factory _$ConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -147,11 +169,14 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final int fetchSeconds;
   @override
   @JsonKey()
+  final bool showBingWallpaper;
+  @override
+  @JsonKey()
   final String cyberPass;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, cyberPass: $cyberPass)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass)';
   }
 
   @override
@@ -162,6 +187,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('fetchSeconds', fetchSeconds))
+      ..add(DiagnosticsProperty('showBingWallpaper', showBingWallpaper))
       ..add(DiagnosticsProperty('cyberPass', cyberPass));
   }
 
@@ -175,14 +201,16 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
                 other.password == password) &&
             (identical(other.fetchSeconds, fetchSeconds) ||
                 other.fetchSeconds == fetchSeconds) &&
+            (identical(other.showBingWallpaper, showBingWallpaper) ||
+                other.showBingWallpaper == showBingWallpaper) &&
             (identical(other.cyberPass, cyberPass) ||
                 other.cyberPass == cyberPass));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, user, password, fetchSeconds, cyberPass);
+  int get hashCode => Object.hash(
+      runtimeType, user, password, fetchSeconds, showBingWallpaper, cyberPass);
 
   @JsonKey(ignore: true)
   @override
@@ -203,6 +231,7 @@ abstract class _Config implements Config {
       {final String user,
       final String password,
       final int fetchSeconds,
+      final bool showBingWallpaper,
       final String cyberPass}) = _$ConfigImpl;
 
   factory _Config.fromJson(Map<String, dynamic> json) = _$ConfigImpl.fromJson;
@@ -213,6 +242,8 @@ abstract class _Config implements Config {
   String get password;
   @override
   int get fetchSeconds;
+  @override
+  bool get showBingWallpaper;
   @override
   String get cyberPass;
   @override

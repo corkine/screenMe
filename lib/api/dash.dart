@@ -81,14 +81,16 @@ Future<DashInfo> getDash(GetDashRef ref) async {
   try {
     final (res, d) =
         await requestFromRaw("/cyber/client/ios-widget", DashInfo.fromJson);
-    return res ??
+    return res?.copyWith(
+            lastError:
+                "[normal] ver: $version, req: ${Configs.data.copyWith(password: "***")}") ??
         DashInfo(
             lastError:
-                "ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d");
+                "[empty] ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d");
   } catch (e, st) {
     debugPrintStack(stackTrace: st);
     return DashInfo(
         lastError:
-            "ver: $version, error: $e, stack: ${st.toString()}, req ${Configs.data.copyWith(password: "***")}");
+            "[error] ver: $version, error: $e, stack: ${st.toString()}, req ${Configs.data.copyWith(password: "***")}");
   }
 }

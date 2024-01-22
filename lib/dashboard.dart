@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -19,8 +20,10 @@ class DashboardView extends ConsumerStatefulWidget {
 class _DashboardViewState extends ConsumerState<DashboardView> {
   @override
   Widget build(BuildContext context) {
-    ref.watch(configsProvider).value;
+    final s = ref.watch(configsProvider).value ?? Config();
     final d = ref.watch(getDashProvider).value;
+    final now = DateTime.now();
+    final today = "${now.year}-${now.month}-${now.day}";
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(
@@ -28,17 +31,32 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             onDoubleTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const LoginView())),
             child: Stack(fit: StackFit.expand, children: [
+              ...(s.showBingWallpaper
+                  ? [
+                      Positioned.fill(
+                          child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://go.mazhangjing.com/bing-today-image?normal=true",
+                              cacheKey: "bing-today-image-$today",
+                              fit: BoxFit.cover))
+                    ]
+                  : []),
               const Positioned(
                   left: 30, top: 10, bottom: 10, child: ClockWidget()),
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  top: 0,
-                  child: Transform.scale(
-                    scale: 1.1,
-                    child: Transform.translate(
-                        offset: const Offset(40, 20), child: buildChart(d)),
-                  ))
+              ...(s.showBingWallpaper
+                  ? []
+                  : [
+                      Positioned(
+                          right: 0,
+                          bottom: 0,
+                          top: 0,
+                          child: Transform.scale(
+                            scale: 1.1,
+                            child: Transform.translate(
+                                offset: const Offset(40, 20),
+                                child: buildChart(d)),
+                          ))
+                    ])
             ])));
   }
 }
