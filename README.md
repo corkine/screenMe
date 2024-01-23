@@ -1,16 +1,13 @@
 # ScreenMe
 
-ScreenMe 是一款专门为小爱带屏音响设计的每日大屏，基于 Flutter 开发。
+ScreenMe 是一款专门为带屏小爱音响（LX04）设计的每日大屏，基于 Flutter 开发，支持如下特性：
+- 时钟显示
+- 本地天气显示（彩云天气）
+- 每日 Bing 壁纸
+- Apple Health 健康数据显示（消耗卡路里、运动和冥想）
+- 工作状态指示（已打卡、未打卡、请假、休假）
+- Microsoft TODO 待办事项
 
-## Getting Started
+![每日bing壁纸视图](https://static2.mazhangjing.com/cyber/202401/bf82fd5b_78f32fd0b8be5068c8fc663f3aad177.jpg)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![健康视图](https://static2.mazhangjing.com/cyber/202401/4479c7ac_edbcd5ae2623ef7e4eb1a57c970e22e.jpg)
