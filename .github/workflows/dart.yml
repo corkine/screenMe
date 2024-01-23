@@ -1,10 +1,9 @@
 name: 'APK Release'
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    push:
+        tags:
+        - "v*"
 
 jobs:
   build:
@@ -41,9 +40,18 @@ jobs:
         # Use the "id" property to give the step a unique identifier.
         # Use the "::set-output" command to set the value of the "built-apk" output variable.
       
-      - name: 'Upload APK'
-        uses: 'actions/upload-artifact@v2'
+        #   - name: 'Upload APK'
+        #     uses: 'actions/upload-artifact@v2'
+        #     with:
+        #       name: 'Built APK'
+        #       path: '${{ steps.build.outputs.built-apk }}'
+        
+
+      - name: 'Release'
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          name: 'Built APK'
-          path: '${{ steps.build.outputs.built-apk }}'
-        # Upload the built APK
+            repo_token: "${{ secrets.GITHUB_TOKEN }}"
+            prerelease: false
+            files: |
+                build/app/outputs/flutter-apk/*.apk
+                build/app/outputs/flutter-apk/*.apk.sha1
