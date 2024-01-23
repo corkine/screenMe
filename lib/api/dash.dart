@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -69,6 +71,7 @@ class DashInfo with _$DashInfo {
       @Default(DashTemp()) DashTemp tempInfo,
       @Default(DashTemp()) DashTemp tempFutureInfo,
       @Default(DashFit()) DashFit fitnessInfo,
+      @Default("") String debugInfo,
       @Default("") String lastError}) = _DashInfo;
 
   factory DashInfo.fromJson(Map<String, dynamic> json) =>
@@ -77,20 +80,43 @@ class DashInfo with _$DashInfo {
 
 @riverpod
 Future<DashInfo> getDash(GetDashRef ref) async {
+  if (ref.read(configsProvider).value?.demoMode ?? false) {
+    return fakeDashInfo();
+  }
   debugPrint("req for dash");
   try {
     final (res, d) =
         await requestFromRaw("/cyber/client/ios-widget", DashInfo.fromJson);
     return res?.copyWith(
-            lastError:
+            debugInfo:
                 "[normal] ver: $version, req: ${Configs.data.copyWith(password: "***")}") ??
         DashInfo(
-            lastError:
-                "[empty] ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d");
+            debugInfo:
+                "[empty] ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d",
+            lastError: d);
   } catch (e, st) {
     debugPrintStack(stackTrace: st);
     return DashInfo(
-        lastError:
-            "[error] ver: $version, error: $e, stack: ${st.toString()}, req ${Configs.data.copyWith(password: "***")}");
+        debugInfo:
+            "[error] ver: $version, error: $e, stack: ${st.toString()}, req ${Configs.data.copyWith(password: "***")}",
+        lastError: e.toString());
   }
+}
+
+DashInfo fakeDashInfo() {
+  return DashInfo(
+      weatherInfo: Random().nextBool() ? "今天的天气晴朗，平均气温 23°" : "最近的降雨带在 20 公里以外",
+      todo: [
+        const DashTodo(title: "阅读《小王子》"),
+        const DashTodo(title: "双击时钟打开设置界面"),
+        DashTodo(title: "取快递", isFinished: Random().nextBool())
+      ],
+      offWork: Random().nextBool(),
+      workStatus: (["🔴", "🟡", "🟢", "⚫", "⚪"]..shuffle()).first,
+      fitnessInfo: DashFit(
+          exercise: Random().nextDouble() * 10 + 10,
+          active: Random().nextDouble() * 80 + 200,
+          mindful: Random().nextInt(3) + 1),
+      debugInfo:
+          "[demo] ver: $version, req: ${Configs.data.copyWith(password: "***", cyberPass: "***")}");
 }

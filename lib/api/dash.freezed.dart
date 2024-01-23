@@ -866,6 +866,7 @@ mixin _$DashInfo {
   DashTemp get tempInfo => throw _privateConstructorUsedError;
   DashTemp get tempFutureInfo => throw _privateConstructorUsedError;
   DashFit get fitnessInfo => throw _privateConstructorUsedError;
+  String get debugInfo => throw _privateConstructorUsedError;
   String get lastError => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -891,6 +892,7 @@ abstract class $DashInfoCopyWith<$Res> {
       DashTemp tempInfo,
       DashTemp tempFutureInfo,
       DashFit fitnessInfo,
+      String debugInfo,
       String lastError});
 
   $DashTempCopyWith<$Res> get tempInfo;
@@ -922,6 +924,7 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
     Object? tempInfo = null,
     Object? tempFutureInfo = null,
     Object? fitnessInfo = null,
+    Object? debugInfo = null,
     Object? lastError = null,
   }) {
     return _then(_value.copyWith(
@@ -969,6 +972,10 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
           ? _value.fitnessInfo
           : fitnessInfo // ignore: cast_nullable_to_non_nullable
               as DashFit,
+      debugInfo: null == debugInfo
+          ? _value.debugInfo
+          : debugInfo // ignore: cast_nullable_to_non_nullable
+              as String,
       lastError: null == lastError
           ? _value.lastError
           : lastError // ignore: cast_nullable_to_non_nullable
@@ -1021,6 +1028,7 @@ abstract class _$$DashInfoImplCopyWith<$Res>
       DashTemp tempInfo,
       DashTemp tempFutureInfo,
       DashFit fitnessInfo,
+      String debugInfo,
       String lastError});
 
   @override
@@ -1053,6 +1061,7 @@ class __$$DashInfoImplCopyWithImpl<$Res>
     Object? tempInfo = null,
     Object? tempFutureInfo = null,
     Object? fitnessInfo = null,
+    Object? debugInfo = null,
     Object? lastError = null,
   }) {
     return _then(_$DashInfoImpl(
@@ -1100,6 +1109,10 @@ class __$$DashInfoImplCopyWithImpl<$Res>
           ? _value.fitnessInfo
           : fitnessInfo // ignore: cast_nullable_to_non_nullable
               as DashFit,
+      debugInfo: null == debugInfo
+          ? _value.debugInfo
+          : debugInfo // ignore: cast_nullable_to_non_nullable
+              as String,
       lastError: null == lastError
           ? _value.lastError
           : lastError // ignore: cast_nullable_to_non_nullable
@@ -1123,6 +1136,7 @@ class _$DashInfoImpl implements _DashInfo {
       this.tempInfo = const DashTemp(),
       this.tempFutureInfo = const DashTemp(),
       this.fitnessInfo = const DashFit(),
+      this.debugInfo = "",
       this.lastError = ""})
       : _cardCheck = cardCheck,
         _todo = todo;
@@ -1177,11 +1191,14 @@ class _$DashInfoImpl implements _DashInfo {
   final DashFit fitnessInfo;
   @override
   @JsonKey()
+  final String debugInfo;
+  @override
+  @JsonKey()
   final String lastError;
 
   @override
   String toString() {
-    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, lastError: $lastError)';
+    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, debugInfo: $debugInfo, lastError: $lastError)';
   }
 
   @override
@@ -1209,6 +1226,8 @@ class _$DashInfoImpl implements _DashInfo {
                 other.tempFutureInfo == tempFutureInfo) &&
             (identical(other.fitnessInfo, fitnessInfo) ||
                 other.fitnessInfo == fitnessInfo) &&
+            (identical(other.debugInfo, debugInfo) ||
+                other.debugInfo == debugInfo) &&
             (identical(other.lastError, lastError) ||
                 other.lastError == lastError));
   }
@@ -1228,6 +1247,7 @@ class _$DashInfoImpl implements _DashInfo {
       tempInfo,
       tempFutureInfo,
       fitnessInfo,
+      debugInfo,
       lastError);
 
   @JsonKey(ignore: true)
@@ -1257,6 +1277,7 @@ abstract class _DashInfo implements DashInfo {
       final DashTemp tempInfo,
       final DashTemp tempFutureInfo,
       final DashFit fitnessInfo,
+      final String debugInfo,
       final String lastError}) = _$DashInfoImpl;
 
   factory _DashInfo.fromJson(Map<String, dynamic> json) =
@@ -1284,6 +1305,8 @@ abstract class _DashInfo implements DashInfo {
   DashTemp get tempFutureInfo;
   @override
   DashFit get fitnessInfo;
+  @override
+  String get debugInfo;
   @override
   String get lastError;
   @override

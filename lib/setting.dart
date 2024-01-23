@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_me/api/common.dart';
 
-class LoginView extends ConsumerStatefulWidget {
-  const LoginView({super.key});
+class SettingView extends ConsumerStatefulWidget {
+  const SettingView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettingViewState();
 }
 
-class _LoginViewState extends ConsumerState<LoginView> {
+class _SettingViewState extends ConsumerState<SettingView> {
   final username = TextEditingController();
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
   bool showWallpaper = false;
+  bool demoMode = false;
   @override
   void dispose() {
     username.dispose();
@@ -32,14 +33,37 @@ class _LoginViewState extends ConsumerState<LoginView> {
       fetchDuration.text = c.fetchSeconds.toString();
       password.text = c.password;
       showWallpaper = c.showBingWallpaper;
+      demoMode = c.demoMode;
       setState(() {});
     });
+  }
+
+  toggleDemoMode() {
+    if (demoMode) {
+      username.text = "demo";
+      password.text = "demo";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("设置"), actions: [
+          Row(children: [
+            Checkbox.adaptive(
+                value: demoMode,
+                onChanged: (v) => setState(() {
+                      demoMode = v!;
+                      toggleDemoMode();
+                    })),
+            InkWell(
+                onTap: () => setState(() {
+                      demoMode = !demoMode;
+                      toggleDemoMode();
+                    }),
+                child: const Text("演示模式")),
+            const SizedBox(width: 10)
+          ]),
           TextButton.icon(
               onPressed: handleLogin,
               icon: const Icon(Icons.save),
@@ -50,7 +74,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(children: [
                   TextField(
-                      autofocus: true,
                       controller: username,
                       decoration: const InputDecoration(
                           border: UnderlineInputBorder(), labelText: "用户名")),
@@ -82,9 +105,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
         password.text.isNotEmpty &&
         fetchDuration.text.isNotEmpty &&
         d != null) {
-      await ref
-          .read(configsProvider.notifier)
-          .set(username.text, password.text, d, showWallpaper);
+      await ref.read(configsProvider.notifier).set(
+          username.text, password.text, d, showWallpaper,
+          demoMode: demoMode);
       await showSimpleMessage(context, content: "设置已更新");
       Navigator.of(context).pop();
     } else {

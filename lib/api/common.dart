@@ -16,7 +16,8 @@ class Config with _$Config {
       @Default("") String password,
       @Default(60) int fetchSeconds,
       @Default(false) bool showBingWallpaper,
-      @Default("") String cyberPass}) = _Config;
+      @Default("") String cyberPass,
+      @Default(true) bool demoMode}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
@@ -38,6 +39,8 @@ extension ConfigHelper on Config {
         'Authorization': cyberBase64Token,
         'Content-Type': 'application/json'
       };
+
+  int get changeSeconds => demoMode ? 10 : fetchSeconds;
 }
 
 @riverpod
@@ -49,13 +52,15 @@ class Configs extends _$Configs {
     return data;
   }
 
-  set(String user, String pass, int duration, bool showWallpaper) async {
+  set(String user, String pass, int duration, bool showWallpaper,
+      {bool demoMode = false}) async {
     final c = Config(
         user: user,
         password: pass,
         cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
         fetchSeconds: duration,
-        showBingWallpaper: showWallpaper);
+        showBingWallpaper: showWallpaper,
+        demoMode: demoMode);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

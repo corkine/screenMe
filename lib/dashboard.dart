@@ -6,7 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:screen_me/chart.dart';
-import 'package:screen_me/login.dart';
+import 'package:screen_me/setting.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import 'api/common.dart';
 
@@ -27,9 +28,9 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(
-            onLongPress: () => showDebugBar(context, d?.lastError ?? "没有错误消息"),
+            onLongPress: () => showDebugBar(context, d?.debugInfo ?? "没有诊断信息"),
             onDoubleTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const LoginView())),
+                MaterialPageRoute(builder: (context) => const SettingView())),
             child: Stack(fit: StackFit.expand, children: [
               ...(s.showBingWallpaper
                   ? [
@@ -51,12 +52,20 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           bottom: 0,
                           top: 0,
                           child: Transform.scale(
-                            scale: 1.1,
-                            child: Transform.translate(
-                                offset: const Offset(40, 20),
-                                child: buildChart(d)),
-                          ))
-                    ])
+                              scale: 1.1,
+                              child: Transform.translate(
+                                  offset: const Offset(40, 20),
+                                  child: buildChart(d))))
+                    ]),
+              ...(s.demoMode
+                  ? [
+                      const Positioned(
+                          right: 30,
+                          bottom: 10,
+                          child: Text("演示模式",
+                              style: TextStyle(color: Colors.white70))),
+                    ]
+                  : [])
             ])));
   }
 }
@@ -98,9 +107,8 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
   }
 
   handleAction(event) {
-    //debugPrint(event.toString());
     final now = DateTime.now();
-    final seconds = Configs.data.fetchSeconds;
+    final seconds = Configs.data.changeSeconds;
     if (event % seconds == 0) {
       debugPrint("invalidate dash $seconds");
       ref.invalidate(getDashProvider);

@@ -97,6 +97,7 @@ _$DashInfoImpl _$$DashInfoImplFromJson(Map<String, dynamic> json) =>
       fitnessInfo: json['fitnessInfo'] == null
           ? const DashFit()
           : DashFit.fromJson(json['fitnessInfo'] as Map<String, dynamic>),
+      debugInfo: json['debugInfo'] as String? ?? "",
       lastError: json['lastError'] as String? ?? "",
     );
 
@@ -113,6 +114,7 @@ Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
       'tempInfo': instance.tempInfo,
       'tempFutureInfo': instance.tempFutureInfo,
       'fitnessInfo': instance.fitnessInfo,
+      'debugInfo': instance.debugInfo,
       'lastError': instance.lastError,
     };
 
@@ -120,7 +122,7 @@ Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getDashHash() => r'f4452eab2fe591ac82136d099254106cf2079cfd';
+String _$getDashHash() => r'ed0b1d2fb484763809f455b8d33e287cae27391b';
 
 /// See also [getDash].
 @ProviderFor(getDash)

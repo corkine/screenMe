@@ -12,6 +12,7 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       fetchSeconds: json['fetchSeconds'] as int? ?? 60,
       showBingWallpaper: json['showBingWallpaper'] as bool? ?? false,
       cyberPass: json['cyberPass'] as String? ?? "",
+      demoMode: json['demoMode'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
@@ -21,13 +22,14 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'fetchSeconds': instance.fetchSeconds,
       'showBingWallpaper': instance.showBingWallpaper,
       'cyberPass': instance.cyberPass,
+      'demoMode': instance.demoMode,
     };
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'c919ec78443101fe6a2172f1f9fd3d3f745bb11f';
+String _$configsHash() => r'0db4b59733e0f3847169eb76e2130fc1b1233f1c';
 
 /// See also [Configs].
 @ProviderFor(Configs)

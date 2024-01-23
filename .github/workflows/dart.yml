@@ -32,6 +32,9 @@ jobs:
       - name: 'Get packages'
         run: 'flutter pub get'
         # Get the Flutter packages.
+
+      - name: Run Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
       
       - name: 'Build APK'
         id: 'build'
@@ -55,3 +58,16 @@ jobs:
             files: |
                 build/app/outputs/flutter-apk/*.apk
                 build/app/outputs/flutter-apk/*.apk.sha1
+
+      - name: Notice to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          payload: |
+            {
+              "text": "ScreenMe Flutter Project CI/CD Build ${{ job.status }} <${{ github.event.pull_request.html_url || github.event.head_commit.url }}| HERE>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        

@@ -46,3 +46,6 @@ app.*.map.json
 .idea
 .flutter-plugins
 .flutter-plugins-dependencies
+
+*.g.dart
+*.freezed.dart
