@@ -1,0 +1,49 @@
+name: 'APK Release'
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Set up JDK 11'
+        uses: 'actions/setup-java@v1'
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      
+      - name: 'Clone Flutter repository with master channel'
+        uses: 'subosito/flutter-action@v1'
+        with:
+          channel: 'master'
+      
+      - name: 'Check Flutter environment'
+        run: 'flutter doctor -v'
+        # Check the Flutter environment.
+      
+      - name: 'Checkout code'
+        uses: 'actions/checkout@v2'
+        # Checkout the app code using the "actions/checkout" action.
+      
+      - name: 'Get packages'
+        run: 'flutter pub get'
+        # Get the Flutter packages.
+      
+      - name: 'Build APK'
+        id: 'build'
+        run: 'flutter build apk && echo "::set-output name=built-apk::build/app/outputs/flutter-apk/"'
+        # Build the APK using the value of the "matrix-target" input.
+        # Use the "id" property to give the step a unique identifier.
+        # Use the "::set-output" command to set the value of the "built-apk" output variable.
+      
+      - name: 'Upload APK'
+        uses: 'actions/upload-artifact@v2'
+        with:
+          name: 'Built APK'
+          path: '${{ steps.build.outputs.built-apk }}'
+        # Upload the built APK
