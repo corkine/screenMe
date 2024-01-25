@@ -55,8 +55,8 @@ class _BlueWidgetState extends ConsumerState<BlueWidget> {
   @override
   Widget build(BuildContext context) {
     final config = ref.watch(configsProvider).value ?? Config();
-    return GestureDetector(
-        onTap: () async {
+    return IconButton(
+        onPressed: () async {
           if (!unsupport && Platform.isAndroid) {
             if (isOn) {
               // ignore: deprecated_member_use
@@ -69,8 +69,7 @@ class _BlueWidgetState extends ConsumerState<BlueWidget> {
             }
           }
         },
-        child: Icon(
-            !isOn ? Icons.bluetooth_disabled : Icons.bluetooth_connected,
+        icon: Icon(!isOn ? Icons.bluetooth_disabled : Icons.bluetooth_connected,
             color: unsupport ? Colors.transparent : Colors.white));
   }
 }

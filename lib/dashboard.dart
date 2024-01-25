@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:screen_me/api/dash.dart';
@@ -42,31 +43,34 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             onDoubleTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const SettingView())),
             child: Stack(fit: StackFit.expand, children: [
-              ...(s.showBingWallpaper
-                  ? [
-                      Positioned.fill(
-                          child: CachedNetworkImage(
+              Positioned.fill(
+                  child: s.showBingWallpaper
+                      ? CachedNetworkImage(
                               imageUrl:
                                   "https://go.mazhangjing.com/bing-today-image?normal=true",
                               cacheKey: "bing-today-image-$today",
-                              fit: BoxFit.cover))
-                    ]
-                  : []),
+                              fit: BoxFit.cover)
+                          .animate()
+                          .fadeIn()
+                      : const SizedBox()),
               const Positioned(
-                  left: 30, top: 10, bottom: 10, child: ClockWidget()),
-              ...(s.showBingWallpaper
-                  ? []
-                  : [
-                      Positioned(
-                          right: 0,
-                          bottom: 0,
-                          top: 0,
-                          child: Transform.scale(
-                              scale: 1.1,
-                              child: Transform.translate(
-                                  offset: const Offset(40, 20),
-                                  child: buildChart(d))))
-                    ]),
+                  left: 30,
+                  top: 10,
+                  bottom: 10,
+                  child: ClockWidget(key: ValueKey("clock"))),
+              Positioned(
+                  right: 0,
+                  bottom: 0,
+                  top: 0,
+                  child: s.showBingWallpaper
+                      ? const SizedBox()
+                      : Transform.scale(
+                          scale: 1.1,
+                          child: Transform.translate(
+                              offset: const Offset(40, 20),
+                              child: buildChart(d)
+                                  .animate()
+                                  .moveX(begin: 10, end: 0)))),
               Positioned(
                   right: 20,
                   bottom: 20,

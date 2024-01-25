@@ -101,7 +101,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         onChanged: (v) => setState(() => showWallpaper = v))
                   ]),
                   Row(children: [
-                    const Text("关闭蓝牙时音量"),
+                    Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
                     const Spacer(),
                     Slider(
                         onChanged: (v) {
@@ -115,7 +115,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         max: 1)
                   ]),
                   Row(mainAxisSize: MainAxisSize.max, children: [
-                    const Text("打开蓝牙时音量"),
+                    Text("打开蓝牙时音量：${(speakerVoice * 100).toInt()}"),
                     const Spacer(),
                     Slider(
                         onChanged: (v) {
