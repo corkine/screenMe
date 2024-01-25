@@ -17,7 +17,9 @@ class Config with _$Config {
       @Default(60) int fetchSeconds,
       @Default(false) bool showBingWallpaper,
       @Default("") String cyberPass,
-      @Default(true) bool demoMode}) = _Config;
+      @Default(true) bool demoMode,
+      @Default(0.1) double volumeNormal,
+      @Default(0.5) double volumeOpenBluetooth}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
@@ -53,18 +55,32 @@ class Configs extends _$Configs {
   }
 
   set(String user, String pass, int duration, bool showWallpaper,
-      {bool demoMode = false}) async {
+      {bool demoMode = false,
+      required double minVol,
+      required double maxVol}) async {
     final c = Config(
         user: user,
         password: pass,
         cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
         fetchSeconds: duration,
         showBingWallpaper: showWallpaper,
-        demoMode: demoMode);
+        demoMode: demoMode,
+        volumeNormal: minVol,
+        volumeOpenBluetooth: maxVol);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;
     state = AsyncData(c);
+  }
+
+  changeFace() async {
+    var v = state.value;
+    if (v == null) return;
+    v = v.copyWith(showBingWallpaper: !v.showBingWallpaper);
+    final s = await SharedPreferences.getInstance();
+    await s.setString("config", jsonEncode(v.toJson()));
+    data = v;
+    state = AsyncData(v);
   }
 
   static Future<Config> loadFromLocal() async {

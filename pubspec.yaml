@@ -25,6 +25,8 @@ dependencies:
   window_manager: ^0.3.7
   flutter_animate: ^4.4.0
   syncfusion_flutter_charts: ^24.1.46+1
+  flutter_blue_plus: ^1.31.10
+  flutter_volume_controller: ^1.3.1
 
 dev_dependencies:
   flutter_test:

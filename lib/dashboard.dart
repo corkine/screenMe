@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:screen_me/api/dash.dart';
+import 'package:screen_me/blue.dart';
 import 'package:screen_me/chart.dart';
 import 'package:screen_me/setting.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 import 'api/common.dart';
+
+num abs(num a) {
+  return a > 0 ? a : -a;
+}
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -28,6 +32,12 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(
+            onHorizontalDragEnd: (details) async {
+              final offset = details.velocity.pixelsPerSecond;
+              if (abs(offset.dx) > 10 || abs(offset.dy) > 10) {
+                await ref.read(configsProvider.notifier).changeFace();
+              }
+            },
             onLongPress: () => showDebugBar(context, d?.debugInfo ?? "没有诊断信息"),
             onDoubleTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const SettingView())),
@@ -57,15 +67,16 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                   offset: const Offset(40, 20),
                                   child: buildChart(d))))
                     ]),
-              ...(s.demoMode
-                  ? [
-                      const Positioned(
-                          right: 30,
-                          bottom: 10,
-                          child: Text("演示模式",
-                              style: TextStyle(color: Colors.white70))),
-                    ]
-                  : [])
+              Positioned(
+                  right: 20,
+                  bottom: 20,
+                  child: Row(children: [
+                    const BlueWidget(),
+                    s.demoMode
+                        ? const Text("演示模式",
+                            style: TextStyle(color: Colors.white70))
+                        : const SizedBox()
+                  ]))
             ])));
   }
 }

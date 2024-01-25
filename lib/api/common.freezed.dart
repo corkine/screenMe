@@ -26,6 +26,8 @@ mixin _$Config {
   bool get showBingWallpaper => throw _privateConstructorUsedError;
   String get cyberPass => throw _privateConstructorUsedError;
   bool get demoMode => throw _privateConstructorUsedError;
+  double get volumeNormal => throw _privateConstructorUsedError;
+  double get volumeOpenBluetooth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +45,9 @@ abstract class $ConfigCopyWith<$Res> {
       int fetchSeconds,
       bool showBingWallpaper,
       String cyberPass,
-      bool demoMode});
+      bool demoMode,
+      double volumeNormal,
+      double volumeOpenBluetooth});
 }
 
 /// @nodoc
@@ -65,6 +69,8 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? showBingWallpaper = null,
     Object? cyberPass = null,
     Object? demoMode = null,
+    Object? volumeNormal = null,
+    Object? volumeOpenBluetooth = null,
   }) {
     return _then(_value.copyWith(
       user: null == user
@@ -91,6 +97,14 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
+      volumeNormal: null == volumeNormal
+          ? _value.volumeNormal
+          : volumeNormal // ignore: cast_nullable_to_non_nullable
+              as double,
+      volumeOpenBluetooth: null == volumeOpenBluetooth
+          ? _value.volumeOpenBluetooth
+          : volumeOpenBluetooth // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -108,7 +122,9 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       int fetchSeconds,
       bool showBingWallpaper,
       String cyberPass,
-      bool demoMode});
+      bool demoMode,
+      double volumeNormal,
+      double volumeOpenBluetooth});
 }
 
 /// @nodoc
@@ -128,6 +144,8 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? showBingWallpaper = null,
     Object? cyberPass = null,
     Object? demoMode = null,
+    Object? volumeNormal = null,
+    Object? volumeOpenBluetooth = null,
   }) {
     return _then(_$ConfigImpl(
       user: null == user
@@ -154,6 +172,14 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
+      volumeNormal: null == volumeNormal
+          ? _value.volumeNormal
+          : volumeNormal // ignore: cast_nullable_to_non_nullable
+              as double,
+      volumeOpenBluetooth: null == volumeOpenBluetooth
+          ? _value.volumeOpenBluetooth
+          : volumeOpenBluetooth // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -167,7 +193,9 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       this.fetchSeconds = 60,
       this.showBingWallpaper = false,
       this.cyberPass = "",
-      this.demoMode = true});
+      this.demoMode = true,
+      this.volumeNormal = 0.1,
+      this.volumeOpenBluetooth = 0.5});
 
   factory _$ConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConfigImplFromJson(json);
@@ -190,10 +218,16 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   @override
   @JsonKey()
   final bool demoMode;
+  @override
+  @JsonKey()
+  final double volumeNormal;
+  @override
+  @JsonKey()
+  final double volumeOpenBluetooth;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
   }
 
   @override
@@ -206,7 +240,9 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty('fetchSeconds', fetchSeconds))
       ..add(DiagnosticsProperty('showBingWallpaper', showBingWallpaper))
       ..add(DiagnosticsProperty('cyberPass', cyberPass))
-      ..add(DiagnosticsProperty('demoMode', demoMode));
+      ..add(DiagnosticsProperty('demoMode', demoMode))
+      ..add(DiagnosticsProperty('volumeNormal', volumeNormal))
+      ..add(DiagnosticsProperty('volumeOpenBluetooth', volumeOpenBluetooth));
   }
 
   @override
@@ -224,13 +260,25 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
             (identical(other.cyberPass, cyberPass) ||
                 other.cyberPass == cyberPass) &&
             (identical(other.demoMode, demoMode) ||
-                other.demoMode == demoMode));
+                other.demoMode == demoMode) &&
+            (identical(other.volumeNormal, volumeNormal) ||
+                other.volumeNormal == volumeNormal) &&
+            (identical(other.volumeOpenBluetooth, volumeOpenBluetooth) ||
+                other.volumeOpenBluetooth == volumeOpenBluetooth));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, password, fetchSeconds,
-      showBingWallpaper, cyberPass, demoMode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      user,
+      password,
+      fetchSeconds,
+      showBingWallpaper,
+      cyberPass,
+      demoMode,
+      volumeNormal,
+      volumeOpenBluetooth);
 
   @JsonKey(ignore: true)
   @override
@@ -253,7 +301,9 @@ abstract class _Config implements Config {
       final int fetchSeconds,
       final bool showBingWallpaper,
       final String cyberPass,
-      final bool demoMode}) = _$ConfigImpl;
+      final bool demoMode,
+      final double volumeNormal,
+      final double volumeOpenBluetooth}) = _$ConfigImpl;
 
   factory _Config.fromJson(Map<String, dynamic> json) = _$ConfigImpl.fromJson;
 
@@ -269,6 +319,10 @@ abstract class _Config implements Config {
   String get cyberPass;
   @override
   bool get demoMode;
+  @override
+  double get volumeNormal;
+  @override
+  double get volumeOpenBluetooth;
   @override
   @JsonKey(ignore: true)
   _$$ConfigImplCopyWith<_$ConfigImpl> get copyWith =>

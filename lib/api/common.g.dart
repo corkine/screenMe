@@ -13,6 +13,9 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       showBingWallpaper: json['showBingWallpaper'] as bool? ?? false,
       cyberPass: json['cyberPass'] as String? ?? "",
       demoMode: json['demoMode'] as bool? ?? true,
+      volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
+      volumeOpenBluetooth:
+          (json['volumeOpenBluetooth'] as num?)?.toDouble() ?? 0.5,
     );
 
 Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
@@ -23,13 +26,15 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'showBingWallpaper': instance.showBingWallpaper,
       'cyberPass': instance.cyberPass,
       'demoMode': instance.demoMode,
+      'volumeNormal': instance.volumeNormal,
+      'volumeOpenBluetooth': instance.volumeOpenBluetooth,
     };
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'0db4b59733e0f3847169eb76e2130fc1b1233f1c';
+String _$configsHash() => r'0fffc8f6ee0986e15dea2ef1d31a7ee70f3c0cfe';
 
 /// See also [Configs].
 @ProviderFor(Configs)

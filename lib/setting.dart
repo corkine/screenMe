@@ -15,6 +15,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
   final username = TextEditingController();
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
+  var normalVoice = 0.0;
+  var speakerVoice = 0.0;
   bool showWallpaper = false;
   bool demoMode = false;
   @override
@@ -34,6 +36,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
       password.text = c.password;
       showWallpaper = c.showBingWallpaper;
       demoMode = c.demoMode;
+      normalVoice = c.volumeNormal;
+      speakerVoice = c.volumeOpenBluetooth;
       setState(() {});
     });
   }
@@ -95,6 +99,34 @@ class _SettingViewState extends ConsumerState<SettingView> {
                     Switch(
                         value: showWallpaper,
                         onChanged: (v) => setState(() => showWallpaper = v))
+                  ]),
+                  Row(children: [
+                    const Text("关闭蓝牙时音量"),
+                    const Spacer(),
+                    Slider(
+                        onChanged: (v) {
+                          setState(() {
+                            normalVoice = v;
+                          });
+                        },
+                        label: "${normalVoice * 100}",
+                        value: normalVoice,
+                        min: 0,
+                        max: 1)
+                  ]),
+                  Row(mainAxisSize: MainAxisSize.max, children: [
+                    const Text("打开蓝牙时音量"),
+                    const Spacer(),
+                    Slider(
+                        onChanged: (v) {
+                          setState(() {
+                            speakerVoice = v;
+                          });
+                        },
+                        label: "${speakerVoice * 100}",
+                        value: speakerVoice,
+                        min: 0,
+                        max: 1)
                   ])
                 ]))));
   }
@@ -107,7 +139,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
         d != null) {
       await ref.read(configsProvider.notifier).set(
           username.text, password.text, d, showWallpaper,
-          demoMode: demoMode);
+          demoMode: demoMode, minVol: normalVoice, maxVol: speakerVoice);
       await showSimpleMessage(context, content: "设置已更新");
       Navigator.of(context).pop();
     } else {

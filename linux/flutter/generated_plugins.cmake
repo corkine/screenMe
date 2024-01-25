@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_volume_controller
   screen_retriever
   url_launcher_linux
   window_manager
