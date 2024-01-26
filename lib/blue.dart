@@ -55,21 +55,24 @@ class _BlueWidgetState extends ConsumerState<BlueWidget> {
   @override
   Widget build(BuildContext context) {
     final config = ref.watch(configsProvider).value ?? Config();
-    return IconButton(
-        onPressed: () async {
-          if (!unsupport && Platform.isAndroid) {
-            if (isOn) {
-              // ignore: deprecated_member_use
-              await FlutterVolumeController.setVolume(config.volumeNormal);
-              await FlutterBluePlus.turnOff();
-            } else {
-              await FlutterVolumeController.setVolume(
-                  config.volumeOpenBluetooth);
-              await FlutterBluePlus.turnOn();
-            }
-          }
-        },
-        icon: Icon(!isOn ? Icons.bluetooth_disabled : Icons.bluetooth_connected,
-            color: unsupport ? Colors.transparent : Colors.white));
+    return unsupport
+        ? const SizedBox()
+        : IconButton(
+            onPressed: () async {
+              if (!unsupport && Platform.isAndroid) {
+                if (isOn) {
+                  // ignore: deprecated_member_use
+                  await FlutterVolumeController.setVolume(config.volumeNormal);
+                  await FlutterBluePlus.turnOff();
+                } else {
+                  await FlutterVolumeController.setVolume(
+                      config.volumeOpenBluetooth);
+                  await FlutterBluePlus.turnOn();
+                }
+              }
+            },
+            icon: Icon(
+                !isOn ? Icons.bluetooth_disabled : Icons.bluetooth_connected,
+                color: Colors.white));
   }
 }

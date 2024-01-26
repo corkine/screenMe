@@ -72,10 +72,44 @@ class DashInfo with _$DashInfo {
       @Default(DashTemp()) DashTemp tempFutureInfo,
       @Default(DashFit()) DashFit fitnessInfo,
       @Default("") String debugInfo,
-      @Default("") String lastError}) = _DashInfo;
+      @Default("") String lastError,
+      @Default([]) List<DashExpress> express}) = _DashInfo;
 
   factory DashInfo.fromJson(Map<String, dynamic> json) =>
       _$DashInfoFromJson(json);
+}
+
+@freezed
+class DashExpress with _$DashExpress {
+  factory DashExpress({
+    @Default("") String id,
+    @Default("") String name,
+    @Default(0) int status,
+    @Default("") @JsonKey(name: "last_update") String lastUpdate,
+    @Default("") String info,
+    @Default([]) List<DashExpressExtra> extra,
+  }) = _DashExpress;
+
+  factory DashExpress.fromJson(Map<String, dynamic> json) =>
+      _$DashExpressFromJson(json);
+}
+
+@freezed
+class DashExpressExtra with _$DashExpressExtra {
+  const factory DashExpressExtra(
+      {@Default("") String time, @Default("") status}) = _DashExpressExtra;
+  factory DashExpressExtra.fromJson(Map<String, dynamic> json) =>
+      _$DashExpressExtraFromJson(json);
+}
+
+@riverpod
+Future<List<DashExpress>> getExpress(GetExpressRef ref) async {
+  final (res, ok) = await requestFromList("/cyber/express/recent",
+      (p) => p.map((e) => DashExpress.fromJson(e)).toList(growable: false));
+  if (ok.isNotEmpty) {
+    debugPrint(ok);
+  }
+  return res ?? [];
 }
 
 @riverpod
@@ -85,12 +119,15 @@ Future<DashInfo> getDash(GetDashRef ref) async {
   }
   debugPrint("req for dash");
   try {
+    final express = await ref.watch(getExpressProvider.future);
     final (res, d) =
         await requestFromRaw("/cyber/client/ios-widget", DashInfo.fromJson);
     return res?.copyWith(
+            express: express,
             debugInfo:
                 "[normal] ver: $version, req: ${Configs.data.copyWith(password: "***")}") ??
         DashInfo(
+            express: express,
             debugInfo:
                 "[empty] ver: $version, req: ${Configs.data.copyWith(password: "***")}, origin or err $d",
             lastError: d);

@@ -868,6 +868,7 @@ mixin _$DashInfo {
   DashFit get fitnessInfo => throw _privateConstructorUsedError;
   String get debugInfo => throw _privateConstructorUsedError;
   String get lastError => throw _privateConstructorUsedError;
+  List<DashExpress> get express => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -893,7 +894,8 @@ abstract class $DashInfoCopyWith<$Res> {
       DashTemp tempFutureInfo,
       DashFit fitnessInfo,
       String debugInfo,
-      String lastError});
+      String lastError,
+      List<DashExpress> express});
 
   $DashTempCopyWith<$Res> get tempInfo;
   $DashTempCopyWith<$Res> get tempFutureInfo;
@@ -926,6 +928,7 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
     Object? fitnessInfo = null,
     Object? debugInfo = null,
     Object? lastError = null,
+    Object? express = null,
   }) {
     return _then(_value.copyWith(
       updateAt: null == updateAt
@@ -980,6 +983,10 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
           ? _value.lastError
           : lastError // ignore: cast_nullable_to_non_nullable
               as String,
+      express: null == express
+          ? _value.express
+          : express // ignore: cast_nullable_to_non_nullable
+              as List<DashExpress>,
     ) as $Val);
   }
 
@@ -1029,7 +1036,8 @@ abstract class _$$DashInfoImplCopyWith<$Res>
       DashTemp tempFutureInfo,
       DashFit fitnessInfo,
       String debugInfo,
-      String lastError});
+      String lastError,
+      List<DashExpress> express});
 
   @override
   $DashTempCopyWith<$Res> get tempInfo;
@@ -1063,6 +1071,7 @@ class __$$DashInfoImplCopyWithImpl<$Res>
     Object? fitnessInfo = null,
     Object? debugInfo = null,
     Object? lastError = null,
+    Object? express = null,
   }) {
     return _then(_$DashInfoImpl(
       updateAt: null == updateAt
@@ -1117,6 +1126,10 @@ class __$$DashInfoImplCopyWithImpl<$Res>
           ? _value.lastError
           : lastError // ignore: cast_nullable_to_non_nullable
               as String,
+      express: null == express
+          ? _value._express
+          : express // ignore: cast_nullable_to_non_nullable
+              as List<DashExpress>,
     ));
   }
 }
@@ -1137,9 +1150,11 @@ class _$DashInfoImpl implements _DashInfo {
       this.tempFutureInfo = const DashTemp(),
       this.fitnessInfo = const DashFit(),
       this.debugInfo = "",
-      this.lastError = ""})
+      this.lastError = "",
+      final List<DashExpress> express = const []})
       : _cardCheck = cardCheck,
-        _todo = todo;
+        _todo = todo,
+        _express = express;
 
   factory _$DashInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashInfoImplFromJson(json);
@@ -1195,10 +1210,18 @@ class _$DashInfoImpl implements _DashInfo {
   @override
   @JsonKey()
   final String lastError;
+  final List<DashExpress> _express;
+  @override
+  @JsonKey()
+  List<DashExpress> get express {
+    if (_express is EqualUnmodifiableListView) return _express;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_express);
+  }
 
   @override
   String toString() {
-    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, debugInfo: $debugInfo, lastError: $lastError)';
+    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, debugInfo: $debugInfo, lastError: $lastError, express: $express)';
   }
 
   @override
@@ -1229,7 +1252,8 @@ class _$DashInfoImpl implements _DashInfo {
             (identical(other.debugInfo, debugInfo) ||
                 other.debugInfo == debugInfo) &&
             (identical(other.lastError, lastError) ||
-                other.lastError == lastError));
+                other.lastError == lastError) &&
+            const DeepCollectionEquality().equals(other._express, _express));
   }
 
   @JsonKey(ignore: true)
@@ -1248,7 +1272,8 @@ class _$DashInfoImpl implements _DashInfo {
       tempFutureInfo,
       fitnessInfo,
       debugInfo,
-      lastError);
+      lastError,
+      const DeepCollectionEquality().hash(_express));
 
   @JsonKey(ignore: true)
   @override
@@ -1278,7 +1303,8 @@ abstract class _DashInfo implements DashInfo {
       final DashTemp tempFutureInfo,
       final DashFit fitnessInfo,
       final String debugInfo,
-      final String lastError}) = _$DashInfoImpl;
+      final String lastError,
+      final List<DashExpress> express}) = _$DashInfoImpl;
 
   factory _DashInfo.fromJson(Map<String, dynamic> json) =
       _$DashInfoImpl.fromJson;
@@ -1310,7 +1336,419 @@ abstract class _DashInfo implements DashInfo {
   @override
   String get lastError;
   @override
+  List<DashExpress> get express;
+  @override
   @JsonKey(ignore: true)
   _$$DashInfoImplCopyWith<_$DashInfoImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DashExpress _$DashExpressFromJson(Map<String, dynamic> json) {
+  return _DashExpress.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DashExpress {
+  String get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  int get status => throw _privateConstructorUsedError;
+  @JsonKey(name: "last_update")
+  String get lastUpdate => throw _privateConstructorUsedError;
+  String get info => throw _privateConstructorUsedError;
+  List<DashExpressExtra> get extra => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DashExpressCopyWith<DashExpress> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DashExpressCopyWith<$Res> {
+  factory $DashExpressCopyWith(
+          DashExpress value, $Res Function(DashExpress) then) =
+      _$DashExpressCopyWithImpl<$Res, DashExpress>;
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      int status,
+      @JsonKey(name: "last_update") String lastUpdate,
+      String info,
+      List<DashExpressExtra> extra});
+}
+
+/// @nodoc
+class _$DashExpressCopyWithImpl<$Res, $Val extends DashExpress>
+    implements $DashExpressCopyWith<$Res> {
+  _$DashExpressCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? status = null,
+    Object? lastUpdate = null,
+    Object? info = null,
+    Object? extra = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUpdate: null == lastUpdate
+          ? _value.lastUpdate
+          : lastUpdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      info: null == info
+          ? _value.info
+          : info // ignore: cast_nullable_to_non_nullable
+              as String,
+      extra: null == extra
+          ? _value.extra
+          : extra // ignore: cast_nullable_to_non_nullable
+              as List<DashExpressExtra>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DashExpressImplCopyWith<$Res>
+    implements $DashExpressCopyWith<$Res> {
+  factory _$$DashExpressImplCopyWith(
+          _$DashExpressImpl value, $Res Function(_$DashExpressImpl) then) =
+      __$$DashExpressImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      int status,
+      @JsonKey(name: "last_update") String lastUpdate,
+      String info,
+      List<DashExpressExtra> extra});
+}
+
+/// @nodoc
+class __$$DashExpressImplCopyWithImpl<$Res>
+    extends _$DashExpressCopyWithImpl<$Res, _$DashExpressImpl>
+    implements _$$DashExpressImplCopyWith<$Res> {
+  __$$DashExpressImplCopyWithImpl(
+      _$DashExpressImpl _value, $Res Function(_$DashExpressImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? status = null,
+    Object? lastUpdate = null,
+    Object? info = null,
+    Object? extra = null,
+  }) {
+    return _then(_$DashExpressImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUpdate: null == lastUpdate
+          ? _value.lastUpdate
+          : lastUpdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      info: null == info
+          ? _value.info
+          : info // ignore: cast_nullable_to_non_nullable
+              as String,
+      extra: null == extra
+          ? _value._extra
+          : extra // ignore: cast_nullable_to_non_nullable
+              as List<DashExpressExtra>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DashExpressImpl implements _DashExpress {
+  _$DashExpressImpl(
+      {this.id = "",
+      this.name = "",
+      this.status = 0,
+      @JsonKey(name: "last_update") this.lastUpdate = "",
+      this.info = "",
+      final List<DashExpressExtra> extra = const []})
+      : _extra = extra;
+
+  factory _$DashExpressImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DashExpressImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String id;
+  @override
+  @JsonKey()
+  final String name;
+  @override
+  @JsonKey()
+  final int status;
+  @override
+  @JsonKey(name: "last_update")
+  final String lastUpdate;
+  @override
+  @JsonKey()
+  final String info;
+  final List<DashExpressExtra> _extra;
+  @override
+  @JsonKey()
+  List<DashExpressExtra> get extra {
+    if (_extra is EqualUnmodifiableListView) return _extra;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_extra);
+  }
+
+  @override
+  String toString() {
+    return 'DashExpress(id: $id, name: $name, status: $status, lastUpdate: $lastUpdate, info: $info, extra: $extra)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DashExpressImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.lastUpdate, lastUpdate) ||
+                other.lastUpdate == lastUpdate) &&
+            (identical(other.info, info) || other.info == info) &&
+            const DeepCollectionEquality().equals(other._extra, _extra));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, status, lastUpdate,
+      info, const DeepCollectionEquality().hash(_extra));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DashExpressImplCopyWith<_$DashExpressImpl> get copyWith =>
+      __$$DashExpressImplCopyWithImpl<_$DashExpressImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DashExpressImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DashExpress implements DashExpress {
+  factory _DashExpress(
+      {final String id,
+      final String name,
+      final int status,
+      @JsonKey(name: "last_update") final String lastUpdate,
+      final String info,
+      final List<DashExpressExtra> extra}) = _$DashExpressImpl;
+
+  factory _DashExpress.fromJson(Map<String, dynamic> json) =
+      _$DashExpressImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get name;
+  @override
+  int get status;
+  @override
+  @JsonKey(name: "last_update")
+  String get lastUpdate;
+  @override
+  String get info;
+  @override
+  List<DashExpressExtra> get extra;
+  @override
+  @JsonKey(ignore: true)
+  _$$DashExpressImplCopyWith<_$DashExpressImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DashExpressExtra _$DashExpressExtraFromJson(Map<String, dynamic> json) {
+  return _DashExpressExtra.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DashExpressExtra {
+  String get time => throw _privateConstructorUsedError;
+  dynamic get status => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DashExpressExtraCopyWith<DashExpressExtra> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DashExpressExtraCopyWith<$Res> {
+  factory $DashExpressExtraCopyWith(
+          DashExpressExtra value, $Res Function(DashExpressExtra) then) =
+      _$DashExpressExtraCopyWithImpl<$Res, DashExpressExtra>;
+  @useResult
+  $Res call({String time, dynamic status});
+}
+
+/// @nodoc
+class _$DashExpressExtraCopyWithImpl<$Res, $Val extends DashExpressExtra>
+    implements $DashExpressExtraCopyWith<$Res> {
+  _$DashExpressExtraCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? time = null,
+    Object? status = freezed,
+  }) {
+    return _then(_value.copyWith(
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DashExpressExtraImplCopyWith<$Res>
+    implements $DashExpressExtraCopyWith<$Res> {
+  factory _$$DashExpressExtraImplCopyWith(_$DashExpressExtraImpl value,
+          $Res Function(_$DashExpressExtraImpl) then) =
+      __$$DashExpressExtraImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String time, dynamic status});
+}
+
+/// @nodoc
+class __$$DashExpressExtraImplCopyWithImpl<$Res>
+    extends _$DashExpressExtraCopyWithImpl<$Res, _$DashExpressExtraImpl>
+    implements _$$DashExpressExtraImplCopyWith<$Res> {
+  __$$DashExpressExtraImplCopyWithImpl(_$DashExpressExtraImpl _value,
+      $Res Function(_$DashExpressExtraImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? time = null,
+    Object? status = freezed,
+  }) {
+    return _then(_$DashExpressExtraImpl(
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: freezed == status ? _value.status! : status,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DashExpressExtraImpl implements _DashExpressExtra {
+  const _$DashExpressExtraImpl({this.time = "", this.status = ""});
+
+  factory _$DashExpressExtraImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DashExpressExtraImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String time;
+  @override
+  @JsonKey()
+  final dynamic status;
+
+  @override
+  String toString() {
+    return 'DashExpressExtra(time: $time, status: $status)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DashExpressExtraImpl &&
+            (identical(other.time, time) || other.time == time) &&
+            const DeepCollectionEquality().equals(other.status, status));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, time, const DeepCollectionEquality().hash(status));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DashExpressExtraImplCopyWith<_$DashExpressExtraImpl> get copyWith =>
+      __$$DashExpressExtraImplCopyWithImpl<_$DashExpressExtraImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DashExpressExtraImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DashExpressExtra implements DashExpressExtra {
+  const factory _DashExpressExtra({final String time, final dynamic status}) =
+      _$DashExpressExtraImpl;
+
+  factory _DashExpressExtra.fromJson(Map<String, dynamic> json) =
+      _$DashExpressExtraImpl.fromJson;
+
+  @override
+  String get time;
+  @override
+  dynamic get status;
+  @override
+  @JsonKey(ignore: true)
+  _$$DashExpressExtraImplCopyWith<_$DashExpressExtraImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -99,6 +99,10 @@ _$DashInfoImpl _$$DashInfoImplFromJson(Map<String, dynamic> json) =>
           : DashFit.fromJson(json['fitnessInfo'] as Map<String, dynamic>),
       debugInfo: json['debugInfo'] as String? ?? "",
       lastError: json['lastError'] as String? ?? "",
+      express: (json['express'] as List<dynamic>?)
+              ?.map((e) => DashExpress.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
@@ -116,13 +120,66 @@ Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
       'fitnessInfo': instance.fitnessInfo,
       'debugInfo': instance.debugInfo,
       'lastError': instance.lastError,
+      'express': instance.express,
+    };
+
+_$DashExpressImpl _$$DashExpressImplFromJson(Map<String, dynamic> json) =>
+    _$DashExpressImpl(
+      id: json['id'] as String? ?? "",
+      name: json['name'] as String? ?? "",
+      status: json['status'] as int? ?? 0,
+      lastUpdate: json['last_update'] as String? ?? "",
+      info: json['info'] as String? ?? "",
+      extra: (json['extra'] as List<dynamic>?)
+              ?.map((e) => DashExpressExtra.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$$DashExpressImplToJson(_$DashExpressImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'status': instance.status,
+      'last_update': instance.lastUpdate,
+      'info': instance.info,
+      'extra': instance.extra,
+    };
+
+_$DashExpressExtraImpl _$$DashExpressExtraImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DashExpressExtraImpl(
+      time: json['time'] as String? ?? "",
+      status: json['status'] ?? "",
+    );
+
+Map<String, dynamic> _$$DashExpressExtraImplToJson(
+        _$DashExpressExtraImpl instance) =>
+    <String, dynamic>{
+      'time': instance.time,
+      'status': instance.status,
     };
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getDashHash() => r'ed0b1d2fb484763809f455b8d33e287cae27391b';
+String _$getExpressHash() => r'f8e3622ece53c26567b72a717395612d8e8c1194';
+
+/// See also [getExpress].
+@ProviderFor(getExpress)
+final getExpressProvider =
+    AutoDisposeFutureProvider<List<DashExpress>>.internal(
+  getExpress,
+  name: r'getExpressProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$getExpressHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetExpressRef = AutoDisposeFutureProviderRef<List<DashExpress>>;
+String _$getDashHash() => r'070908abf335e3e768f336ef6170dea71f3f2d1a';
 
 /// See also [getDash].
 @ProviderFor(getDash)
