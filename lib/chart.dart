@@ -1,10 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-SfCircularChart buildChart(DashInfo? dashInfo) {
+Widget buildChart(DashInfo? dashInfo, AnimationController controller) {
   final mindfulMin = dashInfo?.fitnessInfo.mindful ?? 0.0;
   final mindful100 = max(mindfulMin, 0.5) / 5 * 100;
   final exec100 = max(dashInfo?.fitnessInfo.exercise ?? 3, 3) / 30 * 100;

@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  lottie: ^2.7.0
   http: ^0.13.4
   crypto: ^3.0.2
   intl: ^0.18.0
@@ -47,6 +48,10 @@ flutter:
     - family: Dohyen
       fonts:
         - asset: assets/fonts/DoHyeon.ttf
+
+  assets:
+    - assets/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -6,7 +6,9 @@ import 'package:screen_me/api/common.dart';
 import 'package:screen_me/api/dash.dart';
 
 class ClockWidget extends ConsumerStatefulWidget {
-  const ClockWidget({super.key});
+  final AnimationController controller;
+
+  const ClockWidget({super.key, required this.controller});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ClockWidgetState();
@@ -47,6 +49,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
     if (event % seconds == 0) {
       debugPrint("invalidate dash $seconds");
       ref.invalidate(getDashProvider);
+      widget.controller.forward(from: 0);
       time = Text(DateFormat("HH:mm").format(now),
           style: TextStyle(
               fontFamily: "DoHyen",

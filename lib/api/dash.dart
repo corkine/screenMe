@@ -119,7 +119,7 @@ Future<DashInfo> getDash(GetDashRef ref) async {
   }
   debugPrint("req for dash");
   try {
-    final express = await ref.watch(getExpressProvider.future);
+    final express = await ref.refresh(getExpressProvider.future);
     final (res, d) =
         await requestFromRaw("/cyber/client/ios-widget", DashInfo.fromJson);
     return res?.copyWith(

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:screen_me/blue.dart';
 import 'package:screen_me/chart.dart';
@@ -22,7 +23,17 @@ class DashboardView extends ConsumerStatefulWidget {
   ConsumerState<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends ConsumerState<DashboardView> {
+class _DashboardViewState extends ConsumerState<DashboardView>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = ref.watch(configsProvider).value ?? Config();
@@ -53,11 +64,24 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           .animate()
                           .fadeIn()
                       : const SizedBox()),
-              const Positioned(
+              Positioned(
                   left: 30,
                   top: 10,
                   bottom: 10,
-                  child: ClockWidget(key: ValueKey("clock"))),
+                  child: ClockWidget(
+                      key: const ValueKey("clock"), controller: controller)),
+              Positioned(
+                  bottom: 0,
+                  left: 20,
+                  child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: d?.todo.isEmpty ?? true
+                          ? LottieBuilder.asset("assets/move.json",
+                              alignment: Alignment.center,
+                              frameRate: FrameRate(60),
+                              controller: controller)
+                          : null)),
               Positioned(
                   right: 0,
                   bottom: 0,
@@ -68,7 +92,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           scale: 1.1,
                           child: Transform.translate(
                               offset: const Offset(40, 20),
-                              child: buildChart(d)
+                              child: buildChart(d, controller)
                                   .animate()
                                   .moveX(begin: 10, end: 0)))),
               Positioned(
