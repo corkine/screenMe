@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -71,17 +72,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   child: ClockWidget(
                       key: const ValueKey("clock"), controller: controller)),
               Positioned(
-                  bottom: 0,
-                  left: 20,
-                  child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: d?.todo.isEmpty ?? true
-                          ? LottieBuilder.asset("assets/move.json",
-                              alignment: Alignment.center,
-                              frameRate: FrameRate(60),
-                              controller: controller)
-                          : null)),
+                  bottom: 0, left: 20, child: buildLoadingAnimation(s, d)),
               Positioned(
                   right: 0,
                   bottom: 0,
@@ -92,7 +83,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                           scale: 1.1,
                           child: Transform.translate(
                               offset: const Offset(40, 20),
-                              child: buildChart(d, controller)
+                              child: buildChart(d, s)
                                   .animate()
                                   .moveX(begin: 10, end: 0)))),
               Positioned(
@@ -107,5 +98,24 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         : const SizedBox()
                   ]))
             ])));
+  }
+
+  SizedBox buildLoadingAnimation(Config s, DashInfo? d) {
+    final isNight = DateTime.now().hour >= 21;
+    final needShow =
+        s.showLoadingAnimationIfNoTodo && (d?.todo.isEmpty ?? true);
+    Widget? widget;
+    if (needShow) {
+      widget = LottieBuilder.asset(
+          isNight ? "assets/ghost.json" : "assets/move.json",
+          alignment: Alignment.center,
+          frameRate: FrameRate(60),
+          controller: controller);
+    }
+    // if (kDebugMode) {
+    //   widget = LottieBuilder.asset("assets/ghost.json",
+    //       alignment: Alignment.center, frameRate: FrameRate(60));
+    // }
+    return SizedBox(width: 100, height: 100, child: widget);
   }
 }

@@ -26,6 +26,9 @@ mixin _$Config {
   bool get showBingWallpaper => throw _privateConstructorUsedError;
   String get cyberPass => throw _privateConstructorUsedError;
   bool get demoMode => throw _privateConstructorUsedError;
+  bool get useAnimationInHealthViewWhenNoTodo =>
+      throw _privateConstructorUsedError;
+  bool get showFatWarningAfter17IfLazy => throw _privateConstructorUsedError;
   double get volumeNormal => throw _privateConstructorUsedError;
   double get volumeOpenBluetooth => throw _privateConstructorUsedError;
 
@@ -46,6 +49,8 @@ abstract class $ConfigCopyWith<$Res> {
       bool showBingWallpaper,
       String cyberPass,
       bool demoMode,
+      bool useAnimationInHealthViewWhenNoTodo,
+      bool showFatWarningAfter17IfLazy,
       double volumeNormal,
       double volumeOpenBluetooth});
 }
@@ -69,6 +74,8 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? showBingWallpaper = null,
     Object? cyberPass = null,
     Object? demoMode = null,
+    Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? showFatWarningAfter17IfLazy = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
   }) {
@@ -97,6 +104,15 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
+      useAnimationInHealthViewWhenNoTodo: null ==
+              useAnimationInHealthViewWhenNoTodo
+          ? _value.useAnimationInHealthViewWhenNoTodo
+          : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showFatWarningAfter17IfLazy: null == showFatWarningAfter17IfLazy
+          ? _value.showFatWarningAfter17IfLazy
+          : showFatWarningAfter17IfLazy // ignore: cast_nullable_to_non_nullable
+              as bool,
       volumeNormal: null == volumeNormal
           ? _value.volumeNormal
           : volumeNormal // ignore: cast_nullable_to_non_nullable
@@ -123,6 +139,8 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       bool showBingWallpaper,
       String cyberPass,
       bool demoMode,
+      bool useAnimationInHealthViewWhenNoTodo,
+      bool showFatWarningAfter17IfLazy,
       double volumeNormal,
       double volumeOpenBluetooth});
 }
@@ -144,6 +162,8 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? showBingWallpaper = null,
     Object? cyberPass = null,
     Object? demoMode = null,
+    Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? showFatWarningAfter17IfLazy = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
   }) {
@@ -172,6 +192,15 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
+      useAnimationInHealthViewWhenNoTodo: null ==
+              useAnimationInHealthViewWhenNoTodo
+          ? _value.useAnimationInHealthViewWhenNoTodo
+          : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showFatWarningAfter17IfLazy: null == showFatWarningAfter17IfLazy
+          ? _value.showFatWarningAfter17IfLazy
+          : showFatWarningAfter17IfLazy // ignore: cast_nullable_to_non_nullable
+              as bool,
       volumeNormal: null == volumeNormal
           ? _value.volumeNormal
           : volumeNormal // ignore: cast_nullable_to_non_nullable
@@ -194,6 +223,8 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       this.showBingWallpaper = false,
       this.cyberPass = "",
       this.demoMode = true,
+      this.useAnimationInHealthViewWhenNoTodo = true,
+      this.showFatWarningAfter17IfLazy = false,
       this.volumeNormal = 0.1,
       this.volumeOpenBluetooth = 0.5});
 
@@ -220,6 +251,12 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final bool demoMode;
   @override
   @JsonKey()
+  final bool useAnimationInHealthViewWhenNoTodo;
+  @override
+  @JsonKey()
+  final bool showFatWarningAfter17IfLazy;
+  @override
+  @JsonKey()
   final double volumeNormal;
   @override
   @JsonKey()
@@ -227,7 +264,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationInHealthViewWhenNoTodo: $useAnimationInHealthViewWhenNoTodo, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
   }
 
   @override
@@ -241,6 +278,10 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty('showBingWallpaper', showBingWallpaper))
       ..add(DiagnosticsProperty('cyberPass', cyberPass))
       ..add(DiagnosticsProperty('demoMode', demoMode))
+      ..add(DiagnosticsProperty('useAnimationInHealthViewWhenNoTodo',
+          useAnimationInHealthViewWhenNoTodo))
+      ..add(DiagnosticsProperty(
+          'showFatWarningAfter17IfLazy', showFatWarningAfter17IfLazy))
       ..add(DiagnosticsProperty('volumeNormal', volumeNormal))
       ..add(DiagnosticsProperty('volumeOpenBluetooth', volumeOpenBluetooth));
   }
@@ -261,6 +302,14 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
                 other.cyberPass == cyberPass) &&
             (identical(other.demoMode, demoMode) ||
                 other.demoMode == demoMode) &&
+            (identical(other.useAnimationInHealthViewWhenNoTodo,
+                    useAnimationInHealthViewWhenNoTodo) ||
+                other.useAnimationInHealthViewWhenNoTodo ==
+                    useAnimationInHealthViewWhenNoTodo) &&
+            (identical(other.showFatWarningAfter17IfLazy,
+                    showFatWarningAfter17IfLazy) ||
+                other.showFatWarningAfter17IfLazy ==
+                    showFatWarningAfter17IfLazy) &&
             (identical(other.volumeNormal, volumeNormal) ||
                 other.volumeNormal == volumeNormal) &&
             (identical(other.volumeOpenBluetooth, volumeOpenBluetooth) ||
@@ -277,6 +326,8 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       showBingWallpaper,
       cyberPass,
       demoMode,
+      useAnimationInHealthViewWhenNoTodo,
+      showFatWarningAfter17IfLazy,
       volumeNormal,
       volumeOpenBluetooth);
 
@@ -302,6 +353,8 @@ abstract class _Config implements Config {
       final bool showBingWallpaper,
       final String cyberPass,
       final bool demoMode,
+      final bool useAnimationInHealthViewWhenNoTodo,
+      final bool showFatWarningAfter17IfLazy,
       final double volumeNormal,
       final double volumeOpenBluetooth}) = _$ConfigImpl;
 
@@ -319,6 +372,10 @@ abstract class _Config implements Config {
   String get cyberPass;
   @override
   bool get demoMode;
+  @override
+  bool get useAnimationInHealthViewWhenNoTodo;
+  @override
+  bool get showFatWarningAfter17IfLazy;
   @override
   double get volumeNormal;
   @override

@@ -18,6 +18,8 @@ class Config with _$Config {
       @Default(false) bool showBingWallpaper,
       @Default("") String cyberPass,
       @Default(true) bool demoMode,
+      @Default(true) bool useAnimationInHealthViewWhenNoTodo,
+      @Default(false) bool showFatWarningAfter17IfLazy,
       @Default(0.1) double volumeNormal,
       @Default(0.5) double volumeOpenBluetooth}) = _Config;
 
@@ -25,6 +27,9 @@ class Config with _$Config {
 }
 
 extension ConfigHelper on Config {
+  bool get showLoadingAnimationIfNoTodo =>
+      showBingWallpaper ? false : useAnimationInHealthViewWhenNoTodo;
+
   String get base64Token =>
       "Basic ${base64Encode(utf8.encode('$user:$password'))}";
 
@@ -56,17 +61,21 @@ class Configs extends _$Configs {
 
   set(String user, String pass, int duration, bool showWallpaper,
       {bool demoMode = false,
+      bool useAnimalInHealthViewWhenNoTodo = false,
       required double minVol,
-      required double maxVol}) async {
+      required double maxVol,
+      required bool showWortoutWarning}) async {
     final c = Config(
         user: user,
         password: pass,
         cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
         fetchSeconds: duration,
         showBingWallpaper: showWallpaper,
+        useAnimationInHealthViewWhenNoTodo: useAnimalInHealthViewWhenNoTodo,
         demoMode: demoMode,
         volumeNormal: minVol,
-        volumeOpenBluetooth: maxVol);
+        volumeOpenBluetooth: maxVol,
+        showFatWarningAfter17IfLazy: showWortoutWarning);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;
@@ -243,9 +252,19 @@ showWaitingBar(BuildContext context,
 }
 
 Future<bool> showSimpleMessage(BuildContext context,
-    {String? title, required String content, bool withPopFirst = false}) async {
+    {String? title,
+    required String content,
+    bool withPopFirst = false,
+    bool useSnackBar = false,
+    int snackBarDuration = 500}) async {
   if (withPopFirst) {
     Navigator.of(context).pop();
+  }
+  if (useSnackBar) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(content),
+        duration: Duration(milliseconds: snackBarDuration)));
+    return true;
   }
   return await showDialog<bool>(
           context: context,

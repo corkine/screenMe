@@ -179,7 +179,7 @@ final getExpressProvider =
 );
 
 typedef GetExpressRef = AutoDisposeFutureProviderRef<List<DashExpress>>;
-String _$getDashHash() => r'070908abf335e3e768f336ef6170dea71f3f2d1a';
+String _$getDashHash() => r'41dd949e913e45c72284197f06c29bcf54ec8fd4';
 
 /// See also [getDash].
 @ProviderFor(getDash)

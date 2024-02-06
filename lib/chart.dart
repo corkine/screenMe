@@ -1,56 +1,73 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:screen_me/api/common.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-Widget buildChart(DashInfo? dashInfo, AnimationController controller) {
+Widget buildChart(DashInfo? dashInfo, Config config) {
   final mindfulMin = dashInfo?.fitnessInfo.mindful ?? 0.0;
   final mindful100 = max(mindfulMin, 0.5) / 5 * 100;
   final exec100 = max(dashInfo?.fitnessInfo.exercise ?? 3, 3) / 30 * 100;
   final workout100 = max((dashInfo?.fitnessInfo.active ?? 50), 50) /
       (dashInfo?.fitnessInfo.globalActive ?? 500.0) *
       100;
-  return SfCircularChart(
-      legend: const Legend(
-          isVisible: false,
-          iconHeight: 20,
-          iconWidth: 20,
-          overflowMode: LegendItemOverflowMode.wrap),
-      series: <RadialBarSeries<ChartSampleData, String>>[
-        RadialBarSeries<ChartSampleData, String>(
-            animationDuration: 0,
-            maximumValue: 100,
-            radius: '100%',
-            gap: '2%',
-            innerRadius: '30%',
-            dataSource: <ChartSampleData>[
-              ChartSampleData(
-                  x: 'Mindful',
-                  y: mindful100,
-                  text: '呼吸',
-                  pointColor: const Color.fromRGBO(0, 201, 230, 1.0)),
-              ChartSampleData(
-                  x: 'Exercise',
-                  y: exec100,
-                  text: '锻炼',
-                  pointColor: const Color.fromRGBO(63, 224, 0, 1.0)),
-              ChartSampleData(
-                  x: 'Active',
-                  y: workout100,
-                  text: '活动',
-                  pointColor: const Color.fromRGBO(226, 1, 26, 1.0)),
-            ],
-            cornerStyle: CornerStyle.bothCurve,
-            xValueMapper: (ChartSampleData data, _) => data.x as String,
-            yValueMapper: (ChartSampleData data, _) => data.y,
-            pointColorMapper: (ChartSampleData data, _) => data.pointColor,
-            trackColor: Colors.white,
-            trackBorderColor: Colors.black,
-            trackBorderWidth: 0,
-            trackOpacity: 0.15,
-            dataLabelMapper: (ChartSampleData data, _) => data.text,
-            dataLabelSettings: const DataLabelSettings(isVisible: true))
-      ]);
+  final now = DateTime.now();
+  final fuckLazy = now.hour >= 18 && workout100 < 100;
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      fuckLazy
+          ? KeyedSubtree(
+              key: UniqueKey(),
+              child:
+                  Image.asset("assets/bese.png", width: 50, fit: BoxFit.contain)
+                      .animate()
+                      .shake(duration: const Duration(milliseconds: 1000)))
+          : const SizedBox(),
+      SfCircularChart(
+          legend: const Legend(
+              isVisible: false,
+              iconHeight: 20,
+              iconWidth: 20,
+              overflowMode: LegendItemOverflowMode.wrap),
+          series: <RadialBarSeries<ChartSampleData, String>>[
+            RadialBarSeries<ChartSampleData, String>(
+                animationDuration: 0,
+                maximumValue: 100,
+                radius: '100%',
+                gap: '2%',
+                innerRadius: '30%',
+                dataSource: <ChartSampleData>[
+                  ChartSampleData(
+                      x: 'Mindful',
+                      y: mindful100,
+                      text: '呼吸',
+                      pointColor: const Color.fromRGBO(0, 201, 230, 1.0)),
+                  ChartSampleData(
+                      x: 'Exercise',
+                      y: exec100,
+                      text: '锻炼',
+                      pointColor: const Color.fromRGBO(63, 224, 0, 1.0)),
+                  ChartSampleData(
+                      x: 'Active',
+                      y: workout100,
+                      text: '活动',
+                      pointColor: const Color.fromRGBO(226, 1, 26, 1.0)),
+                ],
+                cornerStyle: CornerStyle.bothCurve,
+                xValueMapper: (ChartSampleData data, _) => data.x as String,
+                yValueMapper: (ChartSampleData data, _) => data.y,
+                pointColorMapper: (ChartSampleData data, _) => data.pointColor,
+                trackColor: Colors.white,
+                trackBorderColor: Colors.black,
+                trackBorderWidth: 0,
+                trackOpacity: 0.15,
+                dataLabelMapper: (ChartSampleData data, _) => data.text,
+                dataLabelSettings: const DataLabelSettings(isVisible: true))
+          ])
+    ],
+  );
 }
 
 class ChartSampleData {

@@ -18,7 +18,9 @@ class _SettingViewState extends ConsumerState<SettingView> {
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
   bool showWallpaper = false;
+  bool showAnimation = false;
   bool demoMode = false;
+  bool showWarning = false;
   @override
   void dispose() {
     username.dispose();
@@ -38,6 +40,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
+      showAnimation = c.showLoadingAnimationIfNoTodo;
+      showWarning = c.showFatWarningAfter17IfLazy;
       setState(() {});
     });
   }
@@ -100,6 +104,22 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         value: showWallpaper,
                         onChanged: (v) => setState(() => showWallpaper = v))
                   ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    const Text("健康视图无待办显示加载动画"),
+                    const Spacer(),
+                    Switch(
+                        value: showAnimation,
+                        onChanged: (v) => setState(() => showAnimation = v))
+                  ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    const Text("健康视图晚 18:00 后运动圆环未完成显示警告"),
+                    const Spacer(),
+                    Switch(
+                        value: showWarning,
+                        onChanged: (v) => setState(() => showWarning = v))
+                  ]),
                   Row(children: [
                     Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
                     const Spacer(),
@@ -139,8 +159,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
         d != null) {
       await ref.read(configsProvider.notifier).set(
           username.text, password.text, d, showWallpaper,
-          demoMode: demoMode, minVol: normalVoice, maxVol: speakerVoice);
-      await showSimpleMessage(context, content: "设置已更新");
+          demoMode: demoMode,
+          minVol: normalVoice,
+          maxVol: speakerVoice,
+          useAnimalInHealthViewWhenNoTodo: showAnimation,
+          showWortoutWarning: showWarning);
+      await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {
       await showSimpleMessage(context, content: "请输入用户名和密码");
