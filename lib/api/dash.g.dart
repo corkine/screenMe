@@ -179,7 +179,7 @@ final getExpressProvider =
 );
 
 typedef GetExpressRef = AutoDisposeFutureProviderRef<List<DashExpress>>;
-String _$getDashHash() => r'41dd949e913e45c72284197f06c29bcf54ec8fd4';
+String _$getDashHash() => r'02a77cb98fdeb960853f36daefdfe93631a899f4';
 
 /// See also [getDash].
 @ProviderFor(getDash)
@@ -193,5 +193,19 @@ final getDashProvider = AutoDisposeFutureProvider<DashInfo>.internal(
 );
 
 typedef GetDashRef = AutoDisposeFutureProviderRef<DashInfo>;
+String _$timesHash() => r'9af21052901b2d850f71123e20dd8432c6bab5b7';
+
+/// See also [Times].
+@ProviderFor(Times)
+final timesProvider = AutoDisposeStreamNotifierProvider<Times, int>.internal(
+  Times.new,
+  name: r'timesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$timesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Times = AutoDisposeStreamNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

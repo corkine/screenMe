@@ -1,4 +1,8 @@
 PODS:
+  - flutter_blue_plus (0.0.1):
+    - FlutterMacOS
+  - flutter_volume_controller (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -20,6 +24,8 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - flutter_blue_plus (from `Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus/macos`)
+  - flutter_volume_controller (from `Flutter/ephemeral/.symlinks/plugins/flutter_volume_controller/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
@@ -33,6 +39,10 @@ SPEC REPOS:
     - FMDB
 
 EXTERNAL SOURCES:
+  flutter_blue_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus/macos
+  flutter_volume_controller:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_volume_controller/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   path_provider_foundation:
@@ -49,6 +59,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
 SPEC CHECKSUMS:
+  flutter_blue_plus: e2868679021f19d12a8c0c58a33f1df66ec7fa6a
+  flutter_volume_controller: 25d09126b0d695560f11c80b1311d5063fed882f
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c

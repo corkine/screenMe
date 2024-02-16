@@ -114,7 +114,8 @@ Future<List<DashExpress>> getExpress(GetExpressRef ref) async {
 
 @riverpod
 Future<DashInfo> getDash(GetDashRef ref) async {
-  if (ref.read(configsProvider).value?.demoMode ?? false) {
+  final c = ref.read(configsProvider).value;
+  if (c?.demoMode ?? true) {
     return fakeDashInfo();
   }
   debugPrint("req for dash");
@@ -156,4 +157,14 @@ DashInfo fakeDashInfo() {
           mindful: Random().nextInt(3) + 1),
       debugInfo:
           "[demo] ver: $version, req: ${Configs.data.copyWith(password: "***", cyberPass: "***")}");
+}
+
+@riverpod
+class Times extends _$Times {
+  @override
+  Stream<int> build() {
+    return Stream.periodic(const Duration(seconds: 1), (a) {
+      return a;
+    });
+  }
 }

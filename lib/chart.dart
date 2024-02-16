@@ -42,7 +42,7 @@ Widget buildChart(DashInfo? dashInfo, Config config) {
                   ChartSampleData(
                       x: 'Mindful',
                       y: mindful100,
-                      text: '呼吸',
+                      text: '冥想',
                       pointColor: const Color.fromRGBO(0, 201, 230, 1.0)),
                   ChartSampleData(
                       x: 'Exercise',

@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:screen_me/api/common.dart';
 import 'package:screen_me/api/dash.dart';
+
+import 'api/common.dart';
 
 class ClockWidget extends ConsumerStatefulWidget {
   final AnimationController controller;
@@ -16,67 +16,30 @@ class ClockWidget extends ConsumerStatefulWidget {
 
 class _ClockWidgetState extends ConsumerState<ClockWidget> {
   static const size = 100.0;
-  Widget time =
-      const Text("", style: TextStyle(fontFamily: "DoHyen", fontSize: size));
-  StreamController controller = StreamController();
-  StreamSubscription? subscription;
+  late Widget time = buildTimeWidget(time: "");
 
-  @override
-  void initState() {
-    super.initState();
-    controller.sink.addStream(
-        Stream.periodic(const Duration(seconds: 1), (index) => index));
-  }
-
-  @override
-  void didChangeDependencies() {
-    debugPrint("register subscription now");
-    subscription ??= controller.stream.listen(handleAction);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    debugPrint("cancel subscription");
-    subscription?.cancel();
-    subscription = null;
-    super.dispose();
-  }
-
-  handleAction(event) {
-    final now = DateTime.now();
-    final seconds = Configs.data.changeSeconds;
-    if (event % seconds == 0) {
-      debugPrint("invalidate dash $seconds");
-      ref.invalidate(getDashProvider);
-      widget.controller.forward(from: 0);
-      time = Text(DateFormat("HH:mm").format(now),
-          style: TextStyle(
-              fontFamily: "DoHyen",
-              fontSize: size,
-              color: Colors.white.withOpacity(0.5)));
-    } else {
-      time = Text(DateFormat("HH:mm").format(now),
-          style: TextStyle(
-              fontFamily: "DoHyen",
-              fontSize: size,
-              color: Colors.white.withOpacity(0.9)));
-    }
-    setState(() {});
+  Widget buildTimeWidget({String? time, double opacity = 0.9}) {
+    return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
+        style: TextStyle(
+            fontFamily: "DoHyen",
+            fontSize: size,
+            color: Colors.white.withOpacity(opacity)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final dash = ref.watch(getDashProvider).value ?? DashInfo();
+    var dash = ref.watch(getDashProvider).value ?? DashInfo();
+    ref.listen(timesProvider, (previous, t) {
+      if ((t.value ?? -1) % Configs.data.fetchSeconds == 0) {
+        widget.controller.forward(from: 0);
+        time = buildTimeWidget(opacity: 0.5);
+        ref.invalidate(getDashProvider);
+      } else {
+        time = buildTimeWidget(opacity: 0.9);
+        setState(() {});
+      }
+    });
     final todo = [...dash.todo];
-    // todo.sort((a, b) {
-    //   if (a.isFinished == b.isFinished) return a.title.compareTo(b.title);
-    //   if (a.isFinished) {
-    //     return 1;
-    //   } else {
-    //     return -1;
-    //   }
-    // });
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
