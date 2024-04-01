@@ -19,6 +19,7 @@ class Config with _$Config {
       @Default("") String cyberPass,
       @Default(true) bool demoMode,
       @Default(true) bool useAnimationInHealthViewWhenNoTodo,
+      @Default(0.0) double maxVolDelaySeconds,
       @Default(false) bool showFatWarningAfter17IfLazy,
       @Default(0.1) double volumeNormal,
       @Default(0.5) double volumeOpenBluetooth}) = _Config;
@@ -64,7 +65,8 @@ class Configs extends _$Configs {
       bool useAnimalInHealthViewWhenNoTodo = false,
       required double minVol,
       required double maxVol,
-      required bool showWortoutWarning}) async {
+      required bool showWortoutWarning,
+      double delay = 0.0}) async {
     final c = Config(
         user: user,
         password: pass,
@@ -75,7 +77,8 @@ class Configs extends _$Configs {
         demoMode: demoMode,
         volumeNormal: minVol,
         volumeOpenBluetooth: maxVol,
-        showFatWarningAfter17IfLazy: showWortoutWarning);
+        showFatWarningAfter17IfLazy: showWortoutWarning,
+        maxVolDelaySeconds: delay);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

@@ -12,7 +12,7 @@ part of 'common.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Config _$ConfigFromJson(Map<String, dynamic> json) {
   return _Config.fromJson(json);
@@ -28,6 +28,7 @@ mixin _$Config {
   bool get demoMode => throw _privateConstructorUsedError;
   bool get useAnimationInHealthViewWhenNoTodo =>
       throw _privateConstructorUsedError;
+  double get maxVolDelaySeconds => throw _privateConstructorUsedError;
   bool get showFatWarningAfter17IfLazy => throw _privateConstructorUsedError;
   double get volumeNormal => throw _privateConstructorUsedError;
   double get volumeOpenBluetooth => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $ConfigCopyWith<$Res> {
       String cyberPass,
       bool demoMode,
       bool useAnimationInHealthViewWhenNoTodo,
+      double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       double volumeNormal,
       double volumeOpenBluetooth});
@@ -75,6 +77,7 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? cyberPass = null,
     Object? demoMode = null,
     Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
@@ -109,6 +112,10 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.useAnimationInHealthViewWhenNoTodo
           : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
               as bool,
+      maxVolDelaySeconds: null == maxVolDelaySeconds
+          ? _value.maxVolDelaySeconds
+          : maxVolDelaySeconds // ignore: cast_nullable_to_non_nullable
+              as double,
       showFatWarningAfter17IfLazy: null == showFatWarningAfter17IfLazy
           ? _value.showFatWarningAfter17IfLazy
           : showFatWarningAfter17IfLazy // ignore: cast_nullable_to_non_nullable
@@ -140,6 +147,7 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       String cyberPass,
       bool demoMode,
       bool useAnimationInHealthViewWhenNoTodo,
+      double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       double volumeNormal,
       double volumeOpenBluetooth});
@@ -163,6 +171,7 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? cyberPass = null,
     Object? demoMode = null,
     Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
@@ -197,6 +206,10 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.useAnimationInHealthViewWhenNoTodo
           : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
               as bool,
+      maxVolDelaySeconds: null == maxVolDelaySeconds
+          ? _value.maxVolDelaySeconds
+          : maxVolDelaySeconds // ignore: cast_nullable_to_non_nullable
+              as double,
       showFatWarningAfter17IfLazy: null == showFatWarningAfter17IfLazy
           ? _value.showFatWarningAfter17IfLazy
           : showFatWarningAfter17IfLazy // ignore: cast_nullable_to_non_nullable
@@ -224,6 +237,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       this.cyberPass = "",
       this.demoMode = true,
       this.useAnimationInHealthViewWhenNoTodo = true,
+      this.maxVolDelaySeconds = 0.0,
       this.showFatWarningAfter17IfLazy = false,
       this.volumeNormal = 0.1,
       this.volumeOpenBluetooth = 0.5});
@@ -254,6 +268,9 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final bool useAnimationInHealthViewWhenNoTodo;
   @override
   @JsonKey()
+  final double maxVolDelaySeconds;
+  @override
+  @JsonKey()
   final bool showFatWarningAfter17IfLazy;
   @override
   @JsonKey()
@@ -264,7 +281,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationInHealthViewWhenNoTodo: $useAnimationInHealthViewWhenNoTodo, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationInHealthViewWhenNoTodo: $useAnimationInHealthViewWhenNoTodo, maxVolDelaySeconds: $maxVolDelaySeconds, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
   }
 
   @override
@@ -280,6 +297,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty('demoMode', demoMode))
       ..add(DiagnosticsProperty('useAnimationInHealthViewWhenNoTodo',
           useAnimationInHealthViewWhenNoTodo))
+      ..add(DiagnosticsProperty('maxVolDelaySeconds', maxVolDelaySeconds))
       ..add(DiagnosticsProperty(
           'showFatWarningAfter17IfLazy', showFatWarningAfter17IfLazy))
       ..add(DiagnosticsProperty('volumeNormal', volumeNormal))
@@ -306,6 +324,8 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
                     useAnimationInHealthViewWhenNoTodo) ||
                 other.useAnimationInHealthViewWhenNoTodo ==
                     useAnimationInHealthViewWhenNoTodo) &&
+            (identical(other.maxVolDelaySeconds, maxVolDelaySeconds) ||
+                other.maxVolDelaySeconds == maxVolDelaySeconds) &&
             (identical(other.showFatWarningAfter17IfLazy,
                     showFatWarningAfter17IfLazy) ||
                 other.showFatWarningAfter17IfLazy ==
@@ -327,6 +347,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       cyberPass,
       demoMode,
       useAnimationInHealthViewWhenNoTodo,
+      maxVolDelaySeconds,
       showFatWarningAfter17IfLazy,
       volumeNormal,
       volumeOpenBluetooth);
@@ -354,6 +375,7 @@ abstract class _Config implements Config {
       final String cyberPass,
       final bool demoMode,
       final bool useAnimationInHealthViewWhenNoTodo,
+      final double maxVolDelaySeconds,
       final bool showFatWarningAfter17IfLazy,
       final double volumeNormal,
       final double volumeOpenBluetooth}) = _$ConfigImpl;
@@ -374,6 +396,8 @@ abstract class _Config implements Config {
   bool get demoMode;
   @override
   bool get useAnimationInHealthViewWhenNoTodo;
+  @override
+  double get maxVolDelaySeconds;
   @override
   bool get showFatWarningAfter17IfLazy;
   @override

@@ -15,6 +15,8 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       demoMode: json['demoMode'] as bool? ?? true,
       useAnimationInHealthViewWhenNoTodo:
           json['useAnimationInHealthViewWhenNoTodo'] as bool? ?? true,
+      maxVolDelaySeconds:
+          (json['maxVolDelaySeconds'] as num?)?.toDouble() ?? 0.0,
       showFatWarningAfter17IfLazy:
           json['showFatWarningAfter17IfLazy'] as bool? ?? false,
       volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
@@ -32,6 +34,7 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'demoMode': instance.demoMode,
       'useAnimationInHealthViewWhenNoTodo':
           instance.useAnimationInHealthViewWhenNoTodo,
+      'maxVolDelaySeconds': instance.maxVolDelaySeconds,
       'showFatWarningAfter17IfLazy': instance.showFatWarningAfter17IfLazy,
       'volumeNormal': instance.volumeNormal,
       'volumeOpenBluetooth': instance.volumeOpenBluetooth,
@@ -41,7 +44,7 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'cff7b61963f71ae9b5eaca5965c9a42d0475d24f';
+String _$configsHash() => r'59548cbe5851c537c69cb0d7e9e80042098ccbf9';
 
 /// See also [Configs].
 @ProviderFor(Configs)

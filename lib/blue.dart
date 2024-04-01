@@ -65,9 +65,16 @@ class _BlueWidgetState extends ConsumerState<BlueWidget> {
                   await FlutterVolumeController.setVolume(config.volumeNormal);
                   await FlutterBluePlus.turnOff();
                 } else {
-                  await FlutterVolumeController.setVolume(
-                      config.volumeOpenBluetooth);
-                  await FlutterBluePlus.turnOn();
+                  try {
+                    await FlutterBluePlus.turnOn();
+                  } catch (_) {}
+                  if (config.maxVolDelaySeconds > 0) {
+                    await Future.delayed(Duration(
+                        milliseconds:
+                            (config.maxVolDelaySeconds * 1000).toInt()));
+                    await FlutterVolumeController.setVolume(
+                        config.volumeOpenBluetooth);
+                  }
                 }
               }
             },

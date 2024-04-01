@@ -13,6 +13,7 @@ class SettingView extends ConsumerStatefulWidget {
 
 class _SettingViewState extends ConsumerState<SettingView> {
   final username = TextEditingController();
+  final delay = TextEditingController();
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
   var normalVoice = 0.0;
@@ -42,6 +43,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       speakerVoice = c.volumeOpenBluetooth;
       showAnimation = c.showLoadingAnimationIfNoTodo;
       showWarning = c.showFatWarningAfter17IfLazy;
+      delay.text = c.maxVolDelaySeconds.toInt().toString();
       setState(() {});
     });
   }
@@ -147,12 +149,24 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         value: speakerVoice,
                         min: 0,
                         max: 1)
-                  ])
+                  ]),
+                  TextField(
+                      controller: delay,
+                      decoration: const InputDecoration(
+                          suffixText: "秒",
+                          border: UnderlineInputBorder(),
+                          labelText: "打开蓝牙时延迟调高音量")),
+                  const SizedBox(height: 10),
                 ]))));
   }
 
   void handleLogin() async {
     final d = int.tryParse(fetchDuration.text);
+    final delaySeconds = double.tryParse(delay.text) ?? 0.0;
+    if (delaySeconds < 0 || delaySeconds > 20) {
+      await showSimpleMessage(context, content: "延迟时间必须在 0-20 之间");
+      return;
+    }
     if (username.text.isNotEmpty &&
         password.text.isNotEmpty &&
         fetchDuration.text.isNotEmpty &&
@@ -163,7 +177,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
           minVol: normalVoice,
           maxVol: speakerVoice,
           useAnimalInHealthViewWhenNoTodo: showAnimation,
-          showWortoutWarning: showWarning);
+          showWortoutWarning: showWarning,
+          delay: delaySeconds);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {
