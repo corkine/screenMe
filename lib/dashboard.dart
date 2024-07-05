@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -47,6 +46,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     final d = ref.watch(getDashProvider).value;
     final now = DateTime.now();
     final today = "${now.year}-${now.month}-${now.day}";
+    final showEye = !(s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false));
     return Scaffold(
         endDrawer: const Drawer(child: ExpressView()),
         backgroundColor: Colors.black,
@@ -71,6 +71,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                           .animate()
                           .fadeIn()
                       : const SizedBox()),
+              if (showEye)
+                Transform.translate(
+                    offset: const Offset(130, 0),
+                    child: LottieBuilder.asset("assets/eye.json",
+                        alignment: Alignment.center,
+                        frameRate: FrameRate(60),
+                        controller: controller)),
               Positioned(
                   left: 30,
                   top: 10,
@@ -83,15 +90,17 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   right: 0,
                   bottom: 0,
                   top: 0,
-                  child: s.showBingWallpaper
-                      ? const SizedBox()
-                      : Transform.scale(
-                          scale: 1.1,
-                          child: Transform.translate(
-                              offset: const Offset(40, 20),
-                              child: buildChart(d, s)
-                                  .animate()
-                                  .moveX(begin: 10, end: 0)))),
+                  child: !s.showBingWallpaper
+                      ? !showEye
+                          ? Transform.scale(
+                              scale: 1.1,
+                              child: Transform.translate(
+                                  offset: const Offset(40, 20),
+                                  child: buildChart(d, s)
+                                      .animate()
+                                      .moveX(begin: 10, end: 0)))
+                          : const SizedBox()
+                      : const SizedBox()),
               Positioned(
                   right: 20,
                   bottom: 20,

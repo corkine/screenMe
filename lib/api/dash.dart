@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screen_me/api/common.dart';
@@ -77,6 +78,16 @@ class DashInfo with _$DashInfo {
 
   factory DashInfo.fromJson(Map<String, dynamic> json) =>
       _$DashInfoFromJson(json);
+}
+
+extension DashInfoExt on DashInfo {
+  bool get lazyLate {
+    final workout100 = max((fitnessInfo.active), 50) /
+        (fitnessInfo.globalActive ?? 500.0) *
+        100;
+    final now = DateTime.now();
+    return now.hour >= 18 && workout100 < 100;
+  }
 }
 
 @freezed
