@@ -16,18 +16,19 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       
+      - name: 'Checkout code'
+        uses: 'actions/checkout@v4'
+        # Checkout the app code using the "actions/checkout" action.
+
       - name: 'Clone Flutter repository with master channel'
-        uses: 'subosito/flutter-action@v1'
+        uses: 'subosito/flutter-action@v2'
         with:
-          channel: 'master'
+          channel: stable
+          flutter-version-file: pubspec.yaml
       
       - name: 'Check Flutter environment'
         run: 'flutter doctor -v'
         # Check the Flutter environment.
-      
-      - name: 'Checkout code'
-        uses: 'actions/checkout@v2'
-        # Checkout the app code using the "actions/checkout" action.
       
       - name: 'Get packages'
         run: 'flutter pub get'
