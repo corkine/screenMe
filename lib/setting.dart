@@ -22,6 +22,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   bool showAnimation = false;
   bool demoMode = false;
   bool showWarning = false;
+  bool showWarningOnBing = false;
   @override
   void dispose() {
     username.dispose();
@@ -38,6 +39,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       fetchDuration.text = c.fetchSeconds.toString();
       password.text = c.password;
       showWallpaper = c.showBingWallpaper;
+      showWarningOnBing = c.fatWarningOverwriteBingWallpaper;
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
@@ -123,6 +125,13 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         onChanged: (v) => setState(() => showWarning = v))
                   ]),
                   Row(children: [
+                    const Text("Bing 壁纸下也显示警告"),
+                    const Spacer(),
+                    Switch(
+                        value: showWarningOnBing,
+                        onChanged: (v) => setState(() => showWarningOnBing = v))
+                  ]),
+                  Row(children: [
                     Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
                     const Spacer(),
                     Slider(
@@ -178,6 +187,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
           maxVol: speakerVoice,
           useAnimalInHealthViewWhenNoTodo: showAnimation,
           showWortoutWarning: showWarning,
+          warningOverwriteBingWallpaper: showWarningOnBing,
           delay: delaySeconds);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();

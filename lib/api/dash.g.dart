@@ -74,7 +74,7 @@ Map<String, dynamic> _$$DashTodoImplToJson(_$DashTodoImpl instance) =>
 
 _$DashInfoImpl _$$DashInfoImplFromJson(Map<String, dynamic> json) =>
     _$DashInfoImpl(
-      updateAt: json['updateAt'] as int? ?? 0,
+      updateAt: (json['updateAt'] as num?)?.toInt() ?? 0,
       needDiaryReport: json['needDiaryReport'] as bool? ?? false,
       weatherInfo: json['weatherInfo'] as String? ?? "",
       needPlantWater: json['needPlantWater'] as bool? ?? false,
@@ -127,7 +127,7 @@ _$DashExpressImpl _$$DashExpressImplFromJson(Map<String, dynamic> json) =>
     _$DashExpressImpl(
       id: json['id'] as String? ?? "",
       name: json['name'] as String? ?? "",
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       lastUpdate: json['last_update'] as String? ?? "",
       info: json['info'] as String? ?? "",
       extra: (json['extra'] as List<dynamic>?)

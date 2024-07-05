@@ -46,9 +46,11 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     final d = ref.watch(getDashProvider).value;
     final now = DateTime.now();
     final today = "${now.year}-${now.month}-${now.day}";
-    final showEye = (!s.showBingWallpaper &&
-        s.showFatWarningAfter17IfLazy &&
-        (d?.lazyLate ?? false));
+    var eyeDataOK = s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false);
+    final showBing = s.showBingWallpaper &&
+        !(eyeDataOK && s.fatWarningOverwriteBingWallpaper);
+    final showEye = !showBing && eyeDataOK;
+    final showFitness = !showBing && !eyeDataOK;
     return Scaffold(
         endDrawer: const Drawer(child: ExpressView()),
         backgroundColor: Colors.black,
@@ -64,7 +66,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                 MaterialPageRoute(builder: (context) => const SettingView())),
             child: Stack(fit: StackFit.expand, children: [
               Positioned.fill(
-                  child: s.showBingWallpaper
+                  child: showBing
                       ? CachedNetworkImage(
                               imageUrl:
                                   "https://go.mazhangjing.com/bing-today-image?normal=true",
@@ -92,16 +94,14 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   right: 0,
                   bottom: 0,
                   top: 0,
-                  child: !s.showBingWallpaper
-                      ? !showEye
-                          ? Transform.scale(
-                              scale: 1.1,
-                              child: Transform.translate(
-                                  offset: const Offset(40, 20),
-                                  child: buildChart(d, s)
-                                      .animate()
-                                      .moveX(begin: 10, end: 0)))
-                          : const SizedBox()
+                  child: showFitness
+                      ? Transform.scale(
+                          scale: 1.1,
+                          child: Transform.translate(
+                              offset: const Offset(40, 20),
+                              child: buildChart(d, s)
+                                  .animate()
+                                  .moveX(begin: 10, end: 0)))
                       : const SizedBox()),
               Positioned(
                   right: 20,

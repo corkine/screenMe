@@ -9,7 +9,7 @@ part of 'common.dart';
 _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       user: json['user'] as String? ?? "",
       password: json['password'] as String? ?? "",
-      fetchSeconds: json['fetchSeconds'] as int? ?? 60,
+      fetchSeconds: (json['fetchSeconds'] as num?)?.toInt() ?? 60,
       showBingWallpaper: json['showBingWallpaper'] as bool? ?? false,
       cyberPass: json['cyberPass'] as String? ?? "",
       demoMode: json['demoMode'] as bool? ?? true,
@@ -19,6 +19,8 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
           (json['maxVolDelaySeconds'] as num?)?.toDouble() ?? 0.0,
       showFatWarningAfter17IfLazy:
           json['showFatWarningAfter17IfLazy'] as bool? ?? false,
+      fatWarningOverwriteBingWallpaper:
+          json['fatWarningOverwriteBingWallpaper'] as bool? ?? false,
       volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
       volumeOpenBluetooth:
           (json['volumeOpenBluetooth'] as num?)?.toDouble() ?? 0.5,
@@ -36,6 +38,8 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
           instance.useAnimationInHealthViewWhenNoTodo,
       'maxVolDelaySeconds': instance.maxVolDelaySeconds,
       'showFatWarningAfter17IfLazy': instance.showFatWarningAfter17IfLazy,
+      'fatWarningOverwriteBingWallpaper':
+          instance.fatWarningOverwriteBingWallpaper,
       'volumeNormal': instance.volumeNormal,
       'volumeOpenBluetooth': instance.volumeOpenBluetooth,
     };
@@ -44,7 +48,7 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'59548cbe5851c537c69cb0d7e9e80042098ccbf9';
+String _$configsHash() => r'a32c699ce80e100193eae0a38312d5ebd6ab034f';
 
 /// See also [Configs].
 @ProviderFor(Configs)

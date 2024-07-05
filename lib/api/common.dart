@@ -21,6 +21,7 @@ class Config with _$Config {
       @Default(true) bool useAnimationInHealthViewWhenNoTodo,
       @Default(0.0) double maxVolDelaySeconds,
       @Default(false) bool showFatWarningAfter17IfLazy,
+      @Default(false) bool fatWarningOverwriteBingWallpaper,
       @Default(0.1) double volumeNormal,
       @Default(0.5) double volumeOpenBluetooth}) = _Config;
 
@@ -66,6 +67,7 @@ class Configs extends _$Configs {
       required double minVol,
       required double maxVol,
       required bool showWortoutWarning,
+      required bool warningOverwriteBingWallpaper,
       double delay = 0.0}) async {
     final c = Config(
         user: user,
@@ -78,6 +80,7 @@ class Configs extends _$Configs {
         volumeNormal: minVol,
         volumeOpenBluetooth: maxVol,
         showFatWarningAfter17IfLazy: showWortoutWarning,
+        fatWarningOverwriteBingWallpaper: warningOverwriteBingWallpaper,
         maxVolDelaySeconds: delay);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
