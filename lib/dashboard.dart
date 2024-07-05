@@ -46,7 +46,9 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     final d = ref.watch(getDashProvider).value;
     final now = DateTime.now();
     final today = "${now.year}-${now.month}-${now.day}";
-    final showEye = !(s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false));
+    final showEye = (!s.showBingWallpaper &&
+        s.showFatWarningAfter17IfLazy &&
+        (d?.lazyLate ?? false));
     return Scaffold(
         endDrawer: const Drawer(child: ExpressView()),
         backgroundColor: Colors.black,
