@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,10 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         !(eyeDataOK && s.fatWarningOverwriteBingWallpaper);
     final showEye = !showBing && eyeDataOK;
     final showFitness = !showBing && !eyeDataOK;
+    var wt = s.warningType;
+    if (wt == WarnType.random) {
+      wt = WarnType.values[Random().nextInt(WarnType.values.length - 1)];
+    }
     return Scaffold(
         endDrawer: const Drawer(child: ExpressView()),
         backgroundColor: Colors.black,
@@ -78,8 +83,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       : const SizedBox()),
               if (showEye)
                 Transform.translate(
-                    offset: s.warningType.position, //130 160 180,10
-                    child: LottieBuilder.asset(s.warningType.path,
+                    offset: wt.position,
+                    child: LottieBuilder.asset(wt.path,
                         alignment: Alignment.center,
                         frameRate: FrameRate(60),
                         controller: controller)),

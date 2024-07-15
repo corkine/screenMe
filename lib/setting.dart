@@ -7,7 +7,9 @@ import 'package:screen_me/api/common.dart';
 enum WarnType {
   eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
   yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
-  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json");
+  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
+  //random 必须为最后一个
+  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
 
   final Offset position;
   final String cnName;
