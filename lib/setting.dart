@@ -4,6 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_me/api/common.dart';
 
+enum WarnType {
+  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
+  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
+  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json");
+
+  final Offset position;
+  final String cnName;
+  final String path;
+
+  const WarnType(
+      {required this.position, required this.cnName, required this.path});
+}
+
 class SettingView extends ConsumerStatefulWidget {
   const SettingView({super.key});
 
@@ -16,6 +29,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   final delay = TextEditingController();
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
+  var warningType = WarnType.eye;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
   bool showWallpaper = false;
@@ -46,6 +60,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       showAnimation = c.showLoadingAnimationIfNoTodo;
       showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
+      warningType = c.warningType;
       setState(() {});
     });
   }
@@ -124,6 +139,21 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         value: showWarning,
                         onChanged: (v) => setState(() => showWarning = v))
                   ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    const Text("警告图案样式"),
+                    const Spacer(),
+                    DropdownButton<WarnType>(
+                        focusColor: Colors.transparent,
+                        value: warningType,
+                        onChanged: (v) => setState(() {
+                              warningType = v!;
+                            }),
+                        items: WarnType.values
+                            .map((e) => DropdownMenuItem<WarnType>(
+                                value: e, child: Text(e.cnName)))
+                            .toList())
+                  ]),
                   Row(children: [
                     const Text("Bing 壁纸下也显示警告"),
                     const Spacer(),
@@ -188,6 +218,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
           useAnimalInHealthViewWhenNoTodo: showAnimation,
           showWortoutWarning: showWarning,
           warningOverwriteBingWallpaper: showWarningOnBing,
+          warningType: warningType,
           delay: delaySeconds);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:screen_me/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 part 'common.freezed.dart';
@@ -21,6 +22,7 @@ class Config with _$Config {
       @Default(true) bool useAnimationInHealthViewWhenNoTodo,
       @Default(0.0) double maxVolDelaySeconds,
       @Default(false) bool showFatWarningAfter17IfLazy,
+      @Default(WarnType.eye) WarnType warningType,
       @Default(false) bool fatWarningOverwriteBingWallpaper,
       @Default(0.1) double volumeNormal,
       @Default(0.5) double volumeOpenBluetooth}) = _Config;
@@ -68,6 +70,7 @@ class Configs extends _$Configs {
       required double maxVol,
       required bool showWortoutWarning,
       required bool warningOverwriteBingWallpaper,
+      required WarnType warningType,
       double delay = 0.0}) async {
     final c = Config(
         user: user,
@@ -81,6 +84,7 @@ class Configs extends _$Configs {
         volumeOpenBluetooth: maxVol,
         showFatWarningAfter17IfLazy: showWortoutWarning,
         fatWarningOverwriteBingWallpaper: warningOverwriteBingWallpaper,
+        warningType: warningType,
         maxVolDelaySeconds: delay);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));

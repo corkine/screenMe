@@ -47,6 +47,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     final now = DateTime.now();
     final today = "${now.year}-${now.month}-${now.day}";
     var eyeDataOK = s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false);
+    //eyeDataOK = true;
     final showBing = s.showBingWallpaper &&
         !(eyeDataOK && s.fatWarningOverwriteBingWallpaper);
     final showEye = !showBing && eyeDataOK;
@@ -77,8 +78,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       : const SizedBox()),
               if (showEye)
                 Transform.translate(
-                    offset: const Offset(130, 0),
-                    child: LottieBuilder.asset("assets/eye.json",
+                    offset: s.warningType.position, //130 160 180,10
+                    child: LottieBuilder.asset(s.warningType.path,
                         alignment: Alignment.center,
                         frameRate: FrameRate(60),
                         controller: controller)),

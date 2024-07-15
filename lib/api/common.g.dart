@@ -19,6 +19,9 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
           (json['maxVolDelaySeconds'] as num?)?.toDouble() ?? 0.0,
       showFatWarningAfter17IfLazy:
           json['showFatWarningAfter17IfLazy'] as bool? ?? false,
+      warningType:
+          $enumDecodeNullable(_$WarnTypeEnumMap, json['warningType']) ??
+              WarnType.eye,
       fatWarningOverwriteBingWallpaper:
           json['fatWarningOverwriteBingWallpaper'] as bool? ?? false,
       volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
@@ -38,17 +41,24 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
           instance.useAnimationInHealthViewWhenNoTodo,
       'maxVolDelaySeconds': instance.maxVolDelaySeconds,
       'showFatWarningAfter17IfLazy': instance.showFatWarningAfter17IfLazy,
+      'warningType': _$WarnTypeEnumMap[instance.warningType]!,
       'fatWarningOverwriteBingWallpaper':
           instance.fatWarningOverwriteBingWallpaper,
       'volumeNormal': instance.volumeNormal,
       'volumeOpenBluetooth': instance.volumeOpenBluetooth,
     };
 
+const _$WarnTypeEnumMap = {
+  WarnType.eye: 'eye',
+  WarnType.yoga: 'yoga',
+  WarnType.water: 'water',
+};
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'a32c699ce80e100193eae0a38312d5ebd6ab034f';
+String _$configsHash() => r'7489c202d77cd16b819765b46087cbe7d23a95e1';
 
 /// See also [Configs].
 @ProviderFor(Configs)
