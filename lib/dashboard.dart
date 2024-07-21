@@ -94,6 +94,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         var wt = s.warningType;
         if (wt == WarnType.random) {
           wt = WarnType.values[Random().nextInt(WarnType.values.length - 1)];
+        } else if (wt == WarnType.gallery) {
+          return buildFace(FaceType.gallery);
         }
         return Transform.translate(
             offset: wt.position,

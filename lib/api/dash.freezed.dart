@@ -1881,9 +1881,7 @@ class _$FaceGalleryImpl implements _FaceGallery {
       {this.blurOpacity = 0.5,
       this.borderRadius = 10.0,
       this.imageRepeatEachMinutes = 1,
-      final List<String> images = const [
-        "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
-      ]})
+      final List<String> images = const []})
       : _images = images;
 
   factory _$FaceGalleryImpl.fromJson(Map<String, dynamic> json) =>

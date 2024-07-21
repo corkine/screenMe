@@ -58,6 +58,7 @@ const _$WarnTypeEnumMap = {
   WarnType.eye: 'eye',
   WarnType.yoga: 'yoga',
   WarnType.water: 'water',
+  WarnType.gallery: 'gallery',
   WarnType.random: 'random',
 };
 

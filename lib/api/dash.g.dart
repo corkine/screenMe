@@ -169,9 +169,7 @@ _$FaceGalleryImpl _$$FaceGalleryImplFromJson(Map<String, dynamic> json) =>
       images: (json['images'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          const [
-            "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
-          ],
+          const [],
     );
 
 Map<String, dynamic> _$$FaceGalleryImplToJson(_$FaceGalleryImpl instance) =>
@@ -215,7 +213,7 @@ final getDashProvider = AutoDisposeFutureProvider<DashInfo>.internal(
 );
 
 typedef GetDashRef = AutoDisposeFutureProviderRef<DashInfo>;
-String _$getFaceGalleryHash() => r'd7c7ae3b2f6f075c4c0d404e3e49a607f4f082a1';
+String _$getFaceGalleryHash() => r'd711df7b64ce9b6cc5e74fae173b5ece7c95813d';
 
 /// See also [getFaceGallery].
 @ProviderFor(getFaceGallery)
