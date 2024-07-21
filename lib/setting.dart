@@ -4,20 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_me/api/common.dart';
 
-enum WarnType {
-  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
-  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
-  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
-  //random 必须为最后一个
-  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
-
-  final Offset position;
-  final String cnName;
-  final String path;
-
-  const WarnType(
-      {required this.position, required this.cnName, required this.path});
-}
+import 'api/dash.dart';
 
 class SettingView extends ConsumerStatefulWidget {
   const SettingView({super.key});
@@ -32,11 +19,11 @@ class _SettingViewState extends ConsumerState<SettingView> {
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
   var warningType = WarnType.eye;
+  var faceType = FaceType.bing;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
-  bool showWallpaper = false;
-  bool showAnimation = false;
   bool demoMode = false;
+  bool showAnimation = false;
   bool showWarning = false;
   bool showWarningOnBing = false;
   @override
@@ -54,15 +41,14 @@ class _SettingViewState extends ConsumerState<SettingView> {
       username.text = c.user;
       fetchDuration.text = c.fetchSeconds.toString();
       password.text = c.password;
-      showWallpaper = c.showBingWallpaper;
       showWarningOnBing = c.fatWarningOverwriteBingWallpaper;
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
-      showAnimation = c.showLoadingAnimationIfNoTodo;
       showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
       warningType = c.warningType;
+      faceType = c.face;
       setState(() {});
     });
   }
@@ -119,15 +105,22 @@ class _SettingViewState extends ConsumerState<SettingView> {
                           labelText: "刷新间隔(秒)")),
                   const SizedBox(height: 10),
                   Row(children: [
-                    const Text("显示 Bing 壁纸"),
+                    const Text("表盘样式"),
                     const Spacer(),
-                    Switch(
-                        value: showWallpaper,
-                        onChanged: (v) => setState(() => showWallpaper = v))
+                    DropdownButton<FaceType>(
+                        focusColor: Colors.transparent,
+                        value: faceType,
+                        onChanged: (v) => setState(() {
+                              faceType = v!;
+                            }),
+                        items: FaceType.values
+                            .map((e) => DropdownMenuItem<FaceType>(
+                                value: e, child: Text(e.name)))
+                            .toList())
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
-                    const Text("健康视图无待办显示加载动画"),
+                    const Text("无待办显示加载动画"),
                     const Spacer(),
                     Switch(
                         value: showAnimation,
@@ -135,7 +128,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
-                    const Text("健康视图晚 18:00 后运动圆环未完成显示警告"),
+                    const Text("晚 18:00 后运动未完成显示警告视图"),
                     const Spacer(),
                     Switch(
                         value: showWarning,
@@ -155,13 +148,6 @@ class _SettingViewState extends ConsumerState<SettingView> {
                             .map((e) => DropdownMenuItem<WarnType>(
                                 value: e, child: Text(e.cnName)))
                             .toList())
-                  ]),
-                  Row(children: [
-                    const Text("Bing 壁纸下也显示警告"),
-                    const Spacer(),
-                    Switch(
-                        value: showWarningOnBing,
-                        onChanged: (v) => setState(() => showWarningOnBing = v))
                   ]),
                   Row(children: [
                     Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
@@ -204,8 +190,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
   void handleLogin() async {
     final d = int.tryParse(fetchDuration.text);
     final delaySeconds = double.tryParse(delay.text) ?? 0.0;
-    if (delaySeconds < 0 || delaySeconds > 20) {
-      await showSimpleMessage(context, content: "延迟时间必须在 0-20 之间");
+    if (delaySeconds < 0 || delaySeconds > 30) {
+      await showSimpleMessage(context, content: "延迟时间必须在 0-30 之间");
       return;
     }
     if (username.text.isNotEmpty &&
@@ -213,14 +199,15 @@ class _SettingViewState extends ConsumerState<SettingView> {
         fetchDuration.text.isNotEmpty &&
         d != null) {
       await ref.read(configsProvider.notifier).set(
-          username.text, password.text, d, showWallpaper,
+          username.text, password.text, d,
           demoMode: demoMode,
           minVol: normalVoice,
           maxVol: speakerVoice,
-          useAnimalInHealthViewWhenNoTodo: showAnimation,
+          useAnimationWhenNoTodo: showAnimation,
           showWortoutWarning: showWarning,
           warningOverwriteBingWallpaper: showWarningOnBing,
           warningType: warningType,
+          face: faceType,
           delay: delaySeconds);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();

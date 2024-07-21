@@ -4,11 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:screen_me/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
+
+import 'dash.dart';
 part 'common.freezed.dart';
 part 'common.g.dart';
+
+num abs(num a) {
+  return a > 0 ? a : -a;
+}
 
 @freezed
 class Config with _$Config {
@@ -16,24 +21,21 @@ class Config with _$Config {
       {@Default("") String user,
       @Default("") String password,
       @Default(60) int fetchSeconds,
-      @Default(false) bool showBingWallpaper,
+      @Default(FaceType.bing) FaceType face,
       @Default("") String cyberPass,
       @Default(true) bool demoMode,
-      @Default(true) bool useAnimationInHealthViewWhenNoTodo,
-      @Default(0.0) double maxVolDelaySeconds,
+      @Default(true) bool useAnimationWhenNoTodo,
+      @Default(20.0) double maxVolDelaySeconds,
       @Default(false) bool showFatWarningAfter17IfLazy,
       @Default(WarnType.eye) WarnType warningType,
       @Default(false) bool fatWarningOverwriteBingWallpaper,
       @Default(0.1) double volumeNormal,
-      @Default(0.5) double volumeOpenBluetooth}) = _Config;
+      @Default(0.7) double volumeOpenBluetooth}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
 
 extension ConfigHelper on Config {
-  bool get showLoadingAnimationIfNoTodo =>
-      showBingWallpaper ? false : useAnimationInHealthViewWhenNoTodo;
-
   String get base64Token =>
       "Basic ${base64Encode(utf8.encode('$user:$password'))}";
 
@@ -63,27 +65,28 @@ class Configs extends _$Configs {
     return data;
   }
 
-  set(String user, String pass, int duration, bool showWallpaper,
+  set(String user, String pass, int duration,
       {bool demoMode = false,
-      bool useAnimalInHealthViewWhenNoTodo = false,
+      bool useAnimationWhenNoTodo = false,
       required double minVol,
       required double maxVol,
       required bool showWortoutWarning,
       required bool warningOverwriteBingWallpaper,
       required WarnType warningType,
+      required FaceType face,
       double delay = 0.0}) async {
     final c = Config(
         user: user,
         password: pass,
         cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
         fetchSeconds: duration,
-        showBingWallpaper: showWallpaper,
-        useAnimationInHealthViewWhenNoTodo: useAnimalInHealthViewWhenNoTodo,
+        useAnimationWhenNoTodo: useAnimationWhenNoTodo,
         demoMode: demoMode,
         volumeNormal: minVol,
         volumeOpenBluetooth: maxVol,
         showFatWarningAfter17IfLazy: showWortoutWarning,
         fatWarningOverwriteBingWallpaper: warningOverwriteBingWallpaper,
+        face: face,
         warningType: warningType,
         maxVolDelaySeconds: delay);
     final s = await SharedPreferences.getInstance();
@@ -92,10 +95,13 @@ class Configs extends _$Configs {
     state = AsyncData(c);
   }
 
-  changeFace() async {
+  changeFace({reverse = false}) async {
     var v = state.value;
     if (v == null) return;
-    v = v.copyWith(showBingWallpaper: !v.showBingWallpaper);
+    final idx = reverse ? -1 : 1;
+    final nextFace = FaceType.values[
+        (FaceType.values.indexOf(v.face) + idx) % FaceType.values.length];
+    v = v.copyWith(face: nextFace);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(v.toJson()));
     data = v;

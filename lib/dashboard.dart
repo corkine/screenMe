@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,6 @@ import 'package:screen_me/setting.dart';
 import 'api/common.dart';
 import 'clock.dart';
 
-num abs(num a) {
-  return a > 0 ? a : -a;
-}
-
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
 
@@ -31,6 +28,9 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
+  DashInfo? d;
+  late Config s;
+
   @override
   void initState() {
     super.initState();
@@ -41,53 +41,96 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
   }
 
+  Widget buildFace(FaceType type) {
+    switch (type) {
+      case FaceType.bing:
+        final now = DateTime.now();
+        final today = "${now.year}-${now.month}-${now.day}";
+        return CachedNetworkImage(
+                imageUrl:
+                    "https://go.mazhangjing.com/bing-today-image?normal=true",
+                cacheKey: "bing-today-image-$today",
+                fit: BoxFit.cover)
+            .animate()
+            .fadeIn();
+      case FaceType.fit:
+        return Positioned(
+            right: 0,
+            bottom: 0,
+            top: 0,
+            child: Transform.scale(
+                scale: 1.1,
+                child: Transform.translate(
+                    offset: const Offset(40, 20),
+                    child:
+                        buildChart(d, s).animate().moveX(begin: 10, end: 0))));
+      case FaceType.gallery:
+        final fg = ref.watch(getFaceGalleryProvider).value ?? FaceGallery();
+        final image = fg.imageNow;
+        return KeyedSubtree(
+            key: ValueKey(image),
+            child: Stack(fit: StackFit.expand, children: [
+              Image.network(image, fit: BoxFit.cover),
+              BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                      color: Colors.black.withOpacity(fg.blurOpacity))),
+              Positioned(
+                  right: 10,
+                  top: 10,
+                  bottom: 10,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(fg.borderRadius),
+                      child: Image.network(image, fit: BoxFit.fitWidth)))
+            ]).animate().fadeIn());
+      case FaceType.warning:
+        var wt = s.warningType;
+        if (wt == WarnType.random) {
+          wt = WarnType.values[Random().nextInt(WarnType.values.length - 1)];
+        }
+        return Transform.translate(
+            offset: wt.position,
+            child: LottieBuilder.asset(wt.path,
+                alignment: Alignment.center,
+                frameRate: FrameRate(60),
+                controller: controller));
+      default:
+        return const Text("No Impl");
+    }
+  }
+
+  FaceType computeNowFaceType() {
+    var eyeDataOK = s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false);
+    if (eyeDataOK) {
+      return FaceType.warning;
+    } else {
+      return s.face;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final s = ref.watch(configsProvider).value ?? Config();
-    final d = ref.watch(getDashProvider).value;
-    final now = DateTime.now();
-    final today = "${now.year}-${now.month}-${now.day}";
-    var eyeDataOK = s.showFatWarningAfter17IfLazy && (d?.lazyLate ?? false);
-    //eyeDataOK = true;
-    final showBing = s.showBingWallpaper &&
-        !(eyeDataOK && s.fatWarningOverwriteBingWallpaper);
-    final showEye = !showBing && eyeDataOK;
-    final showFitness = !showBing && !eyeDataOK;
-    var wt = s.warningType;
-    if (wt == WarnType.random) {
-      wt = WarnType.values[Random().nextInt(WarnType.values.length - 1)];
-    }
+    s = ref.watch(configsProvider).value ?? Config();
+    d = ref.watch(getDashProvider).value;
     return Scaffold(
         endDrawer: const Drawer(child: ExpressView()),
         backgroundColor: Colors.black,
         body: GestureDetector(
             onHorizontalDragEnd: (details) async {
               final offset = details.velocity.pixelsPerSecond;
-              if (abs(offset.dx) > 10 || abs(offset.dy) > 10) {
+              if (offset.dx > 10 || offset.dy > 10) {
                 await ref.read(configsProvider.notifier).changeFace();
+              } else if (offset.dx < -10 || offset.dy < -10) {
+                await ref
+                    .read(configsProvider.notifier)
+                    .changeFace(reverse: true);
               }
             },
             onLongPress: () => showDebugBar(context, d?.debugInfo),
             onDoubleTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const SettingView())),
             child: Stack(fit: StackFit.expand, children: [
-              Positioned.fill(
-                  child: showBing
-                      ? CachedNetworkImage(
-                              imageUrl:
-                                  "https://go.mazhangjing.com/bing-today-image?normal=true",
-                              cacheKey: "bing-today-image-$today",
-                              fit: BoxFit.cover)
-                          .animate()
-                          .fadeIn()
-                      : const SizedBox()),
-              if (showEye)
-                Transform.translate(
-                    offset: wt.position,
-                    child: LottieBuilder.asset(wt.path,
-                        alignment: Alignment.center,
-                        frameRate: FrameRate(60),
-                        controller: controller)),
+              buildFace(computeNowFaceType()),
               Positioned(
                   left: 30,
                   top: 10,
@@ -96,19 +139,6 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       key: const ValueKey("clock"), controller: controller)),
               Positioned(
                   bottom: 0, left: 20, child: buildLoadingAnimation(s, d)),
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  top: 0,
-                  child: showFitness
-                      ? Transform.scale(
-                          scale: 1.1,
-                          child: Transform.translate(
-                              offset: const Offset(40, 20),
-                              child: buildChart(d, s)
-                                  .animate()
-                                  .moveX(begin: 10, end: 0)))
-                      : const SizedBox()),
               Positioned(
                   right: 20,
                   bottom: 20,
@@ -125,8 +155,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
 
   SizedBox buildLoadingAnimation(Config s, DashInfo? d) {
     final isNight = DateTime.now().hour >= 21;
-    final needShow =
-        s.showLoadingAnimationIfNoTodo && (d?.todo.isEmpty ?? true);
+    final needShow = s.useAnimationWhenNoTodo && (d?.todo.isEmpty ?? true);
     Widget? widget;
     if (needShow) {
       widget = LottieBuilder.asset(

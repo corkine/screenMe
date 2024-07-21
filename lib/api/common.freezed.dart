@@ -23,11 +23,10 @@ mixin _$Config {
   String get user => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   int get fetchSeconds => throw _privateConstructorUsedError;
-  bool get showBingWallpaper => throw _privateConstructorUsedError;
+  FaceType get face => throw _privateConstructorUsedError;
   String get cyberPass => throw _privateConstructorUsedError;
   bool get demoMode => throw _privateConstructorUsedError;
-  bool get useAnimationInHealthViewWhenNoTodo =>
-      throw _privateConstructorUsedError;
+  bool get useAnimationWhenNoTodo => throw _privateConstructorUsedError;
   double get maxVolDelaySeconds => throw _privateConstructorUsedError;
   bool get showFatWarningAfter17IfLazy => throw _privateConstructorUsedError;
   WarnType get warningType => throw _privateConstructorUsedError;
@@ -50,10 +49,10 @@ abstract class $ConfigCopyWith<$Res> {
       {String user,
       String password,
       int fetchSeconds,
-      bool showBingWallpaper,
+      FaceType face,
       String cyberPass,
       bool demoMode,
-      bool useAnimationInHealthViewWhenNoTodo,
+      bool useAnimationWhenNoTodo,
       double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       WarnType warningType,
@@ -78,10 +77,10 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? user = null,
     Object? password = null,
     Object? fetchSeconds = null,
-    Object? showBingWallpaper = null,
+    Object? face = null,
     Object? cyberPass = null,
     Object? demoMode = null,
-    Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? useAnimationWhenNoTodo = null,
     Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? warningType = null,
@@ -102,10 +101,10 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.fetchSeconds
           : fetchSeconds // ignore: cast_nullable_to_non_nullable
               as int,
-      showBingWallpaper: null == showBingWallpaper
-          ? _value.showBingWallpaper
-          : showBingWallpaper // ignore: cast_nullable_to_non_nullable
-              as bool,
+      face: null == face
+          ? _value.face
+          : face // ignore: cast_nullable_to_non_nullable
+              as FaceType,
       cyberPass: null == cyberPass
           ? _value.cyberPass
           : cyberPass // ignore: cast_nullable_to_non_nullable
@@ -114,10 +113,9 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      useAnimationInHealthViewWhenNoTodo: null ==
-              useAnimationInHealthViewWhenNoTodo
-          ? _value.useAnimationInHealthViewWhenNoTodo
-          : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
+      useAnimationWhenNoTodo: null == useAnimationWhenNoTodo
+          ? _value.useAnimationWhenNoTodo
+          : useAnimationWhenNoTodo // ignore: cast_nullable_to_non_nullable
               as bool,
       maxVolDelaySeconds: null == maxVolDelaySeconds
           ? _value.maxVolDelaySeconds
@@ -158,10 +156,10 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       {String user,
       String password,
       int fetchSeconds,
-      bool showBingWallpaper,
+      FaceType face,
       String cyberPass,
       bool demoMode,
-      bool useAnimationInHealthViewWhenNoTodo,
+      bool useAnimationWhenNoTodo,
       double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       WarnType warningType,
@@ -184,10 +182,10 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? user = null,
     Object? password = null,
     Object? fetchSeconds = null,
-    Object? showBingWallpaper = null,
+    Object? face = null,
     Object? cyberPass = null,
     Object? demoMode = null,
-    Object? useAnimationInHealthViewWhenNoTodo = null,
+    Object? useAnimationWhenNoTodo = null,
     Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? warningType = null,
@@ -208,10 +206,10 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.fetchSeconds
           : fetchSeconds // ignore: cast_nullable_to_non_nullable
               as int,
-      showBingWallpaper: null == showBingWallpaper
-          ? _value.showBingWallpaper
-          : showBingWallpaper // ignore: cast_nullable_to_non_nullable
-              as bool,
+      face: null == face
+          ? _value.face
+          : face // ignore: cast_nullable_to_non_nullable
+              as FaceType,
       cyberPass: null == cyberPass
           ? _value.cyberPass
           : cyberPass // ignore: cast_nullable_to_non_nullable
@@ -220,10 +218,9 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.demoMode
           : demoMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      useAnimationInHealthViewWhenNoTodo: null ==
-              useAnimationInHealthViewWhenNoTodo
-          ? _value.useAnimationInHealthViewWhenNoTodo
-          : useAnimationInHealthViewWhenNoTodo // ignore: cast_nullable_to_non_nullable
+      useAnimationWhenNoTodo: null == useAnimationWhenNoTodo
+          ? _value.useAnimationWhenNoTodo
+          : useAnimationWhenNoTodo // ignore: cast_nullable_to_non_nullable
               as bool,
       maxVolDelaySeconds: null == maxVolDelaySeconds
           ? _value.maxVolDelaySeconds
@@ -260,16 +257,16 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       {this.user = "",
       this.password = "",
       this.fetchSeconds = 60,
-      this.showBingWallpaper = false,
+      this.face = FaceType.bing,
       this.cyberPass = "",
       this.demoMode = true,
-      this.useAnimationInHealthViewWhenNoTodo = true,
-      this.maxVolDelaySeconds = 0.0,
+      this.useAnimationWhenNoTodo = true,
+      this.maxVolDelaySeconds = 20.0,
       this.showFatWarningAfter17IfLazy = false,
       this.warningType = WarnType.eye,
       this.fatWarningOverwriteBingWallpaper = false,
       this.volumeNormal = 0.1,
-      this.volumeOpenBluetooth = 0.5});
+      this.volumeOpenBluetooth = 0.7});
 
   factory _$ConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConfigImplFromJson(json);
@@ -285,7 +282,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final int fetchSeconds;
   @override
   @JsonKey()
-  final bool showBingWallpaper;
+  final FaceType face;
   @override
   @JsonKey()
   final String cyberPass;
@@ -294,7 +291,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final bool demoMode;
   @override
   @JsonKey()
-  final bool useAnimationInHealthViewWhenNoTodo;
+  final bool useAnimationWhenNoTodo;
   @override
   @JsonKey()
   final double maxVolDelaySeconds;
@@ -316,7 +313,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, showBingWallpaper: $showBingWallpaper, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationInHealthViewWhenNoTodo: $useAnimationInHealthViewWhenNoTodo, maxVolDelaySeconds: $maxVolDelaySeconds, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, warningType: $warningType, fatWarningOverwriteBingWallpaper: $fatWarningOverwriteBingWallpaper, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, face: $face, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationWhenNoTodo: $useAnimationWhenNoTodo, maxVolDelaySeconds: $maxVolDelaySeconds, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, warningType: $warningType, fatWarningOverwriteBingWallpaper: $fatWarningOverwriteBingWallpaper, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
   }
 
   @override
@@ -327,11 +324,11 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('fetchSeconds', fetchSeconds))
-      ..add(DiagnosticsProperty('showBingWallpaper', showBingWallpaper))
+      ..add(DiagnosticsProperty('face', face))
       ..add(DiagnosticsProperty('cyberPass', cyberPass))
       ..add(DiagnosticsProperty('demoMode', demoMode))
-      ..add(DiagnosticsProperty('useAnimationInHealthViewWhenNoTodo',
-          useAnimationInHealthViewWhenNoTodo))
+      ..add(
+          DiagnosticsProperty('useAnimationWhenNoTodo', useAnimationWhenNoTodo))
       ..add(DiagnosticsProperty('maxVolDelaySeconds', maxVolDelaySeconds))
       ..add(DiagnosticsProperty(
           'showFatWarningAfter17IfLazy', showFatWarningAfter17IfLazy))
@@ -352,16 +349,13 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
                 other.password == password) &&
             (identical(other.fetchSeconds, fetchSeconds) ||
                 other.fetchSeconds == fetchSeconds) &&
-            (identical(other.showBingWallpaper, showBingWallpaper) ||
-                other.showBingWallpaper == showBingWallpaper) &&
+            (identical(other.face, face) || other.face == face) &&
             (identical(other.cyberPass, cyberPass) ||
                 other.cyberPass == cyberPass) &&
             (identical(other.demoMode, demoMode) ||
                 other.demoMode == demoMode) &&
-            (identical(other.useAnimationInHealthViewWhenNoTodo,
-                    useAnimationInHealthViewWhenNoTodo) ||
-                other.useAnimationInHealthViewWhenNoTodo ==
-                    useAnimationInHealthViewWhenNoTodo) &&
+            (identical(other.useAnimationWhenNoTodo, useAnimationWhenNoTodo) ||
+                other.useAnimationWhenNoTodo == useAnimationWhenNoTodo) &&
             (identical(other.maxVolDelaySeconds, maxVolDelaySeconds) ||
                 other.maxVolDelaySeconds == maxVolDelaySeconds) &&
             (identical(other.showFatWarningAfter17IfLazy,
@@ -387,10 +381,10 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       user,
       password,
       fetchSeconds,
-      showBingWallpaper,
+      face,
       cyberPass,
       demoMode,
-      useAnimationInHealthViewWhenNoTodo,
+      useAnimationWhenNoTodo,
       maxVolDelaySeconds,
       showFatWarningAfter17IfLazy,
       warningType,
@@ -417,10 +411,10 @@ abstract class _Config implements Config {
       {final String user,
       final String password,
       final int fetchSeconds,
-      final bool showBingWallpaper,
+      final FaceType face,
       final String cyberPass,
       final bool demoMode,
-      final bool useAnimationInHealthViewWhenNoTodo,
+      final bool useAnimationWhenNoTodo,
       final double maxVolDelaySeconds,
       final bool showFatWarningAfter17IfLazy,
       final WarnType warningType,
@@ -437,13 +431,13 @@ abstract class _Config implements Config {
   @override
   int get fetchSeconds;
   @override
-  bool get showBingWallpaper;
+  FaceType get face;
   @override
   String get cyberPass;
   @override
   bool get demoMode;
   @override
-  bool get useAnimationInHealthViewWhenNoTodo;
+  bool get useAnimationWhenNoTodo;
   @override
   double get maxVolDelaySeconds;
   @override

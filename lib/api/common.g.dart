@@ -10,13 +10,13 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       user: json['user'] as String? ?? "",
       password: json['password'] as String? ?? "",
       fetchSeconds: (json['fetchSeconds'] as num?)?.toInt() ?? 60,
-      showBingWallpaper: json['showBingWallpaper'] as bool? ?? false,
+      face:
+          $enumDecodeNullable(_$FaceTypeEnumMap, json['face']) ?? FaceType.bing,
       cyberPass: json['cyberPass'] as String? ?? "",
       demoMode: json['demoMode'] as bool? ?? true,
-      useAnimationInHealthViewWhenNoTodo:
-          json['useAnimationInHealthViewWhenNoTodo'] as bool? ?? true,
+      useAnimationWhenNoTodo: json['useAnimationWhenNoTodo'] as bool? ?? true,
       maxVolDelaySeconds:
-          (json['maxVolDelaySeconds'] as num?)?.toDouble() ?? 0.0,
+          (json['maxVolDelaySeconds'] as num?)?.toDouble() ?? 20.0,
       showFatWarningAfter17IfLazy:
           json['showFatWarningAfter17IfLazy'] as bool? ?? false,
       warningType:
@@ -26,7 +26,7 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
           json['fatWarningOverwriteBingWallpaper'] as bool? ?? false,
       volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
       volumeOpenBluetooth:
-          (json['volumeOpenBluetooth'] as num?)?.toDouble() ?? 0.5,
+          (json['volumeOpenBluetooth'] as num?)?.toDouble() ?? 0.7,
     );
 
 Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
@@ -34,11 +34,10 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'user': instance.user,
       'password': instance.password,
       'fetchSeconds': instance.fetchSeconds,
-      'showBingWallpaper': instance.showBingWallpaper,
+      'face': _$FaceTypeEnumMap[instance.face]!,
       'cyberPass': instance.cyberPass,
       'demoMode': instance.demoMode,
-      'useAnimationInHealthViewWhenNoTodo':
-          instance.useAnimationInHealthViewWhenNoTodo,
+      'useAnimationWhenNoTodo': instance.useAnimationWhenNoTodo,
       'maxVolDelaySeconds': instance.maxVolDelaySeconds,
       'showFatWarningAfter17IfLazy': instance.showFatWarningAfter17IfLazy,
       'warningType': _$WarnTypeEnumMap[instance.warningType]!,
@@ -47,6 +46,13 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'volumeNormal': instance.volumeNormal,
       'volumeOpenBluetooth': instance.volumeOpenBluetooth,
     };
+
+const _$FaceTypeEnumMap = {
+  FaceType.bing: 'bing',
+  FaceType.gallery: 'gallery',
+  FaceType.fit: 'fit',
+  FaceType.warning: 'warning',
+};
 
 const _$WarnTypeEnumMap = {
   WarnType.eye: 'eye',
@@ -59,7 +65,7 @@ const _$WarnTypeEnumMap = {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'7489c202d77cd16b819765b46087cbe7d23a95e1';
+String _$configsHash() => r'80c303945453db6543481768d80df3a8df6fa7bf';
 
 /// See also [Configs].
 @ProviderFor(Configs)

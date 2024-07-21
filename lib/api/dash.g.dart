@@ -160,6 +160,28 @@ Map<String, dynamic> _$$DashExpressExtraImplToJson(
       'status': instance.status,
     };
 
+_$FaceGalleryImpl _$$FaceGalleryImplFromJson(Map<String, dynamic> json) =>
+    _$FaceGalleryImpl(
+      blurOpacity: (json['blurOpacity'] as num?)?.toDouble() ?? 0.5,
+      borderRadius: (json['borderRadius'] as num?)?.toDouble() ?? 10.0,
+      imageRepeatEachMinutes:
+          (json['imageRepeatEachMinutes'] as num?)?.toInt() ?? 1,
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [
+            "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
+          ],
+    );
+
+Map<String, dynamic> _$$FaceGalleryImplToJson(_$FaceGalleryImpl instance) =>
+    <String, dynamic>{
+      'blurOpacity': instance.blurOpacity,
+      'borderRadius': instance.borderRadius,
+      'imageRepeatEachMinutes': instance.imageRepeatEachMinutes,
+      'images': instance.images,
+    };
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
@@ -193,6 +215,21 @@ final getDashProvider = AutoDisposeFutureProvider<DashInfo>.internal(
 );
 
 typedef GetDashRef = AutoDisposeFutureProviderRef<DashInfo>;
+String _$getFaceGalleryHash() => r'd7c7ae3b2f6f075c4c0d404e3e49a607f4f082a1';
+
+/// See also [getFaceGallery].
+@ProviderFor(getFaceGallery)
+final getFaceGalleryProvider = AutoDisposeFutureProvider<FaceGallery>.internal(
+  getFaceGallery,
+  name: r'getFaceGalleryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getFaceGalleryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetFaceGalleryRef = AutoDisposeFutureProviderRef<FaceGallery>;
 String _$timesHash() => r'9af21052901b2d850f71123e20dd8432c6bab5b7';
 
 /// See also [Times].
