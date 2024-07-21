@@ -69,20 +69,27 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         final image = fg.imageNow;
         return KeyedSubtree(
             key: ValueKey(image),
-            child: Stack(fit: StackFit.expand, children: [
-              Image.network(image, fit: BoxFit.cover),
-              BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Container(
-                      color: Colors.black.withOpacity(fg.blurOpacity))),
-              Positioned(
-                  right: 10,
-                  top: 10,
-                  bottom: 10,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(fg.borderRadius),
-                      child: Image.network(image, fit: BoxFit.fitWidth)))
-            ]).animate().fadeIn());
+            child: image.isNotEmpty
+                ? Stack(fit: StackFit.expand, children: [
+                    CachedNetworkImage(
+                        imageUrl: image, cacheKey: image, fit: BoxFit.cover),
+                    BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Container(
+                            color: Colors.black.withOpacity(fg.blurOpacity))),
+                    Positioned(
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                        child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(fg.borderRadius),
+                            child: CachedNetworkImage(
+                                imageUrl: image,
+                                cacheKey: image,
+                                fit: BoxFit.fitWidth)))
+                  ]).animate().fadeIn()
+                : const SizedBox());
       case FaceType.warning:
         var wt = s.warningType;
         if (wt == WarnType.random) {

@@ -212,10 +212,7 @@ class FaceGallery with _$FaceGallery {
       {@Default(0.5) double blurOpacity,
       @Default(10.0) double borderRadius,
       @Default(1) int imageRepeatEachMinutes,
-      @Default([
-        "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
-      ])
-      List<String> images}) = _FaceGallery;
+      @Default([]) List<String> images}) = _FaceGallery;
 
   factory FaceGallery.fromJson(Map<String, dynamic> json) =>
       _$FaceGalleryFromJson(json);
@@ -225,9 +222,12 @@ const faceGalleryUrl = "https://mazhangjing.com/service/screenMe/gallery.json";
 
 extension FaceGalleryExt on FaceGallery {
   String get imageNow {
-    final index = DateTime.now().minute ~/ imageRepeatEachMinutes;
-    final now = images[index % images.length];
-    return now;
+    if (images.isEmpty) return "";
+    DateTime now = DateTime.now();
+    int minutesSinceMidnight = now.hour * 60 + now.minute;
+    int interval = minutesSinceMidnight ~/ imageRepeatEachMinutes;
+    int index = interval % images.length;
+    return images[index];
   }
 }
 
@@ -235,7 +235,9 @@ extension FaceGalleryExt on FaceGallery {
 Future<FaceGallery> getFaceGallery(GetFaceGalleryRef ref) async {
   final s = await ref.watch(configsProvider.future);
   if (s.demoMode) {
-    return FaceGallery();
+    return FaceGallery(images: [
+      "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
+    ]);
   }
   try {
     final r = await get(Uri.parse(faceGalleryUrl),
