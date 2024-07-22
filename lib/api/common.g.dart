@@ -22,8 +22,7 @@ _$ConfigImpl _$$ConfigImplFromJson(Map<String, dynamic> json) => _$ConfigImpl(
       warningType:
           $enumDecodeNullable(_$WarnTypeEnumMap, json['warningType']) ??
               WarnType.eye,
-      fatWarningOverwriteBingWallpaper:
-          json['fatWarningOverwriteBingWallpaper'] as bool? ?? false,
+      warningShowGalleryInBg: json['warningShowGalleryInBg'] as bool? ?? false,
       volumeNormal: (json['volumeNormal'] as num?)?.toDouble() ?? 0.1,
       volumeOpenBluetooth:
           (json['volumeOpenBluetooth'] as num?)?.toDouble() ?? 0.7,
@@ -41,8 +40,7 @@ Map<String, dynamic> _$$ConfigImplToJson(_$ConfigImpl instance) =>
       'maxVolDelaySeconds': instance.maxVolDelaySeconds,
       'showFatWarningAfter17IfLazy': instance.showFatWarningAfter17IfLazy,
       'warningType': _$WarnTypeEnumMap[instance.warningType]!,
-      'fatWarningOverwriteBingWallpaper':
-          instance.fatWarningOverwriteBingWallpaper,
+      'warningShowGalleryInBg': instance.warningShowGalleryInBg,
       'volumeNormal': instance.volumeNormal,
       'volumeOpenBluetooth': instance.volumeOpenBluetooth,
     };
@@ -66,7 +64,7 @@ const _$WarnTypeEnumMap = {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configsHash() => r'80c303945453db6543481768d80df3a8df6fa7bf';
+String _$configsHash() => r'0c2ff51ef69fa46c5d096226a7a08c70a2d1aef7';
 
 /// See also [Configs].
 @ProviderFor(Configs)

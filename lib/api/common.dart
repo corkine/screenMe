@@ -7,12 +7,37 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 
-import 'dash.dart';
 part 'common.freezed.dart';
 part 'common.g.dart';
 
 num abs(num a) {
   return a > 0 ? a : -a;
+}
+
+enum WarnType {
+  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
+  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
+  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
+  gallery(position: Offset(0, 0), cnName: "画廊", path: ""),
+  //random 必须为最后一个
+  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
+
+  final Offset position;
+  final String cnName;
+  final String path;
+
+  const WarnType(
+      {required this.position, required this.cnName, required this.path});
+}
+
+enum FaceType {
+  bing(name: "Bing 壁纸"),
+  gallery(name: "画廊"),
+  fit(name: "健身圆环"),
+  warning(name: "健身警告");
+
+  final String name;
+  const FaceType({required this.name});
 }
 
 @freezed
@@ -28,7 +53,7 @@ class Config with _$Config {
       @Default(20.0) double maxVolDelaySeconds,
       @Default(false) bool showFatWarningAfter17IfLazy,
       @Default(WarnType.eye) WarnType warningType,
-      @Default(false) bool fatWarningOverwriteBingWallpaper,
+      @Default(false) bool warningShowGalleryInBg,
       @Default(0.1) double volumeNormal,
       @Default(0.7) double volumeOpenBluetooth}) = _Config;
 
@@ -71,7 +96,7 @@ class Configs extends _$Configs {
       required double minVol,
       required double maxVol,
       required bool showWortoutWarning,
-      required bool warningOverwriteBingWallpaper,
+      required bool warningShowGalleryInBg,
       required WarnType warningType,
       required FaceType face,
       double delay = 0.0}) async {
@@ -85,7 +110,7 @@ class Configs extends _$Configs {
         volumeNormal: minVol,
         volumeOpenBluetooth: maxVol,
         showFatWarningAfter17IfLazy: showWortoutWarning,
-        fatWarningOverwriteBingWallpaper: warningOverwriteBingWallpaper,
+        warningShowGalleryInBg: warningShowGalleryInBg,
         face: face,
         warningType: warningType,
         maxVolDelaySeconds: delay);

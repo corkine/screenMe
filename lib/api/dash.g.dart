@@ -160,26 +160,6 @@ Map<String, dynamic> _$$DashExpressExtraImplToJson(
       'status': instance.status,
     };
 
-_$FaceGalleryImpl _$$FaceGalleryImplFromJson(Map<String, dynamic> json) =>
-    _$FaceGalleryImpl(
-      blurOpacity: (json['blurOpacity'] as num?)?.toDouble() ?? 0.5,
-      borderRadius: (json['borderRadius'] as num?)?.toDouble() ?? 10.0,
-      imageRepeatEachMinutes:
-          (json['imageRepeatEachMinutes'] as num?)?.toInt() ?? 1,
-      images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-    );
-
-Map<String, dynamic> _$$FaceGalleryImplToJson(_$FaceGalleryImpl instance) =>
-    <String, dynamic>{
-      'blurOpacity': instance.blurOpacity,
-      'borderRadius': instance.borderRadius,
-      'imageRepeatEachMinutes': instance.imageRepeatEachMinutes,
-      'images': instance.images,
-    };
-
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
@@ -213,21 +193,6 @@ final getDashProvider = AutoDisposeFutureProvider<DashInfo>.internal(
 );
 
 typedef GetDashRef = AutoDisposeFutureProviderRef<DashInfo>;
-String _$getFaceGalleryHash() => r'd711df7b64ce9b6cc5e74fae173b5ece7c95813d';
-
-/// See also [getFaceGallery].
-@ProviderFor(getFaceGallery)
-final getFaceGalleryProvider = AutoDisposeFutureProvider<FaceGallery>.internal(
-  getFaceGallery,
-  name: r'getFaceGalleryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getFaceGalleryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetFaceGalleryRef = AutoDisposeFutureProviderRef<FaceGallery>;
 String _$timesHash() => r'9af21052901b2d850f71123e20dd8432c6bab5b7';
 
 /// See also [Times].

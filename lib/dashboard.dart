@@ -15,6 +15,7 @@ import 'package:screen_me/express.dart';
 import 'package:screen_me/setting.dart';
 
 import 'api/common.dart';
+import 'api/gallery.dart';
 import 'clock.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
@@ -97,12 +98,34 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         } else if (wt == WarnType.gallery) {
           return buildFace(FaceType.gallery);
         }
-        return Transform.translate(
-            offset: wt.position,
-            child: LottieBuilder.asset(wt.path,
-                alignment: Alignment.center,
-                frameRate: FrameRate(60),
-                controller: controller));
+        if (!s.warningShowGalleryInBg) {
+          return Transform.translate(
+              offset: wt.position,
+              child: LottieBuilder.asset(wt.path,
+                  alignment: Alignment.center,
+                  frameRate: FrameRate(60),
+                  controller: controller));
+        } else {
+          final fg = ref.watch(getFaceGalleryProvider).value ?? FaceGallery();
+          final image = fg.imageNow;
+          return image.isNotEmpty
+              ? Stack(fit: StackFit.expand, children: [
+                  CachedNetworkImage(
+                      imageUrl: image, cacheKey: image, fit: BoxFit.cover),
+                  BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                          color: Colors.black.withOpacity(
+                              fg.blurOpacityInBgMode ?? fg.blurOpacity))),
+                  Transform.translate(
+                      offset: wt.position,
+                      child: LottieBuilder.asset(wt.path,
+                          alignment: Alignment.center,
+                          frameRate: FrameRate(60),
+                          controller: controller))
+                ])
+              : const SizedBox();
+        }
       default:
         return const Text("No Impl");
     }

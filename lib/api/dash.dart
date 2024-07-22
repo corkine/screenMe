@@ -1,43 +1,15 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screen_me/api/common.dart';
 import 'package:screen_me/version.dart';
 
 part 'dash.freezed.dart';
 part 'dash.g.dart';
-
-enum WarnType {
-  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
-  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
-  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
-  gallery(position: Offset(0, 0), cnName: "画廊", path: ""),
-  //random 必须为最后一个
-  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
-
-  final Offset position;
-  final String cnName;
-  final String path;
-
-  const WarnType(
-      {required this.position, required this.cnName, required this.path});
-}
-
-enum FaceType {
-  bing(name: "Bing 壁纸"),
-  gallery(name: "画廊"),
-  fit(name: "健身圆环"),
-  warning(name: "健身警告");
-
-  final String name;
-  const FaceType({required this.name});
-}
 
 @freezed
 class DashFit with _$DashFit {
@@ -205,48 +177,4 @@ class Times extends _$Times {
       return a;
     });
   }
-}
-
-@freezed
-class FaceGallery with _$FaceGallery {
-  factory FaceGallery(
-      {@Default(0.5) double blurOpacity,
-      @Default(10.0) double borderRadius,
-      @Default(1) int imageRepeatEachMinutes,
-      @Default([]) List<String> images}) = _FaceGallery;
-
-  factory FaceGallery.fromJson(Map<String, dynamic> json) =>
-      _$FaceGalleryFromJson(json);
-}
-
-const faceGalleryUrl = "https://mazhangjing.com/service/screenMe/gallery.json";
-
-extension FaceGalleryExt on FaceGallery {
-  String get imageNow {
-    if (images.isEmpty) return "";
-    DateTime now = DateTime.now();
-    int minutesSinceMidnight = now.hour * 60 + now.minute;
-    int interval = minutesSinceMidnight ~/ imageRepeatEachMinutes;
-    int index = interval % images.length;
-    return images[index];
-  }
-}
-
-@riverpod
-Future<FaceGallery> getFaceGallery(GetFaceGalleryRef ref) async {
-  final s = await ref.watch(configsProvider.future);
-  if (s.demoMode) {
-    return FaceGallery(images: [
-      "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
-    ]);
-  }
-  try {
-    final r = await get(Uri.parse(faceGalleryUrl),
-        headers: Configs.data.cyberBase64Header);
-    final d = jsonDecode(r.body);
-    return FaceGallery.fromJson(d);
-  } catch (e, st) {
-    debugPrintStack(stackTrace: st);
-  }
-  return FaceGallery();
 }

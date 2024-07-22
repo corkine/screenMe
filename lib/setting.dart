@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_me/api/common.dart';
 
-import 'api/dash.dart';
-
 class SettingView extends ConsumerStatefulWidget {
   const SettingView({super.key});
 
@@ -25,7 +23,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   bool demoMode = false;
   bool showAnimation = false;
   bool showWarning = false;
-  bool showWarningOnBing = false;
+  bool warningShowGalleryInBg = false;
   @override
   void dispose() {
     username.dispose();
@@ -41,12 +39,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
       username.text = c.user;
       fetchDuration.text = c.fetchSeconds.toString();
       password.text = c.password;
-      showWarningOnBing = c.fatWarningOverwriteBingWallpaper;
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
       showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
+      warningShowGalleryInBg = c.warningShowGalleryInBg;
       warningType = c.warningType;
       faceType = c.face;
       setState(() {});
@@ -136,6 +134,15 @@ class _SettingViewState extends ConsumerState<SettingView> {
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
+                    const Text("警告视图使用画廊打底"),
+                    const Spacer(),
+                    Switch(
+                        value: warningShowGalleryInBg,
+                        onChanged: (v) =>
+                            setState(() => warningShowGalleryInBg = v))
+                  ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
                     const Text("警告图案样式"),
                     const Spacer(),
                     DropdownButton<WarnType>(
@@ -205,7 +212,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
           maxVol: speakerVoice,
           useAnimationWhenNoTodo: showAnimation,
           showWortoutWarning: showWarning,
-          warningOverwriteBingWallpaper: showWarningOnBing,
+          warningShowGalleryInBg: warningShowGalleryInBg,
           warningType: warningType,
           face: faceType,
           delay: delaySeconds);

@@ -30,8 +30,7 @@ mixin _$Config {
   double get maxVolDelaySeconds => throw _privateConstructorUsedError;
   bool get showFatWarningAfter17IfLazy => throw _privateConstructorUsedError;
   WarnType get warningType => throw _privateConstructorUsedError;
-  bool get fatWarningOverwriteBingWallpaper =>
-      throw _privateConstructorUsedError;
+  bool get warningShowGalleryInBg => throw _privateConstructorUsedError;
   double get volumeNormal => throw _privateConstructorUsedError;
   double get volumeOpenBluetooth => throw _privateConstructorUsedError;
 
@@ -56,7 +55,7 @@ abstract class $ConfigCopyWith<$Res> {
       double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       WarnType warningType,
-      bool fatWarningOverwriteBingWallpaper,
+      bool warningShowGalleryInBg,
       double volumeNormal,
       double volumeOpenBluetooth});
 }
@@ -84,7 +83,7 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
     Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? warningType = null,
-    Object? fatWarningOverwriteBingWallpaper = null,
+    Object? warningShowGalleryInBg = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
   }) {
@@ -129,9 +128,9 @@ class _$ConfigCopyWithImpl<$Res, $Val extends Config>
           ? _value.warningType
           : warningType // ignore: cast_nullable_to_non_nullable
               as WarnType,
-      fatWarningOverwriteBingWallpaper: null == fatWarningOverwriteBingWallpaper
-          ? _value.fatWarningOverwriteBingWallpaper
-          : fatWarningOverwriteBingWallpaper // ignore: cast_nullable_to_non_nullable
+      warningShowGalleryInBg: null == warningShowGalleryInBg
+          ? _value.warningShowGalleryInBg
+          : warningShowGalleryInBg // ignore: cast_nullable_to_non_nullable
               as bool,
       volumeNormal: null == volumeNormal
           ? _value.volumeNormal
@@ -163,7 +162,7 @@ abstract class _$$ConfigImplCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       double maxVolDelaySeconds,
       bool showFatWarningAfter17IfLazy,
       WarnType warningType,
-      bool fatWarningOverwriteBingWallpaper,
+      bool warningShowGalleryInBg,
       double volumeNormal,
       double volumeOpenBluetooth});
 }
@@ -189,7 +188,7 @@ class __$$ConfigImplCopyWithImpl<$Res>
     Object? maxVolDelaySeconds = null,
     Object? showFatWarningAfter17IfLazy = null,
     Object? warningType = null,
-    Object? fatWarningOverwriteBingWallpaper = null,
+    Object? warningShowGalleryInBg = null,
     Object? volumeNormal = null,
     Object? volumeOpenBluetooth = null,
   }) {
@@ -234,9 +233,9 @@ class __$$ConfigImplCopyWithImpl<$Res>
           ? _value.warningType
           : warningType // ignore: cast_nullable_to_non_nullable
               as WarnType,
-      fatWarningOverwriteBingWallpaper: null == fatWarningOverwriteBingWallpaper
-          ? _value.fatWarningOverwriteBingWallpaper
-          : fatWarningOverwriteBingWallpaper // ignore: cast_nullable_to_non_nullable
+      warningShowGalleryInBg: null == warningShowGalleryInBg
+          ? _value.warningShowGalleryInBg
+          : warningShowGalleryInBg // ignore: cast_nullable_to_non_nullable
               as bool,
       volumeNormal: null == volumeNormal
           ? _value.volumeNormal
@@ -264,7 +263,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       this.maxVolDelaySeconds = 20.0,
       this.showFatWarningAfter17IfLazy = false,
       this.warningType = WarnType.eye,
-      this.fatWarningOverwriteBingWallpaper = false,
+      this.warningShowGalleryInBg = false,
       this.volumeNormal = 0.1,
       this.volumeOpenBluetooth = 0.7});
 
@@ -303,7 +302,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
   final WarnType warningType;
   @override
   @JsonKey()
-  final bool fatWarningOverwriteBingWallpaper;
+  final bool warningShowGalleryInBg;
   @override
   @JsonKey()
   final double volumeNormal;
@@ -313,7 +312,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, face: $face, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationWhenNoTodo: $useAnimationWhenNoTodo, maxVolDelaySeconds: $maxVolDelaySeconds, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, warningType: $warningType, fatWarningOverwriteBingWallpaper: $fatWarningOverwriteBingWallpaper, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
+    return 'Config(user: $user, password: $password, fetchSeconds: $fetchSeconds, face: $face, cyberPass: $cyberPass, demoMode: $demoMode, useAnimationWhenNoTodo: $useAnimationWhenNoTodo, maxVolDelaySeconds: $maxVolDelaySeconds, showFatWarningAfter17IfLazy: $showFatWarningAfter17IfLazy, warningType: $warningType, warningShowGalleryInBg: $warningShowGalleryInBg, volumeNormal: $volumeNormal, volumeOpenBluetooth: $volumeOpenBluetooth)';
   }
 
   @override
@@ -333,8 +332,8 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       ..add(DiagnosticsProperty(
           'showFatWarningAfter17IfLazy', showFatWarningAfter17IfLazy))
       ..add(DiagnosticsProperty('warningType', warningType))
-      ..add(DiagnosticsProperty(
-          'fatWarningOverwriteBingWallpaper', fatWarningOverwriteBingWallpaper))
+      ..add(
+          DiagnosticsProperty('warningShowGalleryInBg', warningShowGalleryInBg))
       ..add(DiagnosticsProperty('volumeNormal', volumeNormal))
       ..add(DiagnosticsProperty('volumeOpenBluetooth', volumeOpenBluetooth));
   }
@@ -364,10 +363,8 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
                     showFatWarningAfter17IfLazy) &&
             (identical(other.warningType, warningType) ||
                 other.warningType == warningType) &&
-            (identical(other.fatWarningOverwriteBingWallpaper,
-                    fatWarningOverwriteBingWallpaper) ||
-                other.fatWarningOverwriteBingWallpaper ==
-                    fatWarningOverwriteBingWallpaper) &&
+            (identical(other.warningShowGalleryInBg, warningShowGalleryInBg) ||
+                other.warningShowGalleryInBg == warningShowGalleryInBg) &&
             (identical(other.volumeNormal, volumeNormal) ||
                 other.volumeNormal == volumeNormal) &&
             (identical(other.volumeOpenBluetooth, volumeOpenBluetooth) ||
@@ -388,7 +385,7 @@ class _$ConfigImpl with DiagnosticableTreeMixin implements _Config {
       maxVolDelaySeconds,
       showFatWarningAfter17IfLazy,
       warningType,
-      fatWarningOverwriteBingWallpaper,
+      warningShowGalleryInBg,
       volumeNormal,
       volumeOpenBluetooth);
 
@@ -418,7 +415,7 @@ abstract class _Config implements Config {
       final double maxVolDelaySeconds,
       final bool showFatWarningAfter17IfLazy,
       final WarnType warningType,
-      final bool fatWarningOverwriteBingWallpaper,
+      final bool warningShowGalleryInBg,
       final double volumeNormal,
       final double volumeOpenBluetooth}) = _$ConfigImpl;
 
@@ -445,7 +442,7 @@ abstract class _Config implements Config {
   @override
   WarnType get warningType;
   @override
-  bool get fatWarningOverwriteBingWallpaper;
+  bool get warningShowGalleryInBg;
   @override
   double get volumeNormal;
   @override
