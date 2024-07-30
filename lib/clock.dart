@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:screen_me/api/dash.dart';
 
-import 'api/common.dart';
+import 'api/core.dart';
 
 class ClockWidget extends ConsumerStatefulWidget {
   final AnimationController controller;

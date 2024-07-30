@@ -5,25 +5,27 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'common.dart';
+import 'core.dart';
 
 part 'gallery.g.dart';
 part 'gallery.freezed.dart';
 
+/// see https://git.mazhangjing.com/corkine/cyberMeFlutter/lib/api/gallery.dart
 @freezed
 class FaceGallery with _$FaceGallery {
   factory FaceGallery(
-      {@Default(0.5) double blurOpacity,
-      double? blurOpacityInBgMode,
-      @Default(10.0) double borderRadius,
-      @Default(1) int imageRepeatEachMinutes,
-      @Default([]) List<String> images}) = _FaceGallery;
+      {@Default(0.7) double blurOpacity,
+      @Default(0.3) double blurOpacityInBgMode,
+      @Default(25) double borderRadius,
+      @Default(5) int imageRepeatEachMinutes,
+      @Default(1) int configRefreshMinutes,
+      @Default([]) List<String> images, //已选择的图片
+      @Default([]) List<String> imagesAll //所有的图片
+      }) = _FaceGallery;
 
   factory FaceGallery.fromJson(Map<String, dynamic> json) =>
       _$FaceGalleryFromJson(json);
 }
-
-const faceGalleryUrl = "https://mazhangjing.com/service/screenMe/gallery.json";
 
 extension FaceGalleryExt on FaceGallery {
   String get imageNow {
@@ -34,21 +36,32 @@ extension FaceGalleryExt on FaceGallery {
     int index = interval % images.length;
     return images[index];
   }
+
+  (int, bool) get needRefreshGalleryConfig {
+    if (configRefreshMinutes <= 0) return (0, false);
+    DateTime now = DateTime.now();
+    int min = now.hour * 60 + now.minute;
+    if (min % configRefreshMinutes == 0) {
+      return (min, true);
+    }
+    return (0, false);
+  }
 }
 
 @riverpod
 Future<FaceGallery> getFaceGallery(GetFaceGalleryRef ref) async {
   final s = await ref.watch(configsProvider.future);
   if (s.demoMode) {
-    return FaceGallery(images: [
-      "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg"
-    ]);
+    return FaceGallery(images: [fakeGalleryImage]);
   }
   try {
     final r = await get(Uri.parse(faceGalleryUrl),
         headers: Configs.data.cyberBase64Header);
     final d = jsonDecode(r.body);
-    return FaceGallery.fromJson(d);
+    final re = FaceGallery.fromJson(d);
+    debugPrint(
+        "refreshed gallery config, images now ${re.images}, refresh next ${re.configRefreshMinutes}");
+    return re;
   } catch (e, st) {
     debugPrintStack(stackTrace: st);
   }

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:screen_me/api/common.dart';
+import 'package:screen_me/api/core.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

@@ -2,153 +2,26 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
+import 'config.dart';
 
-part 'common.freezed.dart';
-part 'common.g.dart';
-
-num abs(num a) {
-  return a > 0 ? a : -a;
-}
-
-enum WarnType {
-  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
-  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
-  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
-  gallery(position: Offset(0, 0), cnName: "画廊", path: ""),
-  //random 必须为最后一个
-  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
-
-  final Offset position;
-  final String cnName;
-  final String path;
-
-  const WarnType(
-      {required this.position, required this.cnName, required this.path});
-}
-
-enum FaceType {
-  bing(name: "Bing 壁纸"),
-  gallery(name: "画廊"),
-  fit(name: "健身圆环"),
-  warning(name: "健身警告");
-
-  final String name;
-  const FaceType({required this.name});
-}
-
-@freezed
-class Config with _$Config {
-  factory Config(
-      {@Default("") String user,
-      @Default("") String password,
-      @Default(60) int fetchSeconds,
-      @Default(FaceType.bing) FaceType face,
-      @Default("") String cyberPass,
-      @Default(true) bool demoMode,
-      @Default(true) bool useAnimationWhenNoTodo,
-      @Default(20.0) double maxVolDelaySeconds,
-      @Default(false) bool showFatWarningAfter17IfLazy,
-      @Default(WarnType.eye) WarnType warningType,
-      @Default(false) bool warningShowGalleryInBg,
-      @Default(0.1) double volumeNormal,
-      @Default(0.7) double volumeOpenBluetooth}) = _Config;
-
-  factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
-}
-
-extension ConfigHelper on Config {
-  String get base64Token =>
-      "Basic ${base64Encode(utf8.encode('$user:$password'))}";
-
-  Map<String, String> get base64Header =>
-      <String, String>{'authorization': base64Token};
-
-  String get cyberBase64Token =>
-      "Basic ${base64Encode(utf8.encode('$user:$cyberPass'))}";
-
-  Map<String, String> get cyberBase64Header =>
-      <String, String>{'authorization': cyberBase64Token};
-
-  Map<String, String> get cyberBase64JsonContentHeader => <String, String>{
-        'Authorization': cyberBase64Token,
-        'Content-Type': 'application/json'
-      };
-
-  int get changeSeconds => demoMode ? 10 : fetchSeconds;
-}
-
-@riverpod
-class Configs extends _$Configs {
-  static late Config data;
-  @override
-  Future<Config> build() async {
-    data = await loadFromLocal();
-    return data;
-  }
-
-  set(String user, String pass, int duration,
-      {bool demoMode = false,
-      bool useAnimationWhenNoTodo = false,
-      required double minVol,
-      required double maxVol,
-      required bool showWortoutWarning,
-      required bool warningShowGalleryInBg,
-      required WarnType warningType,
-      required FaceType face,
-      double delay = 0.0}) async {
-    final c = Config(
-        user: user,
-        password: pass,
-        cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
-        fetchSeconds: duration,
-        useAnimationWhenNoTodo: useAnimationWhenNoTodo,
-        demoMode: demoMode,
-        volumeNormal: minVol,
-        volumeOpenBluetooth: maxVol,
-        showFatWarningAfter17IfLazy: showWortoutWarning,
-        warningShowGalleryInBg: warningShowGalleryInBg,
-        face: face,
-        warningType: warningType,
-        maxVolDelaySeconds: delay);
-    final s = await SharedPreferences.getInstance();
-    await s.setString("config", jsonEncode(c.toJson()));
-    data = c;
-    state = AsyncData(c);
-  }
-
-  changeFace({reverse = false}) async {
-    var v = state.value;
-    if (v == null) return;
-    final idx = reverse ? -1 : 1;
-    final nextFace = FaceType.values[
-        (FaceType.values.indexOf(v.face) + idx) % FaceType.values.length];
-    v = v.copyWith(face: nextFace);
-    final s = await SharedPreferences.getInstance();
-    await s.setString("config", jsonEncode(v.toJson()));
-    data = v;
-    state = AsyncData(v);
-  }
-
-  static Future<Config> loadFromLocal() async {
-    try {
-      final s = await SharedPreferences.getInstance();
-      final d = s.getString("config") ?? "{}";
-      data = Config.fromJson(jsonDecode(d));
-    } catch (e, st) {
-      debugPrintStack(stackTrace: st);
-      data = Config();
-    }
-    return data;
-  }
-}
+export 'enum.dart';
+export 'config.dart';
 
 const endpoint = kDebugMode
     ? "https://cyber.mazhangjing.com"
     : "https://cyber.mazhangjing.com";
+
+const faceGalleryUrl = "https://mazhangjing.com/service/screenMe/gallery.json";
+
+const bingImageUrl = "https://go.mazhangjing.com/bing-today-image?normal=true";
+
+const fakeGalleryImage =
+    "https://static2.mazhangjing.com/cyber/202407/9bb21ff6_photo-1721296382202-8b917fd0963e.jpg";
+
+num abs(num a) {
+  return a > 0 ? a : -a;
+}
 
 String encryptPassword(String password, int validSeconds, [int? nowMill]) {
   var willExpired =

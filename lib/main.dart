@@ -7,7 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:screen_me/dashboard.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'api/common.dart';
+import 'api/core.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -14,7 +14,7 @@ import 'package:screen_me/chart.dart';
 import 'package:screen_me/express.dart';
 import 'package:screen_me/setting.dart';
 
-import 'api/common.dart';
+import 'api/core.dart';
 import 'api/gallery.dart';
 import 'clock.dart';
 
@@ -42,14 +42,15 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
   }
 
+  int cacheMinute = 0;
+
   Widget buildFace(FaceType type) {
     switch (type) {
       case FaceType.bing:
         final now = DateTime.now();
         final today = "${now.year}-${now.month}-${now.day}";
         return CachedNetworkImage(
-                imageUrl:
-                    "https://go.mazhangjing.com/bing-today-image?normal=true",
+                imageUrl: bingImageUrl,
                 cacheKey: "bing-today-image-$today",
                 fit: BoxFit.cover)
             .animate()
@@ -67,6 +68,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         buildChart(d, s).animate().moveX(begin: 10, end: 0))));
       case FaceType.gallery:
         final fg = ref.watch(getFaceGalleryProvider).value ?? FaceGallery();
+        final (lastMinutes, need) = fg.needRefreshGalleryConfig;
+        if (need && lastMinutes != cacheMinute) {
+          debugPrint(
+              "refreshing face gallery config due to ${fg.configRefreshMinutes}");
+          cacheMinute = lastMinutes;
+          ref.invalidate(getFaceGalleryProvider);
+        }
         final image = fg.imageNow;
         return KeyedSubtree(
             key: ValueKey(image),
@@ -107,6 +115,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   controller: controller));
         } else {
           final fg = ref.watch(getFaceGalleryProvider).value ?? FaceGallery();
+          final (lastMinutes, need) = fg.needRefreshGalleryConfig;
+          if (need && lastMinutes != cacheMinute) {
+            debugPrint(
+                "refreshing face gallery config due to ${fg.configRefreshMinutes}");
+            cacheMinute = lastMinutes;
+            ref.invalidate(getFaceGalleryProvider);
+          }
           final image = fg.imageNow;
           return image.isNotEmpty
               ? Stack(fit: StackFit.expand, children: [
@@ -115,8 +130,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                       child: Container(
-                          color: Colors.black.withOpacity(
-                              fg.blurOpacityInBgMode ?? fg.blurOpacity))),
+                          color: Colors.black
+                              .withOpacity(fg.blurOpacityInBgMode))),
                   Transform.translate(
                       offset: wt.position,
                       child: LottieBuilder.asset(wt.path,
@@ -169,8 +184,9 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                   bottom: 10,
                   child: ClockWidget(
                       key: const ValueKey("clock"), controller: controller)),
-              Positioned(
-                  bottom: 0, left: 20, child: buildLoadingAnimation(s, d)),
+              if (s.useAnimationWhenNoTodo)
+                Positioned(
+                    bottom: 0, left: 20, child: buildLoadingAnimation(s, d)),
               Positioned(
                   right: 20,
                   bottom: 20,

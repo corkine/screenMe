@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:screen_me/api/common.dart';
+import 'package:screen_me/api/core.dart';
 import 'package:screen_me/version.dart';
 
 part 'dash.freezed.dart';

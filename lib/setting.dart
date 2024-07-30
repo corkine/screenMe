@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:screen_me/api/common.dart';
+import 'package:screen_me/api/core.dart';
 
 class SettingView extends ConsumerStatefulWidget {
   const SettingView({super.key});
@@ -42,6 +42,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
+      showAnimation = c.useAnimationWhenNoTodo;
       showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
       warningShowGalleryInBg = c.warningShowGalleryInBg;
