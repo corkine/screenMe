@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_annotation_target
+// ignore_for_file: invalid_annotation_target, constant_identifier_names
 
 import 'dart:math';
 
@@ -58,11 +58,60 @@ class DashTodo with _$DashTodo {
 }
 
 @freezed
+class DashWeatherIcon with _$DashWeatherIcon {
+  const factory DashWeatherIcon(
+          {@Default("") String date,
+          @Default(WeatherIconType.UNKNOWN) WeatherIconType value}) =
+      _DashWeatherIcon;
+
+  factory DashWeatherIcon.fromJson(Map<String, dynamic> json) =>
+      _$DashWeatherIconFromJson(json);
+}
+
+enum WeatherIconType {
+  CLEAR_DAY(name: "晴（白天）"),
+  CLEAR_NIGHT(name: "晴（夜间）"),
+  PARTLY_CLOUDY_DAY(name: "多云（白天）"),
+  PARTLY_CLOUDY_NIGHT(name: "多云（夜间）"),
+  CLOUDY(name: "阴"),
+  LIGHT_HAZE(name: "轻度雾霾"),
+  MODERATE_HAZE(name: "中度雾霾"),
+  HEAVY_HAZE(name: "重度雾霾"),
+  LIGHT_RAIN(name: "小雨"),
+  MODERATE_RAIN(name: "中雨"),
+  HEAVY_RAIN(name: "大雨"),
+  STORM_RAIN(name: "暴雨"),
+  FOG(name: "雾"),
+  LIGHT_SNOW(name: "小雪"),
+  MODERATE_SNOW(name: "中雪"),
+  HEAVY_SNOW(name: "大雪"),
+  STORM_SNOW(name: "暴雪"),
+  DUST(name: "浮尘"),
+  SAND(name: "沙尘"),
+  WIND(name: "大风"),
+  UNKNOWN(name: "未知");
+
+  final String name;
+  const WeatherIconType({required this.name});
+  bool get showRain =>
+      this == LIGHT_RAIN ||
+      this == MODERATE_RAIN ||
+      this == HEAVY_RAIN ||
+      this == STORM_RAIN ||
+      this == LIGHT_SNOW ||
+      this == MODERATE_SNOW ||
+      this == HEAVY_SNOW ||
+      this == STORM_SNOW;
+}
+
+@freezed
 class DashInfo with _$DashInfo {
   factory DashInfo(
       {@Default(0) int updateAt,
       @Default(false) bool needDiaryReport,
       @Default("") String weatherInfo,
+      @Default(DashWeatherIcon(date: "", value: WeatherIconType.UNKNOWN))
+      DashWeatherIcon weatherIcon,
       @Default(false) bool needPlantWater,
       @Default([]) List<String> cardCheck,
       @Default([]) List<DashTodo> todo,

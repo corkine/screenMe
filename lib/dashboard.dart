@@ -26,8 +26,9 @@ class DashboardView extends ConsumerStatefulWidget {
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController controller;
+  late AnimationController rainController;
 
   DashInfo? d;
   late Config s;
@@ -40,6 +41,9 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     }
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    rainController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
+          ..repeat(reverse: false);
   }
 
   int cacheMinute = 0;
@@ -178,6 +182,15 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                 MaterialPageRoute(builder: (context) => const SettingView())),
             child: Stack(fit: StackFit.expand, children: [
               buildFace(computeNowFaceType()),
+              if (s.rainType != RainType.none &&
+                  (d?.weatherIcon.value.showRain ?? false))
+                Positioned(
+                    top: s.rainType.position.dx,
+                    left: s.rainType.position.dy,
+                    width: s.rainType.size.width,
+                    height: s.rainType.size.height,
+                    child: LottieBuilder.asset(s.rainType.path,
+                        controller: rainController)),
               Positioned(
                   left: 30,
                   top: 10,

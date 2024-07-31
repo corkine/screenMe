@@ -72,11 +72,54 @@ Map<String, dynamic> _$$DashTodoImplToJson(_$DashTodoImpl instance) =>
       'isFinished': instance.isFinished,
     };
 
+_$DashWeatherIconImpl _$$DashWeatherIconImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DashWeatherIconImpl(
+      date: json['date'] as String? ?? "",
+      value: $enumDecodeNullable(_$WeatherIconTypeEnumMap, json['value']) ??
+          WeatherIconType.UNKNOWN,
+    );
+
+Map<String, dynamic> _$$DashWeatherIconImplToJson(
+        _$DashWeatherIconImpl instance) =>
+    <String, dynamic>{
+      'date': instance.date,
+      'value': _$WeatherIconTypeEnumMap[instance.value]!,
+    };
+
+const _$WeatherIconTypeEnumMap = {
+  WeatherIconType.CLEAR_DAY: 'CLEAR_DAY',
+  WeatherIconType.CLEAR_NIGHT: 'CLEAR_NIGHT',
+  WeatherIconType.PARTLY_CLOUDY_DAY: 'PARTLY_CLOUDY_DAY',
+  WeatherIconType.PARTLY_CLOUDY_NIGHT: 'PARTLY_CLOUDY_NIGHT',
+  WeatherIconType.CLOUDY: 'CLOUDY',
+  WeatherIconType.LIGHT_HAZE: 'LIGHT_HAZE',
+  WeatherIconType.MODERATE_HAZE: 'MODERATE_HAZE',
+  WeatherIconType.HEAVY_HAZE: 'HEAVY_HAZE',
+  WeatherIconType.LIGHT_RAIN: 'LIGHT_RAIN',
+  WeatherIconType.MODERATE_RAIN: 'MODERATE_RAIN',
+  WeatherIconType.HEAVY_RAIN: 'HEAVY_RAIN',
+  WeatherIconType.STORM_RAIN: 'STORM_RAIN',
+  WeatherIconType.FOG: 'FOG',
+  WeatherIconType.LIGHT_SNOW: 'LIGHT_SNOW',
+  WeatherIconType.MODERATE_SNOW: 'MODERATE_SNOW',
+  WeatherIconType.HEAVY_SNOW: 'HEAVY_SNOW',
+  WeatherIconType.STORM_SNOW: 'STORM_SNOW',
+  WeatherIconType.DUST: 'DUST',
+  WeatherIconType.SAND: 'SAND',
+  WeatherIconType.WIND: 'WIND',
+  WeatherIconType.UNKNOWN: 'UNKNOWN',
+};
+
 _$DashInfoImpl _$$DashInfoImplFromJson(Map<String, dynamic> json) =>
     _$DashInfoImpl(
       updateAt: (json['updateAt'] as num?)?.toInt() ?? 0,
       needDiaryReport: json['needDiaryReport'] as bool? ?? false,
       weatherInfo: json['weatherInfo'] as String? ?? "",
+      weatherIcon: json['weatherIcon'] == null
+          ? const DashWeatherIcon(date: "", value: WeatherIconType.UNKNOWN)
+          : DashWeatherIcon.fromJson(
+              json['weatherIcon'] as Map<String, dynamic>),
       needPlantWater: json['needPlantWater'] as bool? ?? false,
       cardCheck: (json['cardCheck'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -110,6 +153,7 @@ Map<String, dynamic> _$$DashInfoImplToJson(_$DashInfoImpl instance) =>
       'updateAt': instance.updateAt,
       'needDiaryReport': instance.needDiaryReport,
       'weatherInfo': instance.weatherInfo,
+      'weatherIcon': instance.weatherIcon,
       'needPlantWater': instance.needPlantWater,
       'cardCheck': instance.cardCheck,
       'todo': instance.todo,

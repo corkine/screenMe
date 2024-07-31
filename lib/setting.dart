@@ -17,6 +17,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
   var warningType = WarnType.eye;
+  var rainType = RainType.cloud;
   var faceType = FaceType.bing;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
@@ -46,6 +47,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
       warningShowGalleryInBg = c.warningShowGalleryInBg;
+      rainType = c.rainType;
       warningType = c.warningType;
       faceType = c.face;
       setState(() {});
@@ -157,6 +159,21 @@ class _SettingViewState extends ConsumerState<SettingView> {
                                 value: e, child: Text(e.cnName)))
                             .toList())
                   ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    const Text("下雨提示图案样式"),
+                    const Spacer(),
+                    DropdownButton<RainType>(
+                        focusColor: Colors.transparent,
+                        value: rainType,
+                        onChanged: (v) => setState(() {
+                              rainType = v!;
+                            }),
+                        items: RainType.values
+                            .map((e) => DropdownMenuItem<RainType>(
+                                value: e, child: Text(e.name)))
+                            .toList())
+                  ]),
                   Row(children: [
                     Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
                     const Spacer(),
@@ -215,6 +232,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
           showWortoutWarning: showWarning,
           warningShowGalleryInBg: warningShowGalleryInBg,
           warningType: warningType,
+          rainType: rainType,
           face: faceType,
           delay: delaySeconds);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);

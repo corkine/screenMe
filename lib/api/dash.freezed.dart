@@ -849,6 +849,163 @@ abstract class _DashTodo implements DashTodo {
       throw _privateConstructorUsedError;
 }
 
+DashWeatherIcon _$DashWeatherIconFromJson(Map<String, dynamic> json) {
+  return _DashWeatherIcon.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DashWeatherIcon {
+  String get date => throw _privateConstructorUsedError;
+  WeatherIconType get value => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DashWeatherIconCopyWith<DashWeatherIcon> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DashWeatherIconCopyWith<$Res> {
+  factory $DashWeatherIconCopyWith(
+          DashWeatherIcon value, $Res Function(DashWeatherIcon) then) =
+      _$DashWeatherIconCopyWithImpl<$Res, DashWeatherIcon>;
+  @useResult
+  $Res call({String date, WeatherIconType value});
+}
+
+/// @nodoc
+class _$DashWeatherIconCopyWithImpl<$Res, $Val extends DashWeatherIcon>
+    implements $DashWeatherIconCopyWith<$Res> {
+  _$DashWeatherIconCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? date = null,
+    Object? value = null,
+  }) {
+    return _then(_value.copyWith(
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as WeatherIconType,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DashWeatherIconImplCopyWith<$Res>
+    implements $DashWeatherIconCopyWith<$Res> {
+  factory _$$DashWeatherIconImplCopyWith(_$DashWeatherIconImpl value,
+          $Res Function(_$DashWeatherIconImpl) then) =
+      __$$DashWeatherIconImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String date, WeatherIconType value});
+}
+
+/// @nodoc
+class __$$DashWeatherIconImplCopyWithImpl<$Res>
+    extends _$DashWeatherIconCopyWithImpl<$Res, _$DashWeatherIconImpl>
+    implements _$$DashWeatherIconImplCopyWith<$Res> {
+  __$$DashWeatherIconImplCopyWithImpl(
+      _$DashWeatherIconImpl _value, $Res Function(_$DashWeatherIconImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? date = null,
+    Object? value = null,
+  }) {
+    return _then(_$DashWeatherIconImpl(
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as WeatherIconType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DashWeatherIconImpl implements _DashWeatherIcon {
+  const _$DashWeatherIconImpl(
+      {this.date = "", this.value = WeatherIconType.UNKNOWN});
+
+  factory _$DashWeatherIconImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DashWeatherIconImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String date;
+  @override
+  @JsonKey()
+  final WeatherIconType value;
+
+  @override
+  String toString() {
+    return 'DashWeatherIcon(date: $date, value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DashWeatherIconImpl &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, date, value);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DashWeatherIconImplCopyWith<_$DashWeatherIconImpl> get copyWith =>
+      __$$DashWeatherIconImplCopyWithImpl<_$DashWeatherIconImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DashWeatherIconImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DashWeatherIcon implements DashWeatherIcon {
+  const factory _DashWeatherIcon(
+      {final String date, final WeatherIconType value}) = _$DashWeatherIconImpl;
+
+  factory _DashWeatherIcon.fromJson(Map<String, dynamic> json) =
+      _$DashWeatherIconImpl.fromJson;
+
+  @override
+  String get date;
+  @override
+  WeatherIconType get value;
+  @override
+  @JsonKey(ignore: true)
+  _$$DashWeatherIconImplCopyWith<_$DashWeatherIconImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 DashInfo _$DashInfoFromJson(Map<String, dynamic> json) {
   return _DashInfo.fromJson(json);
 }
@@ -858,6 +1015,7 @@ mixin _$DashInfo {
   int get updateAt => throw _privateConstructorUsedError;
   bool get needDiaryReport => throw _privateConstructorUsedError;
   String get weatherInfo => throw _privateConstructorUsedError;
+  DashWeatherIcon get weatherIcon => throw _privateConstructorUsedError;
   bool get needPlantWater => throw _privateConstructorUsedError;
   List<String> get cardCheck => throw _privateConstructorUsedError;
   List<DashTodo> get todo => throw _privateConstructorUsedError;
@@ -885,6 +1043,7 @@ abstract class $DashInfoCopyWith<$Res> {
       {int updateAt,
       bool needDiaryReport,
       String weatherInfo,
+      DashWeatherIcon weatherIcon,
       bool needPlantWater,
       List<String> cardCheck,
       List<DashTodo> todo,
@@ -897,6 +1056,7 @@ abstract class $DashInfoCopyWith<$Res> {
       String lastError,
       List<DashExpress> express});
 
+  $DashWeatherIconCopyWith<$Res> get weatherIcon;
   $DashTempCopyWith<$Res> get tempInfo;
   $DashTempCopyWith<$Res> get tempFutureInfo;
   $DashFitCopyWith<$Res> get fitnessInfo;
@@ -918,6 +1078,7 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
     Object? updateAt = null,
     Object? needDiaryReport = null,
     Object? weatherInfo = null,
+    Object? weatherIcon = null,
     Object? needPlantWater = null,
     Object? cardCheck = null,
     Object? todo = null,
@@ -943,6 +1104,10 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
           ? _value.weatherInfo
           : weatherInfo // ignore: cast_nullable_to_non_nullable
               as String,
+      weatherIcon: null == weatherIcon
+          ? _value.weatherIcon
+          : weatherIcon // ignore: cast_nullable_to_non_nullable
+              as DashWeatherIcon,
       needPlantWater: null == needPlantWater
           ? _value.needPlantWater
           : needPlantWater // ignore: cast_nullable_to_non_nullable
@@ -992,6 +1157,14 @@ class _$DashInfoCopyWithImpl<$Res, $Val extends DashInfo>
 
   @override
   @pragma('vm:prefer-inline')
+  $DashWeatherIconCopyWith<$Res> get weatherIcon {
+    return $DashWeatherIconCopyWith<$Res>(_value.weatherIcon, (value) {
+      return _then(_value.copyWith(weatherIcon: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $DashTempCopyWith<$Res> get tempInfo {
     return $DashTempCopyWith<$Res>(_value.tempInfo, (value) {
       return _then(_value.copyWith(tempInfo: value) as $Val);
@@ -1027,6 +1200,7 @@ abstract class _$$DashInfoImplCopyWith<$Res>
       {int updateAt,
       bool needDiaryReport,
       String weatherInfo,
+      DashWeatherIcon weatherIcon,
       bool needPlantWater,
       List<String> cardCheck,
       List<DashTodo> todo,
@@ -1039,6 +1213,8 @@ abstract class _$$DashInfoImplCopyWith<$Res>
       String lastError,
       List<DashExpress> express});
 
+  @override
+  $DashWeatherIconCopyWith<$Res> get weatherIcon;
   @override
   $DashTempCopyWith<$Res> get tempInfo;
   @override
@@ -1061,6 +1237,7 @@ class __$$DashInfoImplCopyWithImpl<$Res>
     Object? updateAt = null,
     Object? needDiaryReport = null,
     Object? weatherInfo = null,
+    Object? weatherIcon = null,
     Object? needPlantWater = null,
     Object? cardCheck = null,
     Object? todo = null,
@@ -1086,6 +1263,10 @@ class __$$DashInfoImplCopyWithImpl<$Res>
           ? _value.weatherInfo
           : weatherInfo // ignore: cast_nullable_to_non_nullable
               as String,
+      weatherIcon: null == weatherIcon
+          ? _value.weatherIcon
+          : weatherIcon // ignore: cast_nullable_to_non_nullable
+              as DashWeatherIcon,
       needPlantWater: null == needPlantWater
           ? _value.needPlantWater
           : needPlantWater // ignore: cast_nullable_to_non_nullable
@@ -1141,6 +1322,8 @@ class _$DashInfoImpl implements _DashInfo {
       {this.updateAt = 0,
       this.needDiaryReport = false,
       this.weatherInfo = "",
+      this.weatherIcon =
+          const DashWeatherIcon(date: "", value: WeatherIconType.UNKNOWN),
       this.needPlantWater = false,
       final List<String> cardCheck = const [],
       final List<DashTodo> todo = const [],
@@ -1168,6 +1351,9 @@ class _$DashInfoImpl implements _DashInfo {
   @override
   @JsonKey()
   final String weatherInfo;
+  @override
+  @JsonKey()
+  final DashWeatherIcon weatherIcon;
   @override
   @JsonKey()
   final bool needPlantWater;
@@ -1221,7 +1407,7 @@ class _$DashInfoImpl implements _DashInfo {
 
   @override
   String toString() {
-    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, debugInfo: $debugInfo, lastError: $lastError, express: $express)';
+    return 'DashInfo(updateAt: $updateAt, needDiaryReport: $needDiaryReport, weatherInfo: $weatherInfo, weatherIcon: $weatherIcon, needPlantWater: $needPlantWater, cardCheck: $cardCheck, todo: $todo, offWork: $offWork, workStatus: $workStatus, tempInfo: $tempInfo, tempFutureInfo: $tempFutureInfo, fitnessInfo: $fitnessInfo, debugInfo: $debugInfo, lastError: $lastError, express: $express)';
   }
 
   @override
@@ -1235,6 +1421,8 @@ class _$DashInfoImpl implements _DashInfo {
                 other.needDiaryReport == needDiaryReport) &&
             (identical(other.weatherInfo, weatherInfo) ||
                 other.weatherInfo == weatherInfo) &&
+            (identical(other.weatherIcon, weatherIcon) ||
+                other.weatherIcon == weatherIcon) &&
             (identical(other.needPlantWater, needPlantWater) ||
                 other.needPlantWater == needPlantWater) &&
             const DeepCollectionEquality()
@@ -1263,6 +1451,7 @@ class _$DashInfoImpl implements _DashInfo {
       updateAt,
       needDiaryReport,
       weatherInfo,
+      weatherIcon,
       needPlantWater,
       const DeepCollectionEquality().hash(_cardCheck),
       const DeepCollectionEquality().hash(_todo),
@@ -1294,6 +1483,7 @@ abstract class _DashInfo implements DashInfo {
       {final int updateAt,
       final bool needDiaryReport,
       final String weatherInfo,
+      final DashWeatherIcon weatherIcon,
       final bool needPlantWater,
       final List<String> cardCheck,
       final List<DashTodo> todo,
@@ -1315,6 +1505,8 @@ abstract class _DashInfo implements DashInfo {
   bool get needDiaryReport;
   @override
   String get weatherInfo;
+  @override
+  DashWeatherIcon get weatherIcon;
   @override
   bool get needPlantWater;
   @override

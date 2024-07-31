@@ -23,6 +23,7 @@ class Config with _$Config {
       @Default(false) bool showFatWarningAfter17IfLazy,
       @Default(WarnType.eye) WarnType warningType,
       @Default(false) bool warningShowGalleryInBg,
+      @Default(RainType.cloud) RainType rainType,
       @Default(0.1) double volumeNormal,
       @Default(0.7) double volumeOpenBluetooth}) = _Config;
 
@@ -67,6 +68,7 @@ class Configs extends _$Configs {
       required bool showWortoutWarning,
       required bool warningShowGalleryInBg,
       required WarnType warningType,
+      required RainType rainType,
       required FaceType face,
       double delay = 0.0}) async {
     final c = Config(
@@ -81,6 +83,7 @@ class Configs extends _$Configs {
         showFatWarningAfter17IfLazy: showWortoutWarning,
         warningShowGalleryInBg: warningShowGalleryInBg,
         face: face,
+        rainType: rainType,
         warningType: warningType,
         maxVolDelaySeconds: delay);
     final s = await SharedPreferences.getInstance();
