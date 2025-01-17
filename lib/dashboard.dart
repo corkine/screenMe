@@ -145,8 +145,6 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                 ])
               : const SizedBox();
         }
-      default:
-        return const Text("No Impl");
     }
   }
 
@@ -191,6 +189,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     height: s.rainType.size.height,
                     child: LottieBuilder.asset(s.rainType.path,
                         controller: rainController)),
+              if (s.demoMode)
+                Positioned.fill(child: Container(color: Colors.black87)),
               Positioned(
                   left: 30,
                   top: 10,

@@ -21,10 +21,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
   var faceType = FaceType.bing;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
+  var darkModeAfter = TimeOfDay(hour: 0, minute: 0);
   bool demoMode = false;
   bool showAnimation = false;
   bool showWarning = false;
   bool warningShowGalleryInBg = false;
+
   @override
   void dispose() {
     username.dispose();
@@ -50,6 +52,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
       rainType = c.rainType;
       warningType = c.warningType;
       faceType = c.face;
+      darkModeAfter = c.darkModeAfter;
       setState(() {});
     });
   }
@@ -209,6 +212,24 @@ class _SettingViewState extends ConsumerState<SettingView> {
                           border: UnderlineInputBorder(),
                           labelText: "打开蓝牙时延迟调高音量")),
                   const SizedBox(height: 10),
+                  Row(children: [
+                    Text(darkModeAfter == TimeOfDay(hour: 0, minute: 0)
+                        ? "不使用暗色模式"
+                        : "在 ${darkModeAfter.hour}:${darkModeAfter.minute.toString().padLeft(2, '0')} 后使用暗色模式"),
+                    const Spacer(),
+                    ElevatedButton(
+                        onPressed: () async {
+                          final time = await showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          if (time != null) {
+                            setState(() {
+                              darkModeAfter = time;
+                            });
+                          }
+                        },
+                        child: const Text("选择时间")),
+                  ]),
+                  const SizedBox(height: 20),
                 ]))));
   }
 
@@ -234,7 +255,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
           warningType: warningType,
           rainType: rainType,
           face: faceType,
-          delay: delaySeconds);
+          delay: delaySeconds,
+          darkModeAfter: darkModeAfter);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screen_me/api/core.dart';
 import 'package:screen_me/version.dart';
@@ -162,7 +163,7 @@ class DashExpressExtra with _$DashExpressExtra {
 }
 
 @riverpod
-Future<List<DashExpress>> getExpress(GetExpressRef ref) async {
+Future<List<DashExpress>> getExpress(Ref ref) async {
   final (res, ok) = await requestFromList("/cyber/express/recent",
       (p) => p.map((e) => DashExpress.fromJson(e)).toList(growable: false));
   if (ok.isNotEmpty) {
@@ -172,7 +173,7 @@ Future<List<DashExpress>> getExpress(GetExpressRef ref) async {
 }
 
 @riverpod
-Future<DashInfo> getDash(GetDashRef ref) async {
+Future<DashInfo> getDash(Ref ref) async {
   final c = ref.read(configsProvider).value;
   if (c?.demoMode ?? true) {
     return fakeDashInfo();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,21 @@ import 'core.dart';
 
 part 'config.freezed.dart';
 part 'config.g.dart';
+
+class TimeOfDayConverter implements JsonConverter<TimeOfDay, String> {
+  const TimeOfDayConverter();
+
+  @override
+  TimeOfDay fromJson(String json) {
+    final parts = json.split(':');
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+  }
+
+  @override
+  String toJson(TimeOfDay object) {
+    return '${object.hour.toString().padLeft(2, '0')}:${object.minute.toString().padLeft(2, '0')}';
+  }
+}
 
 @freezed
 class Config with _$Config {
@@ -25,7 +41,10 @@ class Config with _$Config {
       @Default(false) bool warningShowGalleryInBg,
       @Default(RainType.cloud) RainType rainType,
       @Default(0.1) double volumeNormal,
-      @Default(0.7) double volumeOpenBluetooth}) = _Config;
+      @Default(0.7) double volumeOpenBluetooth,
+      @TimeOfDayConverter()
+      @Default(TimeOfDay(hour: 0, minute: 0))
+      TimeOfDay darkModeAfter}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
@@ -49,6 +68,12 @@ extension ConfigHelper on Config {
       };
 
   int get changeSeconds => demoMode ? 10 : fetchSeconds;
+
+  bool get needDarkNow {
+    if (darkModeAfter.hour == 0 && darkModeAfter.minute == 0) return false;
+    final now = TimeOfDay.now();
+    return now.isAfter(darkModeAfter);
+  }
 }
 
 @riverpod
@@ -70,11 +95,12 @@ class Configs extends _$Configs {
       required WarnType warningType,
       required RainType rainType,
       required FaceType face,
+      required TimeOfDay darkModeAfter,
       double delay = 0.0}) async {
     final c = Config(
         user: user,
         password: pass,
-        cyberPass: encryptPassword(pass, 60 * 60 * 24 * 30),
+        cyberPass: encryptPassword(pass, 60 * 60 * 24 * 365),
         fetchSeconds: duration,
         useAnimationWhenNoTodo: useAnimationWhenNoTodo,
         demoMode: demoMode,
@@ -85,7 +111,8 @@ class Configs extends _$Configs {
         face: face,
         rainType: rainType,
         warningType: warningType,
-        maxVolDelaySeconds: delay);
+        maxVolDelaySeconds: delay,
+        darkModeAfter: darkModeAfter);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

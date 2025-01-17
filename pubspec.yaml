@@ -35,12 +35,12 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  # flutter_lints: ^2.0.0
   json_serializable: ^6.7.1
   build_runner:
-  custom_lint:
+  # custom_lint:
   riverpod_generator: ^2.4.2
-  riverpod_lint: ^2.3.12
+  # riverpod_lint: ^2.3.12
   freezed: ^2.4.5
 
 flutter:
