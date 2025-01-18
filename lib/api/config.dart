@@ -72,7 +72,9 @@ extension ConfigHelper on Config {
   bool get needDarkNow {
     if (darkModeAfter.hour == 0 && darkModeAfter.minute == 0) return false;
     final now = TimeOfDay.now();
-    return now.isAfter(darkModeAfter);
+    final res = now.isAfter(darkModeAfter);
+    debugPrint("now is ${now} check is ${darkModeAfter}, is ${res}");
+    return res;
   }
 }
 

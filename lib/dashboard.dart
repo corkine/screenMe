@@ -189,7 +189,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     height: s.rainType.size.height,
                     child: LottieBuilder.asset(s.rainType.path,
                         controller: rainController)),
-              if (s.demoMode)
+              if (s.needDarkNow)
                 Positioned.fill(child: Container(color: Colors.black87)),
               Positioned(
                   left: 30,
@@ -210,7 +210,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         ? const Text("演示模式",
                             style: TextStyle(color: Colors.white70))
                         : const SizedBox()
-                  ]))
+                  ])),
             ])));
   }
 
