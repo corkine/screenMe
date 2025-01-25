@@ -21,11 +21,14 @@ class _SettingViewState extends ConsumerState<SettingView> {
   var faceType = FaceType.bing;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
-  var darkModeAfter = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay? darkModeStart;
+  TimeOfDay? darkModeAfterDay2;
   bool demoMode = false;
   bool showAnimation = false;
   bool showWarning = false;
   bool warningShowGalleryInBg = false;
+  double darkness = 0.8;
+  bool showChineseCalendar = false;
 
   @override
   void dispose() {
@@ -52,7 +55,10 @@ class _SettingViewState extends ConsumerState<SettingView> {
       rainType = c.rainType;
       warningType = c.warningType;
       faceType = c.face;
-      darkModeAfter = c.darkModeAfter;
+      darkModeStart = c.darkModeStart;
+      darkModeAfterDay2 = c.darkModeEndDay2;
+      darkness = c.darkness;
+      showChineseCalendar = c.showChineseCalendar;
       setState(() {});
     });
   }
@@ -140,6 +146,15 @@ class _SettingViewState extends ConsumerState<SettingView> {
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
+                    const Text("显示农历节气和时辰"),
+                    const Spacer(),
+                    Switch(
+                        value: showChineseCalendar,
+                        onChanged: (v) =>
+                            setState(() => showChineseCalendar = v))
+                  ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
                     const Text("警告视图使用画廊打底"),
                     const Spacer(),
                     Switch(
@@ -213,21 +228,52 @@ class _SettingViewState extends ConsumerState<SettingView> {
                           labelText: "打开蓝牙时延迟调高音量")),
                   const SizedBox(height: 10),
                   Row(children: [
-                    Text(darkModeAfter == TimeOfDay(hour: 0, minute: 0)
-                        ? "不使用暗色模式"
-                        : "在 ${darkModeAfter.hour}:${darkModeAfter.minute.toString().padLeft(2, '0')} 后使用暗色模式"),
-                    const Spacer(),
+                    Expanded(
+                      child: Text((darkModeStart == null ||
+                              darkModeAfterDay2 == null)
+                          ? "不使用暗色模式"
+                          : "在 ${darkModeStart!.hour}:${darkModeStart!.minute.toString().padLeft(2, '0')} 后使用暗色模式，直到第二天" +
+                              " ${darkModeAfterDay2!.hour}:${darkModeAfterDay2!.minute.toString().padLeft(2, '0')}"),
+                    ),
+                    const SizedBox(width: 10),
                     ElevatedButton(
                         onPressed: () async {
                           final time = await showTimePicker(
                               context: context, initialTime: TimeOfDay.now());
                           if (time != null) {
                             setState(() {
-                              darkModeAfter = time;
+                              darkModeStart = time;
                             });
                           }
                         },
-                        child: const Text("选择时间")),
+                        child: const Text("开始")),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                        onPressed: () async {
+                          final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay(hour: 4, minute: 0));
+                          if (time != null) {
+                            setState(() {
+                              darkModeAfterDay2 = time;
+                            });
+                          }
+                        },
+                        child: const Text("结束(第二天)"))
+                  ]),
+                  Row(mainAxisSize: MainAxisSize.max, children: [
+                    Text("暗色模式暗度：${(darkness * 100).toInt()}"),
+                    const Spacer(),
+                    Slider(
+                        onChanged: (v) {
+                          setState(() {
+                            darkness = v;
+                          });
+                        },
+                        label: "${darkness * 100}",
+                        value: darkness,
+                        min: 0,
+                        max: 1)
                   ]),
                   const SizedBox(height: 20),
                 ]))));
@@ -256,7 +302,10 @@ class _SettingViewState extends ConsumerState<SettingView> {
           rainType: rainType,
           face: faceType,
           delay: delaySeconds,
-          darkModeAfter: darkModeAfter);
+          darkModeStart: darkModeStart,
+          darkModeAfterDay2: darkModeAfterDay2,
+          darkness: darkness,
+          showChineseCalendar: showChineseCalendar);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {

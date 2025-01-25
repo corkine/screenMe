@@ -42,9 +42,10 @@ class Config with _$Config {
       @Default(RainType.cloud) RainType rainType,
       @Default(0.1) double volumeNormal,
       @Default(0.7) double volumeOpenBluetooth,
-      @TimeOfDayConverter()
-      @Default(TimeOfDay(hour: 0, minute: 0))
-      TimeOfDay darkModeAfter}) = _Config;
+      @TimeOfDayConverter() TimeOfDay? darkModeStart,
+      @TimeOfDayConverter() TimeOfDay? darkModeEndDay2,
+      @Default(0.8) double darkness,
+      @Default(false) bool showChineseCalendar}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
@@ -70,11 +71,13 @@ extension ConfigHelper on Config {
   int get changeSeconds => demoMode ? 10 : fetchSeconds;
 
   bool get needDarkNow {
-    if (darkModeAfter.hour == 0 && darkModeAfter.minute == 0) return false;
-    final now = TimeOfDay.now();
-    final res = now.isAfter(darkModeAfter);
-    debugPrint("now is ${now} check is ${darkModeAfter}, is ${res}");
-    return res;
+    final now = DateTime.now();
+    if (darkModeStart == null || darkModeEndDay2 == null) return false;
+    final start = DateTime(now.year, now.month, now.day, darkModeStart!.hour,
+        darkModeStart!.minute);
+    final end = DateTime(now.year, now.month, now.day + 1,
+        darkModeEndDay2!.hour, darkModeEndDay2!.minute);
+    return now.isAfter(start) && now.isBefore(end);
   }
 }
 
@@ -97,7 +100,10 @@ class Configs extends _$Configs {
       required WarnType warningType,
       required RainType rainType,
       required FaceType face,
-      required TimeOfDay darkModeAfter,
+      TimeOfDay? darkModeStart,
+      TimeOfDay? darkModeAfterDay2,
+      required double darkness,
+      required bool showChineseCalendar,
       double delay = 0.0}) async {
     final c = Config(
         user: user,
@@ -114,7 +120,10 @@ class Configs extends _$Configs {
         rainType: rainType,
         warningType: warningType,
         maxVolDelaySeconds: delay,
-        darkModeAfter: darkModeAfter);
+        darkModeStart: darkModeStart,
+        darkModeEndDay2: darkModeAfterDay2,
+        darkness: darkness,
+        showChineseCalendar: showChineseCalendar);
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

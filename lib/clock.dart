@@ -1,3 +1,4 @@
+import 'package:chinese_lunar_calendar/chinese_lunar_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -7,8 +8,10 @@ import 'api/core.dart';
 
 class ClockWidget extends ConsumerStatefulWidget {
   final AnimationController controller;
+  final Config config;
 
-  const ClockWidget({super.key, required this.controller});
+  const ClockWidget(
+      {super.key, required this.controller, required this.config});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ClockWidgetState();
@@ -23,6 +26,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
         style: TextStyle(
             fontFamily: "DoHyen",
             fontSize: size,
+            // ignore: deprecated_member_use
             color: Colors.white.withOpacity(opacity)));
   }
 
@@ -40,12 +44,25 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
       }
     });
     final todo = [...dash.todo];
+    final lunar = LunarCalendar.from(utcDateTime: DateTime.now().toUtc());
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomPaint(
               painter: WorkStatus(workStatus: dash.workStatus), child: time),
+          if (widget.config.showChineseCalendar)
+            Transform.translate(
+              offset: const Offset(0, -24),
+              child: Row(children: [
+                Text(
+                    "${lunar.twoHourPeriod.name}(${lunar.twoHourPeriod.jing?.cnName}${lunar.twoHourPeriod.jing?.unit})${lunar.ke.fullName}${lunar.ke.unitName}",
+                    style: const TextStyle(color: Colors.white, fontSize: 13)),
+                if (lunar.localTime.getSolarTerm() != null)
+                  Text("${lunar.localTime.getSolarTerm()}",
+                      style: const TextStyle(color: Colors.white, fontSize: 13))
+              ]),
+            ),
           Transform.translate(
               offset: const Offset(0, -22),
               child: Text(dash.weatherInfo,

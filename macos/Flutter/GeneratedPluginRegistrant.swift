@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import flutter_blue_plus_macos
+import flutter_blue_plus_darwin
 import flutter_volume_controller
 import path_provider_foundation
 import screen_retriever

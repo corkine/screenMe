@@ -189,14 +189,14 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     height: s.rainType.size.height,
                     child: LottieBuilder.asset(s.rainType.path,
                         controller: rainController)),
-              if (s.needDarkNow)
-                Positioned.fill(child: Container(color: Colors.black87)),
               Positioned(
                   left: 30,
                   top: 10,
                   bottom: 10,
                   child: ClockWidget(
-                      key: const ValueKey("clock"), controller: controller)),
+                      config: s,
+                      key: const ValueKey("clock"),
+                      controller: controller)),
               if (s.useAnimationWhenNoTodo)
                 Positioned(
                     bottom: 0, left: 20, child: buildLoadingAnimation(s, d)),
@@ -211,6 +211,10 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                             style: TextStyle(color: Colors.white70))
                         : const SizedBox()
                   ])),
+              if (s.needDarkNow)
+                Positioned.fill(
+                    child: Container(
+                        color: Colors.black.withValues(alpha: s.darkness))),
             ])));
   }
 
