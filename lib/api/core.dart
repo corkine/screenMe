@@ -7,6 +7,7 @@ import 'config.dart';
 
 export 'enum.dart';
 export 'config.dart';
+export 'config_sync.dart';
 
 const endpoint = kDebugMode
     ? "https://cyber.mazhangjing.com"
