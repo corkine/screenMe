@@ -169,14 +169,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.4"
-  chinese_lunar_calendar:
-    dependency: "direct main"
-    description:
-      name: chinese_lunar_calendar
-      sha256: d6db62aa924cd91d2662cd5d9263f4fb78ade4598fb7e8eb630ed88df2de9f08
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.4"
   clipboard:
     dependency: "direct main"
     description:
@@ -273,14 +265,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "7.0.3"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:

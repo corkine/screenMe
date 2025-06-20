@@ -21,6 +21,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   var warningType = WarnType.eye;
   var rainType = RainType.cloud;
   var faceType = FaceType.bing;
+  var fontType = FontType.playfair;
   var normalVoice = 0.0;
   var speakerVoice = 0.0;
   TimeOfDay? darkModeStart;
@@ -30,7 +31,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   bool showWarning = false;
   bool warningShowGalleryInBg = false;
   double darkness = 0.8;
-  bool showChineseCalendar = false;
+
 
   @override
   void dispose() {
@@ -59,10 +60,11 @@ class _SettingViewState extends ConsumerState<SettingView> {
       rainType = c.rainType;
       warningType = c.warningType;
       faceType = c.face;
+      fontType = c.fontType;
       darkModeStart = c.darkModeStart;
       darkModeAfterDay2 = c.darkModeEndDay2;
       darkness = c.darkness;
-      showChineseCalendar = c.showChineseCalendar;
+
       setState(() {});
     });
   }
@@ -134,6 +136,21 @@ class _SettingViewState extends ConsumerState<SettingView> {
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
+                    const Text("时钟字体"),
+                    const Spacer(),
+                    DropdownButton<FontType>(
+                        focusColor: Colors.transparent,
+                        value: fontType,
+                        onChanged: (v) => setState(() {
+                              fontType = v!;
+                            }),
+                        items: FontType.values
+                            .map((e) => DropdownMenuItem<FontType>(
+                                value: e, child: Text(e.name)))
+                            .toList())
+                  ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
                     const Text("无待办显示加载动画"),
                     const Spacer(),
                     Switch(
@@ -148,15 +165,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         value: showWarning,
                         onChanged: (v) => setState(() => showWarning = v))
                   ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("显示农历节气和时辰"),
-                    const Spacer(),
-                    Switch(
-                        value: showChineseCalendar,
-                        onChanged: (v) =>
-                            setState(() => showChineseCalendar = v))
-                  ]),
+
                   const SizedBox(height: 10),
                   Row(children: [
                     const Text("警告视图使用画廊打底"),
@@ -335,11 +344,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
           warningType: warningType,
           rainType: rainType,
           face: faceType,
+          fontType: fontType,
           delay: delaySeconds,
           darkModeStart: darkModeStart,
           darkModeAfterDay2: darkModeAfterDay2,
           darkness: darkness,
-          showChineseCalendar: showChineseCalendar);
+);
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {
@@ -485,10 +495,11 @@ class _SettingViewState extends ConsumerState<SettingView> {
         rainType = config.rainType;
         warningType = config.warningType;
         faceType = config.face;
+        fontType = config.fontType;
         darkModeStart = config.darkModeStart;
         darkModeAfterDay2 = config.darkModeEndDay2;
         darkness = config.darkness;
-        showChineseCalendar = config.showChineseCalendar;
+
 
         setState(() {});
 

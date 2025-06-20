@@ -1,4 +1,3 @@
-import 'package:chinese_lunar_calendar/chinese_lunar_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +21,37 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
   late Widget time = buildTimeWidget(time: "");
 
   Widget buildTimeWidget({String? time, double opacity = 0.9}) {
+    if (widget.config.fontType == FontType.playfair) {
+      return Transform.translate(
+        offset: const Offset(0, -18),
+        child: Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
+            style: TextStyle(
+                fontFamily: "PlayfairDisplay",
+                fontSize: size,
+                fontWeight: FontWeight.w700,
+                // ignore: deprecated_member_use
+                color: Colors.white.withOpacity(opacity))),
+      );
+    } else if (widget.config.fontType == FontType.orbitron) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 0, right: 10, bottom: 10),
+        child: Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
+            style: TextStyle(
+                fontFamily: "Orbitron",
+                fontSize: size - 12,
+                fontWeight: FontWeight.w700,
+                // ignore: deprecated_member_use
+                color: Colors.white.withOpacity(opacity))),
+      );
+    } else if (widget.config.fontType == FontType.plex) {
+      return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
+          style: TextStyle(
+              fontFamily: "Plex",
+              fontSize: size - 12,
+              fontWeight: FontWeight.w800,
+              // ignore: deprecated_member_use
+              color: Colors.white.withOpacity(opacity)));
+    }
     return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
         style: TextStyle(
             fontFamily: "DoHyen",
@@ -44,25 +74,12 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
       }
     });
     final todo = [...dash.todo];
-    final lunar = LunarCalendar.from(utcDateTime: DateTime.now().toUtc());
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomPaint(
               painter: WorkStatus(workStatus: dash.workStatus), child: time),
-          if (widget.config.showChineseCalendar)
-            Transform.translate(
-              offset: const Offset(0, -24),
-              child: Row(children: [
-                Text(
-                    "${lunar.twoHourPeriod.name}(${lunar.twoHourPeriod.jing?.cnName}${lunar.twoHourPeriod.jing?.unit})${lunar.ke.fullName}${lunar.ke.unitName}",
-                    style: const TextStyle(color: Colors.white, fontSize: 13)),
-                if (lunar.localTime.getSolarTerm() != null)
-                  Text("${lunar.localTime.getSolarTerm()}",
-                      style: const TextStyle(color: Colors.white, fontSize: 13))
-              ]),
-            ),
           Transform.translate(
               offset: const Offset(0, -22),
               child: Text(dash.weatherInfo,

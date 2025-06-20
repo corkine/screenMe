@@ -42,10 +42,10 @@ class Config with _$Config {
       @Default(RainType.cloud) RainType rainType,
       @Default(0.1) double volumeNormal,
       @Default(0.7) double volumeOpenBluetooth,
+      @Default(FontType.playfair) FontType fontType,
       @TimeOfDayConverter() TimeOfDay? darkModeStart,
       @TimeOfDayConverter() TimeOfDay? darkModeEndDay2,
-      @Default(0.8) double darkness,
-      @Default(false) bool showChineseCalendar}) = _Config;
+      @Default(0.8) double darkness}) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }
@@ -100,30 +100,31 @@ class Configs extends _$Configs {
       required WarnType warningType,
       required RainType rainType,
       required FaceType face,
+      required FontType fontType,
       TimeOfDay? darkModeStart,
       TimeOfDay? darkModeAfterDay2,
       required double darkness,
-      required bool showChineseCalendar,
       double delay = 0.0}) async {
     final c = Config(
-        user: user,
-        password: pass,
-        cyberPass: encryptPassword(pass, 60 * 60 * 24 * 365),
-        fetchSeconds: duration,
-        useAnimationWhenNoTodo: useAnimationWhenNoTodo,
-        demoMode: demoMode,
-        volumeNormal: minVol,
-        volumeOpenBluetooth: maxVol,
-        showFatWarningAfter17IfLazy: showWortoutWarning,
-        warningShowGalleryInBg: warningShowGalleryInBg,
-        face: face,
-        rainType: rainType,
-        warningType: warningType,
-        maxVolDelaySeconds: delay,
-        darkModeStart: darkModeStart,
-        darkModeEndDay2: darkModeAfterDay2,
-        darkness: darkness,
-        showChineseCalendar: showChineseCalendar);
+      user: user,
+      password: pass,
+      cyberPass: encryptPassword(pass, 60 * 60 * 24 * 365),
+      fetchSeconds: duration,
+      useAnimationWhenNoTodo: useAnimationWhenNoTodo,
+      demoMode: demoMode,
+      volumeNormal: minVol,
+      volumeOpenBluetooth: maxVol,
+      showFatWarningAfter17IfLazy: showWortoutWarning,
+      warningShowGalleryInBg: warningShowGalleryInBg,
+      face: face,
+      rainType: rainType,
+      warningType: warningType,
+      fontType: fontType,
+      maxVolDelaySeconds: delay,
+      darkModeStart: darkModeStart,
+      darkModeEndDay2: darkModeAfterDay2,
+      darkness: darkness,
+    );
     final s = await SharedPreferences.getInstance();
     await s.setString("config", jsonEncode(c.toJson()));
     data = c;

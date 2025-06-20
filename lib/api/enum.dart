@@ -54,3 +54,14 @@ enum FaceType {
   final String name;
   const FaceType({required this.name});
 }
+
+enum FontType {
+  dohyeon(name: "DoHyeon", fontFamily: "DoHyeon"),
+  playfair(name: "Playfair Display", fontFamily: "PlayfairDisplay"),
+  orbitron(name: "Orbitron", fontFamily: "Orbitron"),
+  plex(name: "Plex", fontFamily: "Plex");
+
+  final String name;
+  final String fontFamily;
+  const FontType({required this.name, required this.fontFamily});
+}
