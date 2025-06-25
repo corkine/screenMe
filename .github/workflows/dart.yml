@@ -65,7 +65,7 @@ jobs:
         run: |
           wget https://github.com/corkine/ci-transfer/releases/latest/download/ci-transfer
           chmod +x ci-transfer
-          ./ci-transfer -s build/app/outputs/flutter-apk/app-release.apk --oss_destination "$OSS_DESTINATION"
+          ./ci-transfer -s build/app/outputs/flutter-apk/app-release.apk --oss-destination "$OSS_DESTINATION"
 
       - name: Notice to Slack
         id: slack
