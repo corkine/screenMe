@@ -14,19 +14,11 @@ class SettingView extends ConsumerStatefulWidget {
 
 class _SettingViewState extends ConsumerState<SettingView> {
   final username = TextEditingController();
-  final delay = TextEditingController();
   final password = TextEditingController();
+  final delay = TextEditingController();
   final fetchDuration = TextEditingController();
   final importCode = TextEditingController();
-  var rainType = RainType.cloud;
-  var faceType = FaceType.bing;
-  var fontType = FontType.playfair;
-  var normalVoice = 0.0;
-  var speakerVoice = 0.0;
-  TimeOfDay? darkModeStart;
-  TimeOfDay? darkModeAfterDay2;
-  bool demoMode = false;
-  double darkness = 0.8;
+  Config? _config;
 
   @override
   void dispose() {
@@ -45,23 +37,15 @@ class _SettingViewState extends ConsumerState<SettingView> {
       username.text = c.user;
       fetchDuration.text = c.fetchSeconds.toString();
       password.text = c.password;
-      demoMode = c.demoMode;
-      normalVoice = c.volumeNormal;
-      speakerVoice = c.volumeOpenBluetooth;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
-      rainType = c.rainType;
-      faceType = c.face;
-      fontType = c.fontType;
-      darkModeStart = c.darkModeStart;
-      darkModeAfterDay2 = c.darkModeEndDay2;
-      darkness = c.darkness;
-
-      setState(() {});
+      setState(() {
+        _config = c;
+      });
     });
   }
 
   toggleDemoMode() {
-    if (demoMode) {
+    if (_config!.demoMode) {
       username.text = "demo";
       password.text = "demo";
     }
@@ -69,207 +53,274 @@ class _SettingViewState extends ConsumerState<SettingView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_config == null) {
+      return const Scaffold(
+          body: Center(
+        child: CircularProgressIndicator(),
+      ));
+    }
     return Scaffold(
-        appBar: AppBar(title: const Text("设置"), actions: [
-          Row(children: [
-            Checkbox.adaptive(
-                value: demoMode,
-                onChanged: (v) => setState(() {
-                      demoMode = v!;
-                      toggleDemoMode();
-                    })),
-            InkWell(
-                onTap: () => setState(() {
-                      demoMode = !demoMode;
-                      toggleDemoMode();
-                    }),
-                child: const Text("演示模式")),
-            const SizedBox(width: 10)
-          ]),
-          TextButton.icon(
-              onPressed: handleLogin,
-              icon: const Icon(Icons.save),
-              label: const Text("保存"))
-        ]),
+        appBar: AppBar(
+            title: Transform.translate(
+                offset: Offset(-20, 0),
+                child: const Text("设置", style: TextStyle(fontSize: 20))),
+            toolbarHeight: 45,
+            actions: [
+              Row(children: [
+                Checkbox.adaptive(
+                    value: _config!.demoMode,
+                    onChanged: (v) => setState(() {
+                          _config = _config!.copyWith(demoMode: v!);
+                          toggleDemoMode();
+                        })),
+                InkWell(
+                    onTap: () => setState(() {
+                          _config =
+                              _config!.copyWith(demoMode: !_config!.demoMode);
+                          toggleDemoMode();
+                        }),
+                    child: const Text("演示模式")),
+                const SizedBox(width: 10)
+              ]),
+              TextButton.icon(
+                  onPressed: handleLogin,
+                  icon: const Icon(Icons.save),
+                  label: const Text("保存"))
+            ]),
         body: SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(children: [
-                  TextField(
-                      controller: username,
-                      decoration: const InputDecoration(
-                          border: UnderlineInputBorder(), labelText: "用户名")),
-                  TextField(
-                      controller: password,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          border: UnderlineInputBorder(), labelText: "密码")),
-                  TextField(
-                      controller: fetchDuration,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: "刷新间隔(秒)")),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("表盘样式"),
-                    const Spacer(),
-                    DropdownButton<FaceType>(
-                        focusColor: Colors.transparent,
-                        value: faceType,
-                        onChanged: (v) => setState(() {
-                              faceType = v!;
-                            }),
-                        items: FaceType.values
-                            .map((e) => DropdownMenuItem<FaceType>(
-                                value: e, child: Text(e.name)))
-                            .toList())
-                  ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("时钟字体"),
-                    const Spacer(),
-                    DropdownButton<FontType>(
-                        focusColor: Colors.transparent,
-                        value: fontType,
-                        onChanged: (v) => setState(() {
-                              fontType = v!;
-                            }),
-                        items: FontType.values
-                            .map((e) => DropdownMenuItem<FontType>(
-                                value: e, child: Text(e.name)))
-                            .toList())
-                  ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("下雨提示图案样式"),
-                    const Spacer(),
-                    DropdownButton<RainType>(
-                        focusColor: Colors.transparent,
-                        value: rainType,
-                        onChanged: (v) => setState(() {
-                              rainType = v!;
-                            }),
-                        items: RainType.values
-                            .map((e) => DropdownMenuItem<RainType>(
-                                value: e, child: Text(e.name)))
-                            .toList())
-                  ]),
-                  Row(children: [
-                    Text("关闭蓝牙时音量：${(normalVoice * 100).toInt()}"),
-                    const Spacer(),
-                    Slider(
-                        onChanged: (v) {
-                          setState(() {
-                            normalVoice = v;
-                          });
-                        },
-                        label: "${normalVoice * 100}",
-                        value: normalVoice,
-                        min: 0,
-                        max: 1)
-                  ]),
-                  Row(mainAxisSize: MainAxisSize.max, children: [
-                    Text("打开蓝牙时音量：${(speakerVoice * 100).toInt()}"),
-                    const Spacer(),
-                    Slider(
-                        onChanged: (v) {
-                          setState(() {
-                            speakerVoice = v;
-                          });
-                        },
-                        label: "${speakerVoice * 100}",
-                        value: speakerVoice,
-                        min: 0,
-                        max: 1)
-                  ]),
-                  TextField(
-                      controller: delay,
-                      decoration: const InputDecoration(
-                          suffixText: "秒",
-                          border: UnderlineInputBorder(),
-                          labelText: "打开蓝牙时延迟调高音量")),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    Expanded(
-                      child: Text((darkModeStart == null ||
-                              darkModeAfterDay2 == null)
-                          ? "不使用暗色模式"
-                          : "在 ${darkModeStart!.hour}:${darkModeStart!.minute.toString().padLeft(2, '0')} 后使用暗色模式，直到第二天" +
-                              " ${darkModeAfterDay2!.hour}:${darkModeAfterDay2!.minute.toString().padLeft(2, '0')}"),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                        onPressed: () async {
-                          final time = await showTimePicker(
-                              context: context, initialTime: TimeOfDay.now());
-                          if (time != null) {
-                            setState(() {
-                              darkModeStart = time;
-                            });
-                          }
-                        },
-                        child: const Text("开始")),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                        onPressed: () async {
-                          final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay(hour: 4, minute: 0));
-                          if (time != null) {
-                            setState(() {
-                              darkModeAfterDay2 = time;
-                            });
-                          }
-                        },
-                        child: const Text("结束(第二天)"))
-                  ]),
-                  Row(mainAxisSize: MainAxisSize.max, children: [
-                    Text("暗色模式暗度：${(darkness * 100).toInt()}"),
-                    const Spacer(),
-                    Slider(
-                        onChanged: (v) {
-                          setState(() {
-                            darkness = v;
-                          });
-                        },
-                        label: "${darkness * 100}",
-                        value: darkness,
-                        min: 0,
-                        max: 1)
-                  ]),
-                  const SizedBox(height: 10),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("配置同步",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        const Text("通过云端同步配置，可在跨设备或版本更新时使用",
-                            style: TextStyle(fontSize: 12, color: Colors.grey)),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _SettingsGroup(title: "基础配置", children: [
+                        Row(spacing: 10, children: [
+                          Expanded(
+                            flex: 3,
+                            child: TextField(
+                                controller: username,
+                                decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: "用户名")),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: TextField(
+                                controller: password,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: "密码")),
+                          ),
+                          LimitedBox(
+                              maxWidth: 80,
+                              child: TextField(
+                                  controller: fetchDuration,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                      suffixText: "秒",
+                                      border: UnderlineInputBorder(),
+                                      labelText: "刷新间隔")))
+                        ]),
                         const SizedBox(height: 10),
+                        Row(children: [
+                          const Text("表盘样式"),
+                          const Spacer(),
+                          DropdownButton<FaceType>(
+                              isDense: true,
+                              alignment: Alignment.centerRight,
+                              underline: const SizedBox(),
+                              focusColor: Colors.transparent,
+                              value: _config!.face,
+                              onChanged: (v) => setState(() {
+                                    _config = _config!.copyWith(face: v!);
+                                  }),
+                              items: FaceType.values
+                                  .map((e) => DropdownMenuItem<FaceType>(
+                                      value: e, child: Text(e.name)))
+                                  .toList())
+                        ]),
+                        const SizedBox(height: 10),
+                        Row(children: [
+                          const Text("时钟字体"),
+                          const Spacer(),
+                          DropdownButton<FontType>(
+                              isDense: true,
+                              alignment: Alignment.centerRight,
+                              underline: const SizedBox(),
+                              focusColor: Colors.transparent,
+                              value: _config!.fontType,
+                              onChanged: (v) => setState(() {
+                                    _config = _config!.copyWith(fontType: v!);
+                                  }),
+                              items: FontType.values
+                                  .map((e) => DropdownMenuItem<FontType>(
+                                      value: e, child: Text(e.name)))
+                                  .toList())
+                        ]),
+                        const SizedBox(height: 10),
+                        Row(children: [
+                          const Text("下雨提示"),
+                          const Spacer(),
+                          DropdownButton<RainType>(
+                              isDense: true,
+                              alignment: Alignment.centerRight,
+                              underline: const SizedBox(),
+                              focusColor: Colors.transparent,
+                              value: _config!.rainType,
+                              onChanged: (v) => setState(() {
+                                    _config = _config!.copyWith(rainType: v!);
+                                  }),
+                              items: RainType.values
+                                  .map((e) => DropdownMenuItem<RainType>(
+                                      value: e, child: Text(e.name)))
+                                  .toList())
+                        ])
+                      ]),
+                      _SettingsGroup(title: "蓝牙音量", children: [
+                        Row(children: [
+                          Text(
+                              "关闭蓝牙时音量：${(_config!.volumeNormal * 100).toInt()}"),
+                          const Spacer(),
+                          Slider(
+                              onChanged: (v) {
+                                setState(() {
+                                  _config = _config!.copyWith(volumeNormal: v);
+                                });
+                              },
+                              label: "${_config!.volumeNormal * 100}",
+                              value: _config!.volumeNormal,
+                              min: 0,
+                              max: 1)
+                        ]),
+                        Row(mainAxisSize: MainAxisSize.max, children: [
+                          Text(
+                              "打开蓝牙时音量：${(_config!.volumeOpenBluetooth * 100).toInt()}"),
+                          const Spacer(),
+                          Slider(
+                              onChanged: (v) {
+                                setState(() {
+                                  _config =
+                                      _config!.copyWith(volumeOpenBluetooth: v);
+                                });
+                              },
+                              label: "${_config!.volumeOpenBluetooth * 100}",
+                              value: _config!.volumeOpenBluetooth,
+                              min: 0,
+                              max: 1)
+                        ]),
+                        TextField(
+                            controller: delay,
+                            decoration: const InputDecoration(
+                                suffixText: "秒",
+                                border: UnderlineInputBorder(),
+                                labelText: "打开蓝牙时延迟调高音量")),
+                      ]),
+                      _SettingsGroup(title: "暗色模式", children: [
                         Row(
                           children: [
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: exportConfig,
-                                icon: const Icon(Icons.upload),
-                                label: const Text("导出配置"),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: () => showImportDialog(context),
-                                icon: const Icon(Icons.download),
-                                label: const Text("导入配置"),
-                              ),
+                            const Text("启用暗色模式"),
+                            const Spacer(),
+                            Switch.adaptive(
+                              value: _config!.darkModeStart != null,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    _config = _config!.copyWith(
+                                      darkModeStart:
+                                          const TimeOfDay(hour: 22, minute: 0),
+                                      darkModeEndDay2:
+                                          const TimeOfDay(hour: 6, minute: 0),
+                                    );
+                                  } else {
+                                    _config = _config!.copyWith(
+                                      darkModeStart: null,
+                                      darkModeEndDay2: null,
+                                    );
+                                  }
+                                });
+                              },
                             ),
                           ],
-                        )
+                        ),
+                        if (_config!.darkModeStart != null) ...[
+                          const SizedBox(height: 10),
+                          Row(children: [
+                            Expanded(
+                              child: Text(
+                                  "从 ${_config!.darkModeStart!.format(context)} 到次日 ${_config!.darkModeEndDay2!.format(context)}"),
+                            ),
+                            const SizedBox(width: 10),
+                            TextButton(
+                                onPressed: () async {
+                                  final time = await showTimePicker(
+                                      context: context,
+                                      initialTime: _config!.darkModeStart!);
+                                  if (time != null) {
+                                    setState(() {
+                                      _config = _config!
+                                          .copyWith(darkModeStart: time);
+                                    });
+                                  }
+                                },
+                                child: const Text("开始时间")),
+                            TextButton(
+                                onPressed: () async {
+                                  final time = await showTimePicker(
+                                      context: context,
+                                      initialTime: _config!.darkModeEndDay2!);
+                                  if (time != null) {
+                                    setState(() {
+                                      _config = _config!
+                                          .copyWith(darkModeEndDay2: time);
+                                    });
+                                  }
+                                },
+                                child: const Text("结束时间"))
+                          ]),
+                          Row(mainAxisSize: MainAxisSize.max, children: [
+                            Text("暗度：${(_config!.darkness * 100).toInt()}%"),
+                            Expanded(
+                              child: Slider(
+                                  onChanged: (v) {
+                                    setState(() {
+                                      _config = _config!.copyWith(darkness: v);
+                                    });
+                                  },
+                                  label: "${(_config!.darkness * 100).toInt()}",
+                                  value: _config!.darkness,
+                                  min: 0,
+                                  max: 1),
+                            )
+                          ]),
+                        ]
                       ]),
-                  const SizedBox(height: 20)
-                ]))));
+                      _SettingsGroup(
+                          title: "配置同步",
+                          subtitle: "通过云端同步配置，可在跨设备或版本更新时使用",
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: exportConfig,
+                                    icon: const Icon(Icons.upload),
+                                    label: const Text("导出配置"),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () => showImportDialog(context),
+                                    icon: const Icon(Icons.download),
+                                    label: const Text("导入配置"),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ]),
+                      const SizedBox(height: 20)
+                    ]))));
   }
 
   void handleLogin() async {
@@ -287,16 +338,16 @@ class _SettingViewState extends ConsumerState<SettingView> {
             username.text,
             password.text,
             d,
-            demoMode: demoMode,
-            minVol: normalVoice,
-            maxVol: speakerVoice,
-            rainType: rainType,
-            face: faceType,
-            fontType: fontType,
+            demoMode: _config!.demoMode,
+            minVol: _config!.volumeNormal,
+            maxVol: _config!.volumeOpenBluetooth,
+            rainType: _config!.rainType,
+            face: _config!.face,
+            fontType: _config!.fontType,
             delay: delaySeconds,
-            darkModeStart: darkModeStart,
-            darkModeAfterDay2: darkModeAfterDay2,
-            darkness: darkness,
+            darkModeStart: _config!.darkModeStart,
+            darkModeAfterDay2: _config!.darkModeEndDay2,
+            darkness: _config!.darkness,
           );
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
@@ -381,24 +432,10 @@ class _SettingViewState extends ConsumerState<SettingView> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("导入配置"),
-        content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: importCode,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "配置密码",
-                  hintText: "例如: 19895",
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 10),
-              const Text("注意：只能导入相同设备类型的配置",
-                  style: TextStyle(fontSize: 12, color: Colors.grey))
-            ]),
+        contentPadding:
+            EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+        actionsPadding: EdgeInsets.only(bottom: 8, right: 10),
+        content: _ImportDialogContent(importCode: importCode),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -417,12 +454,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
   }
 
   // 导入配置
-  Future<void> importConfig(String password) async {
+  Future<void> importConfig(String secret) async {
     try {
       showWaitingBar(context, text: "正在导入配置...");
 
       // 使用ConfigSyncService导入
-      final result = await ConfigSyncService.importConfig(password);
+      final result = await ConfigSyncService.importConfig(secret);
 
       ScaffoldMessenger.of(context).clearMaterialBanners();
 
@@ -431,20 +468,12 @@ class _SettingViewState extends ConsumerState<SettingView> {
 
         // 应用配置到界面
         username.text = config.user;
-        this.password.text = config.password;
+        password.text = config.password;
         fetchDuration.text = config.fetchSeconds.toString();
-        demoMode = config.demoMode;
-        normalVoice = config.volumeNormal;
-        speakerVoice = config.volumeOpenBluetooth;
         delay.text = config.maxVolDelaySeconds.toInt().toString();
-        rainType = config.rainType;
-        faceType = config.face;
-        fontType = config.fontType;
-        darkModeStart = config.darkModeStart;
-        darkModeAfterDay2 = config.darkModeEndDay2;
-        darkness = config.darkness;
-
-        setState(() {});
+        setState(() {
+          _config = config;
+        });
 
         await showSimpleMessage(context,
             content: result.message + "\n请点击保存按钮应用配置",
@@ -457,5 +486,157 @@ class _SettingViewState extends ConsumerState<SettingView> {
       ScaffoldMessenger.of(context).clearMaterialBanners();
       await showSimpleMessage(context, content: "导入失败: $e");
     }
+  }
+}
+
+class _ImportDialogContent extends StatefulWidget {
+  final TextEditingController importCode;
+  const _ImportDialogContent({required this.importCode});
+
+  @override
+  State<_ImportDialogContent> createState() => _ImportDialogContentState();
+}
+
+class _ImportDialogContentState extends State<_ImportDialogContent> {
+  void _onKeyTap(String value) {
+    if (widget.importCode.text.length >= 10) return;
+    setState(() {
+      widget.importCode.text += value;
+    });
+  }
+
+  void _onBackspace() {
+    if (widget.importCode.text.isNotEmpty) {
+      setState(() {
+        widget.importCode.text = widget.importCode.text
+            .substring(0, widget.importCode.text.length - 1);
+      });
+    }
+  }
+
+  void _onClear() {
+    setState(() {
+      widget.importCode.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Expanded(
+        flex: 4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "导入配置",
+              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+            ),
+            const Text("只能导入相同设备类型的配置",
+                style: TextStyle(fontSize: 12, color: Colors.grey)),
+            Spacer(),
+            TextField(
+              controller: widget.importCode,
+              readOnly: true,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 24, letterSpacing: 8),
+              decoration: const InputDecoration(labelText: "配置密码"),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(width: 20),
+      Expanded(flex: 3, child: _buildKeypad())
+    ]);
+  }
+
+  Widget _buildKeypad() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          spacing: 10,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildKeypadButton("1"),
+            _buildKeypadButton("2"),
+            _buildKeypadButton("3")
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildKeypadButton("4"),
+            _buildKeypadButton("5"),
+            _buildKeypadButton("6")
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildKeypadButton("7"),
+            _buildKeypadButton("8"),
+            _buildKeypadButton("9")
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildKeypadButton("C", onTap: _onClear),
+            _buildKeypadButton("0"),
+            _buildKeypadButton("<", onTap: _onBackspace),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildKeypadButton(String text, {VoidCallback? onTap}) {
+    return SizedBox(
+      width: 45,
+      height: 45,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        onPressed: onTap ?? () => _onKeyTap(text),
+        child: text == "<" ? const Icon(Icons.backspace_outlined) : Text(text),
+      ),
+    );
+  }
+}
+
+class _SettingsGroup extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final List<Widget> children;
+  const _SettingsGroup(
+      {required this.title, this.subtitle, required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary)),
+          if (subtitle != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+              child: Text(subtitle!,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ),
+          const SizedBox(height: 8),
+          ...children,
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
   }
 }

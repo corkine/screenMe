@@ -100,15 +100,15 @@ class ConfigSyncService {
   }
 
   // 从云端导入配置
-  static Future<ConfigSyncResult> importConfig(String password) async {
-    if (password.isEmpty) {
+  static Future<ConfigSyncResult> importConfig(String secret) async {
+    if (secret.isEmpty) {
       return ConfigSyncResult.error("请输入配置密码");
     }
     
     try {
       // 从云端获取配置
       final response = await http.get(
-        Uri.parse('https://screenme.mazhangjing.com/config/$password'),
+        Uri.parse('https://screenme.mazhangjing.com/config/$secret'),
       );
       
       if (response.statusCode == 200) {
