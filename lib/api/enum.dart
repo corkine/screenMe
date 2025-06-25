@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum WarnType {
-  eye(position: Offset(130, 0), cnName: "眼睛", path: "assets/eye.json"),
-  yoga(position: Offset(160, 10), cnName: "瑜伽", path: "assets/yoga.json"),
-  water(position: Offset(180, 10), cnName: "气泡", path: "assets/orange.json"),
-  gallery(position: Offset(0, 0), cnName: "画廊", path: ""),
-  //random 必须为最后一个
-  random(position: Offset(0, 0), cnName: "随机", path: "assets/random.json");
-
-  final Offset position;
-  final String cnName;
-  final String path;
-
-  const WarnType(
-      {required this.position, required this.cnName, required this.path});
-}
-
 enum RainType {
   lotus(
       name: "荷花",
@@ -46,13 +30,18 @@ enum RainType {
 }
 
 enum FaceType {
-  bing(name: "Bing 壁纸"),
-  gallery(name: "画廊"),
-  fit(name: "健身圆环"),
-  warning(name: "健身警告");
+  bing(name: "Bing 壁纸", needClockTodoRain: true, needBlueExpress: true),
+  gallery(name: "画廊", needClockTodoRain: true, needBlueExpress: true),
+  fit(name: "健身", needClockTodoRain: true, needBlueExpress: true),
+  clock(name: "时钟", needClockTodoRain: false, needBlueExpress: false);
 
   final String name;
-  const FaceType({required this.name});
+  final bool needClockTodoRain;
+  final bool needBlueExpress;
+  const FaceType(
+      {required this.name,
+      required this.needClockTodoRain,
+      required this.needBlueExpress});
 }
 
 enum FontType {

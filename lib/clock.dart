@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:screen_me/api/dash.dart';
 
 import 'api/core.dart';
@@ -8,17 +9,37 @@ import 'api/core.dart';
 class ClockWidget extends ConsumerStatefulWidget {
   final AnimationController controller;
   final Config config;
+  final DashInfo? dash;
 
   const ClockWidget(
-      {super.key, required this.controller, required this.config});
+      {super.key,
+      required this.controller,
+      required this.config,
+      this.dash});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ClockWidgetState();
 }
 
-class _ClockWidgetState extends ConsumerState<ClockWidget> {
+class _ClockWidgetState extends ConsumerState<ClockWidget>
+    with TickerProviderStateMixin {
   static const size = 100.0;
   late Widget time = buildTimeWidget(time: "");
+  late AnimationController rainController;
+
+  @override
+  void initState() {
+    super.initState();
+    rainController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
+          ..repeat(reverse: false);
+  }
+
+  @override
+  void dispose() {
+    rainController.dispose();
+    super.dispose();
+  }
 
   Widget buildTimeWidget({String? time, double opacity = 0.9}) {
     if (widget.config.fontType == FontType.playfair) {
@@ -74,7 +95,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
       }
     });
     final todo = [...dash.todo];
-    return Column(
+    final clockColumn = Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -103,6 +124,28 @@ class _ClockWidgetState extends ConsumerState<ClockWidget> {
               .toList(growable: false),
           const SizedBox(height: 20)
         ]);
+
+    bool showRain(Config s, DashInfo? d) {
+      return s.face.needClockTodoRain &&
+          s.rainType != RainType.none &&
+          (d?.weatherIcon.value.showRain ?? false);
+    }
+
+    if (showRain(widget.config, dash)) {
+      return Stack(
+        children: [
+          clockColumn,
+          Positioned(
+              top: widget.config.rainType.position.dx - 10,
+              left: widget.config.rainType.position.dy - 30,
+              width: widget.config.rainType.size.width,
+              height: widget.config.rainType.size.height,
+              child: LottieBuilder.asset(widget.config.rainType.path,
+                  controller: rainController)),
+        ],
+      );
+    }
+    return clockColumn;
   }
 }
 

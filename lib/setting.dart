@@ -18,7 +18,6 @@ class _SettingViewState extends ConsumerState<SettingView> {
   final password = TextEditingController();
   final fetchDuration = TextEditingController();
   final importCode = TextEditingController();
-  var warningType = WarnType.eye;
   var rainType = RainType.cloud;
   var faceType = FaceType.bing;
   var fontType = FontType.playfair;
@@ -27,11 +26,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
   TimeOfDay? darkModeStart;
   TimeOfDay? darkModeAfterDay2;
   bool demoMode = false;
-  bool showAnimation = false;
-  bool showWarning = false;
-  bool warningShowGalleryInBg = false;
   double darkness = 0.8;
-
 
   @override
   void dispose() {
@@ -53,12 +48,8 @@ class _SettingViewState extends ConsumerState<SettingView> {
       demoMode = c.demoMode;
       normalVoice = c.volumeNormal;
       speakerVoice = c.volumeOpenBluetooth;
-      showAnimation = c.useAnimationWhenNoTodo;
-      showWarning = c.showFatWarningAfter17IfLazy;
       delay.text = c.maxVolDelaySeconds.toInt().toString();
-      warningShowGalleryInBg = c.warningShowGalleryInBg;
       rainType = c.rainType;
-      warningType = c.warningType;
       faceType = c.face;
       fontType = c.fontType;
       darkModeStart = c.darkModeStart;
@@ -147,47 +138,6 @@ class _SettingViewState extends ConsumerState<SettingView> {
                         items: FontType.values
                             .map((e) => DropdownMenuItem<FontType>(
                                 value: e, child: Text(e.name)))
-                            .toList())
-                  ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("无待办显示加载动画"),
-                    const Spacer(),
-                    Switch(
-                        value: showAnimation,
-                        onChanged: (v) => setState(() => showAnimation = v))
-                  ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("晚 18:00 后运动未完成显示警告视图"),
-                    const Spacer(),
-                    Switch(
-                        value: showWarning,
-                        onChanged: (v) => setState(() => showWarning = v))
-                  ]),
-
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("警告视图使用画廊打底"),
-                    const Spacer(),
-                    Switch(
-                        value: warningShowGalleryInBg,
-                        onChanged: (v) =>
-                            setState(() => warningShowGalleryInBg = v))
-                  ]),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const Text("警告图案样式"),
-                    const Spacer(),
-                    DropdownButton<WarnType>(
-                        focusColor: Colors.transparent,
-                        value: warningType,
-                        onChanged: (v) => setState(() {
-                              warningType = v!;
-                            }),
-                        items: WarnType.values
-                            .map((e) => DropdownMenuItem<WarnType>(
-                                value: e, child: Text(e.cnName)))
                             .toList())
                   ]),
                   const SizedBox(height: 10),
@@ -334,22 +284,20 @@ class _SettingViewState extends ConsumerState<SettingView> {
         fetchDuration.text.isNotEmpty &&
         d != null) {
       await ref.read(configsProvider.notifier).set(
-          username.text, password.text, d,
-          demoMode: demoMode,
-          minVol: normalVoice,
-          maxVol: speakerVoice,
-          useAnimationWhenNoTodo: showAnimation,
-          showWortoutWarning: showWarning,
-          warningShowGalleryInBg: warningShowGalleryInBg,
-          warningType: warningType,
-          rainType: rainType,
-          face: faceType,
-          fontType: fontType,
-          delay: delaySeconds,
-          darkModeStart: darkModeStart,
-          darkModeAfterDay2: darkModeAfterDay2,
-          darkness: darkness,
-);
+            username.text,
+            password.text,
+            d,
+            demoMode: demoMode,
+            minVol: normalVoice,
+            maxVol: speakerVoice,
+            rainType: rainType,
+            face: faceType,
+            fontType: fontType,
+            delay: delaySeconds,
+            darkModeStart: darkModeStart,
+            darkModeAfterDay2: darkModeAfterDay2,
+            darkness: darkness,
+          );
       await showSimpleMessage(context, content: "设置已更新", useSnackBar: true);
       Navigator.of(context).pop();
     } else {
@@ -488,18 +436,13 @@ class _SettingViewState extends ConsumerState<SettingView> {
         demoMode = config.demoMode;
         normalVoice = config.volumeNormal;
         speakerVoice = config.volumeOpenBluetooth;
-        showAnimation = config.useAnimationWhenNoTodo;
-        showWarning = config.showFatWarningAfter17IfLazy;
         delay.text = config.maxVolDelaySeconds.toInt().toString();
-        warningShowGalleryInBg = config.warningShowGalleryInBg;
         rainType = config.rainType;
-        warningType = config.warningType;
         faceType = config.face;
         fontType = config.fontType;
         darkModeStart = config.darkModeStart;
         darkModeAfterDay2 = config.darkModeEndDay2;
         darkness = config.darkness;
-
 
         setState(() {});
 

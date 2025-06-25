@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:screen_me/api/core.dart';
 import 'package:screen_me/api/dash.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -13,14 +12,6 @@ Widget buildChart(DashInfo? dashInfo, Config config) {
       (dashInfo?.fitnessInfo.globalActive ?? 500.0) *
       100;
   return Stack(alignment: Alignment.center, children: [
-    (dashInfo?.lazyLate ?? false)
-        ? KeyedSubtree(
-            key: UniqueKey(),
-            child:
-                Image.asset("assets/bese.png", width: 50, fit: BoxFit.contain)
-                    .animate()
-                    .shake(duration: const Duration(milliseconds: 1000)))
-        : const SizedBox(),
     SfCircularChart(
         legend: const Legend(
             isVisible: false,
