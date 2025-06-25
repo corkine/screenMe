@@ -59,6 +59,14 @@ jobs:
                 build/app/outputs/flutter-apk/*.apk
                 build/app/outputs/flutter-apk/*.apk.sha1
 
+      - name: Run ci-transfer
+        env:
+          DESTINATION: ${{ secrets.OSS_DESTINATION }}
+        run: |
+          wget https://github.com/corkine/ci-transfer/releases/latest/download/ci-transfer
+          chmod +x ci-transfer
+          ./ci-transfer -s build/app/outputs/flutter-apk/app-release.apk --oss_destination "$OSS_DESTINATION"
+
       - name: Notice to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
