@@ -61,7 +61,7 @@ jobs:
 
       - name: Run ci-transfer
         env:
-          DESTINATION: ${{ secrets.OSS_DESTINATION }}
+          OSS_DESTINATION: ${{ secrets.OSS_DESTINATION }}
         run: |
           wget https://github.com/corkine/ci-transfer/releases/latest/download/ci-transfer
           chmod +x ci-transfer
