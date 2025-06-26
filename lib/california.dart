@@ -132,7 +132,7 @@ class _CaliforniaClockPainter extends CustomPainter {
   void _drawTicks(
       Canvas canvas, Offset center, double rx, double ry, double radius) {
     final tickPaint = Paint()..color = const Color(0xFFC4D2D8);
-    const cornerRounding = 10.0;
+    const cornerRounding = 20.0;
 
     final tickPoints = _getEvenlySpacedPoints(
         60, rx * 0.9, ry * 0.9, cornerRounding, center);
@@ -160,8 +160,8 @@ class _CaliforniaClockPainter extends CustomPainter {
 
     final textStyle = TextStyle(
         color: const Color(0xFFC4D2D8),
-        fontSize: radius * 0.15,
-        fontFamily: 'PlayfairDisplay');
+        fontSize: radius * 0.2,
+        fontFamily: 'DoHyeon');
 
     final hourMarkerPoints = _getEvenlySpacedPoints(
         12, rx * 0.75, ry * 0.75, cornerRounding, center);
@@ -247,12 +247,12 @@ class _CaliforniaClockPainter extends CustomPainter {
     final weekday = _weekdays[dateTime.weekday - 1];
     final dateText = '$day 周$weekday';
 
-    final textStyle = TextStyle(
+    final dateStyle = TextStyle(
       color: Colors.white,
       fontSize: radius * 0.1,
       fontFamily: 'DoHyeon',
     );
-    final textSpan = TextSpan(text: dateText, style: textStyle);
+    final textSpan = TextSpan(text: dateText, style: dateStyle);
     final textPainter =
         TextPainter(text: textSpan, textDirection: ui.TextDirection.ltr);
     textPainter.layout();

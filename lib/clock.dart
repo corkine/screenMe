@@ -12,10 +12,7 @@ class ClockWidget extends ConsumerStatefulWidget {
   final DashInfo? dash;
 
   const ClockWidget(
-      {super.key,
-      required this.controller,
-      required this.config,
-      this.dash});
+      {super.key, required this.controller, required this.config, this.dash});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ClockWidgetState();
@@ -126,8 +123,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget>
         ]);
 
     bool showRain(Config s, DashInfo? d) {
-      return s.face.needClockTodoRain &&
-          s.rainType != RainType.none &&
+      return s.rainType != RainType.none &&
           (d?.weatherIcon.value.showRain ?? false);
     }
 

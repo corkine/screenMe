@@ -33,7 +33,8 @@ enum FaceType {
   bing(name: "Bing 壁纸", needClockTodoRain: true, needBlueExpress: true),
   gallery(name: "画廊", needClockTodoRain: true, needBlueExpress: true),
   fit(name: "健身", needClockTodoRain: true, needBlueExpress: true),
-  clock(name: "时钟", needClockTodoRain: false, needBlueExpress: false);
+  clock(name: "加州时钟", needClockTodoRain: false, needBlueExpress: false),
+  bingClock(name: "必应时钟", needClockTodoRain: false, needBlueExpress: false);
 
   final String name;
   final bool needClockTodoRain;
@@ -45,7 +46,7 @@ enum FaceType {
 }
 
 enum FontType {
-  dohyeon(name: "DoHyeon", fontFamily: "DoHyeon"),
+  dohyeon(name: "DoHyen", fontFamily: "DoHyen"),
   playfair(name: "Playfair Display", fontFamily: "PlayfairDisplay"),
   orbitron(name: "Orbitron", fontFamily: "Orbitron"),
   plex(name: "Plex", fontFamily: "Plex");

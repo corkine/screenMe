@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_me/api/dash.dart';
+import 'package:screen_me/bing_clock.dart';
 import 'package:screen_me/blue.dart';
 import 'package:screen_me/california.dart';
 import 'package:screen_me/chart.dart';
@@ -64,6 +65,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         buildChart(d, s).animate().moveX(begin: 10, end: 0))));
       case FaceType.gallery:
         return GalleryView();
+      case FaceType.bingClock:
+        return BingClockView();
       case FaceType.clock:
         return CaliforniaClockView();
     }
