@@ -21,3 +21,7 @@ ScreenMe 支持如下特性：
 ![健康视图](https://static2.mazhangjing.com/cyber/202401/4479c7ac_edbcd5ae2623ef7e4eb1a57c970e22e.jpg)
 
 可前往 [Github Release 页面](https://github.com/corkine/screenMe/releases)下载构建好的 Android apk 安装包。应用对 iOS、macOS、iPadOS 以及 Windows 都进行了兼容，可自行下载编译打包。
+
+## Config Server
+
+在 `config-server` 下包含了一个基于 Go 的简单配置服务器，用于在 ScreenMe 升级和 App 重新安装时进行配置迁移。
