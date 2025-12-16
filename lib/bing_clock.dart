@@ -1,17 +1,11 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
-import 'package:screen_me/api/config.dart';
-import 'package:screen_me/api/enum.dart';
 
 import 'api/core.dart';
-import 'api/gallery.dart';
 
 int cacheMinute = 0;
 
@@ -92,6 +86,12 @@ class _BingClockViewState extends ConsumerState<BingClockView>
         fontSize = 150;
         offYTick = -10;
         fontSizeTick = 150;
+        break;
+      case FontType.micro5:
+        offY = -50;
+        fontSize = 280;
+        offYTick = 30;
+        fontSizeTick = 200;
         break;
     }
 

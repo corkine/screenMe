@@ -48,7 +48,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget>
                 fontSize: size,
                 fontWeight: FontWeight.w700,
                 // ignore: deprecated_member_use
-                color: Colors.white.withOpacity(opacity))),
+                color: Colors.white.withValues(alpha: opacity))),
       );
     } else if (widget.config.fontType == FontType.orbitron) {
       return Padding(
@@ -59,7 +59,7 @@ class _ClockWidgetState extends ConsumerState<ClockWidget>
                 fontSize: size - 12,
                 fontWeight: FontWeight.w700,
                 // ignore: deprecated_member_use
-                color: Colors.white.withOpacity(opacity))),
+                color: Colors.white.withValues(alpha: opacity))),
       );
     } else if (widget.config.fontType == FontType.plex) {
       return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
@@ -68,14 +68,22 @@ class _ClockWidgetState extends ConsumerState<ClockWidget>
               fontSize: size - 12,
               fontWeight: FontWeight.w800,
               // ignore: deprecated_member_use
-              color: Colors.white.withOpacity(opacity)));
+              color: Colors.white.withValues(alpha: opacity)));
+    } else if (widget.config.fontType == FontType.micro5) {
+      return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
+          style: TextStyle(
+              fontFamily: "Micro5",
+              fontSize: size + 30,
+              height: 1.1,
+              fontWeight: FontWeight.w700,
+              color: Colors.white.withValues(alpha: opacity)));
     }
     return Text(time ?? DateFormat("HH:mm").format(DateTime.now()),
         style: TextStyle(
             fontFamily: "DoHyen",
             fontSize: size,
             // ignore: deprecated_member_use
-            color: Colors.white.withOpacity(opacity)));
+            color: Colors.white.withValues(alpha: opacity)));
   }
 
   @override
@@ -176,7 +184,7 @@ class WorkStatus extends CustomPainter {
       default:
         p.color = Colors.green;
     }
-    p.color = p.color.withOpacity(1);
+    p.color = p.color.withValues(alpha: 1);
     canvas.drawCircle(Offset(size.width, size.height / 3), 20, p);
   }
 

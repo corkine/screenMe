@@ -50,12 +50,14 @@ class _BlueWidgetState extends ConsumerState<BlueWidget>
         FlutterVolumeController.updateShowSystemUI(true);
       }
       FlutterBluePlus.isSupported.then((value) {
+        if (!mounted) return;
         setState(() {
           unsupport = !value;
         });
         debugPrint("bluetooth support, start listen state change");
         sub =
             FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+          if (!mounted) return;
           debugPrint(state.toString());
           final now = state == BluetoothAdapterState.on ? true : false;
           if (now != isOn) {
@@ -216,6 +218,7 @@ class _BlueWidgetState extends ConsumerState<BlueWidget>
   Future<void> _handleBluetoothToggle(Config config) async {
     if (isPreviewMode) {
       // 预览模式：模拟蓝牙切换
+      if (!mounted) return;
       setState(() {
         isProcessing = true;
       });
@@ -223,6 +226,7 @@ class _BlueWidgetState extends ConsumerState<BlueWidget>
       // 模拟操作延迟
       await Future.delayed(const Duration(milliseconds: 500));
       
+      if (!mounted) return;
       setState(() {
         isOn = !isOn;
         isProcessing = false;
@@ -235,6 +239,7 @@ class _BlueWidgetState extends ConsumerState<BlueWidget>
       
       debugPrint("预览模式：蓝牙状态切换为 ${isOn ? '开启' : '关闭'}");
     } else if (!unsupport && Platform.isAndroid) {
+      if (!mounted) return;
       setState(() {
         isProcessing = true;
       });
@@ -258,6 +263,7 @@ class _BlueWidgetState extends ConsumerState<BlueWidget>
         }
       } catch (e) {
         debugPrint('蓝牙操作失败: $e');
+        if (!mounted) return;
         setState(() {
           isProcessing = false;
         });

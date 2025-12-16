@@ -9,6 +9,7 @@ import 'package:screen_me/api/dash.dart';
 import 'package:screen_me/bing_clock.dart';
 import 'package:screen_me/blue.dart';
 import 'package:screen_me/california.dart';
+import 'package:screen_me/christmas_clock.dart';
 import 'package:screen_me/chart.dart';
 import 'package:screen_me/express.dart';
 import 'package:screen_me/gallery.dart';
@@ -69,6 +70,8 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         return BingClockView();
       case FaceType.clock:
         return CaliforniaClockView();
+      case FaceType.christmas:
+        return const ChristmasClockView();
     }
   }
 
