@@ -19,6 +19,8 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
   bool _showColon = true;
   final List<Snowflake> _snowflakes = [];
   late AnimationController _snowController;
+  late AnimationController _lightController;
+  double _lightOpacity = 1.0;
 
   @override
   void initState() {
@@ -49,14 +51,29 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
       });
 
     _snowController.repeat();
+
+    // 圣诞树灯光闪烁控制器
+    _lightController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..addListener(() {
+        setState(() {
+          _lightOpacity = 0.3 + _lightController.value * 0.7;
+        });
+      });
+    _lightController.repeat(reverse: true, count: 10);
   }
 
   @override
   void dispose() {
     _timer?.cancel();
     _snowController.dispose();
+    _lightController.dispose();
     super.dispose();
   }
+
+  // 判断是否是偶数分钟
+  bool get _needFlash => _now.minute == 0 || _now.minute == 30;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +87,7 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
 
     // 根据屏幕尺寸计算字体大小
     final fontSize = size.width > 400 ? 240.0 : 200.0;
-    final lineHeight = 1.0;
+    final lineHeight = 0.5;
 
     return Container(
       color: const Color(0xFFAA5A4A), // 红棕色背景
@@ -83,7 +100,9 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
             child: Opacity(
               opacity: 0.6,
               child: CustomPaint(
-                painter: PixelChristmasTreePainter(),
+                painter: PixelChristmasTreePainter(
+                  lightOpacity: _needFlash ? _lightOpacity : 1.0,
+                ),
                 size: Size(size.width * 0.45, size.height * 0.7),
               ),
             ),
@@ -93,94 +112,89 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
             painter: SnowPainter(_snowflakes, size),
             size: size,
           ),
-          // 日期信息
-          Positioned(
-            bottom: 70,
-            left: 85,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              decoration: BoxDecoration(
-                color: const Color(0xFFD4A84B),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    dateStr,
-                    style: const TextStyle(
-                      color: Color(0xFF8B4513),
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Orbitron',
-                      letterSpacing: 2,
+          // 主内容 - 时钟居中，日期与时钟左对齐
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 像素时钟 - 使用 Micro5 字体
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      hour,
+                      style: TextStyle(
+                        fontFamily: 'Micro5',
+                        fontSize: fontSize,
+                        height: lineHeight,
+                        color: Colors.white,
+                        letterSpacing: 4,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    weekStr,
-                    style: const TextStyle(
-                      color: Color(0xFF8B4513),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Orbitron',
-                      letterSpacing: 4,
+                    AnimatedOpacity(
+                      opacity: _showColon ? 1.0 : 0.3,
+                      duration: const Duration(milliseconds: 200),
+                      child: Text(
+                        ':',
+                        style: TextStyle(
+                          fontFamily: 'Micro5',
+                          fontSize: fontSize - 20,
+                          height: lineHeight,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
+                    Text(
+                      minute,
+                      style: TextStyle(
+                        fontFamily: 'Micro5',
+                        fontSize: fontSize,
+                        height: lineHeight,
+                        color: Colors.white,
+                        letterSpacing: 4,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // 日期信息
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD4A84B),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                ],
-              ),
-            ),
-          ),
-          // 主内容 - 时钟居中
-          Transform.translate(
-            offset: const Offset(0, -20),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // 像素时钟 - 使用 Micro5 字体
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        hour,
-                        style: TextStyle(
-                          fontFamily: 'Micro5',
-                          fontSize: fontSize,
-                          height: lineHeight,
-                          color: Colors.white,
-                          letterSpacing: 4,
+                        dateStr,
+                        style: const TextStyle(
+                          color: Color(0xFF8B4513),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Orbitron',
+                          letterSpacing: 2,
                         ),
                       ),
-                      AnimatedOpacity(
-                        opacity: _showColon ? 1.0 : 0.3,
-                        duration: const Duration(milliseconds: 200),
-                        child: Text(
-                          ':',
-                          style: TextStyle(
-                            fontFamily: 'Micro5',
-                            fontSize: fontSize - 20,
-                            height: lineHeight,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(width: 6),
                       Text(
-                        minute,
-                        style: TextStyle(
-                          fontFamily: 'Micro5',
-                          fontSize: fontSize,
-                          height: lineHeight,
-                          color: Colors.white,
+                        weekStr,
+                        style: const TextStyle(
+                          color: Color(0xFF8B4513),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Orbitron',
                           letterSpacing: 4,
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -235,7 +249,7 @@ class SnowPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (var flake in snowflakes) {
       final paint = Paint()
-        ..color = Colors.white.withOpacity(flake.opacity)
+        ..color = Colors.white.withValues(alpha: flake.opacity)
         ..style = PaintingStyle.fill;
 
       // 像素风格的雪花 - 绘制小方块
@@ -256,6 +270,10 @@ class SnowPainter extends CustomPainter {
 
 // 像素圣诞树绘制器
 class PixelChristmasTreePainter extends CustomPainter {
+  final double lightOpacity;
+
+  PixelChristmasTreePainter({this.lightOpacity = 1.0});
+
   @override
   void paint(Canvas canvas, Size size) {
     final pixelSize = size.width / 15;
@@ -281,6 +299,9 @@ class PixelChristmasTreePainter extends CustomPainter {
       [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0], // 树干
     ];
 
+    // 灯光颜色（会闪烁）: 3-黄色, 4-红色, 6-白色
+    final lightColors = {3, 4, 6};
+
     final colors = {
       0: Colors.transparent,
       1: const Color(0xFF1B7F37), // 深绿
@@ -295,8 +316,13 @@ class PixelChristmasTreePainter extends CustomPainter {
       for (int col = 0; col < treePattern[row].length; col++) {
         final colorIndex = treePattern[row][col];
         if (colorIndex != 0) {
+          final baseColor = colors[colorIndex]!;
+          final color = lightColors.contains(colorIndex)
+              ? baseColor.withOpacity(lightOpacity)
+              : baseColor;
+
           final paint = Paint()
-            ..color = colors[colorIndex]!
+            ..color = color
             ..style = PaintingStyle.fill;
 
           canvas.drawRect(
@@ -314,5 +340,6 @@ class PixelChristmasTreePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant PixelChristmasTreePainter oldDelegate) =>
+      oldDelegate.lightOpacity != lightOpacity;
 }
