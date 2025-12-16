@@ -72,8 +72,36 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
     super.dispose();
   }
 
-  // 判断是否是偶数分钟
+  // 判断是否需要灯光闪烁
   bool get _needFlash => _now.minute == 0 || _now.minute == 30;
+
+  // 获取背景颜色
+  // 白天(8-17点): 阳光暖色调
+  // 晚上(22-6点): 暗色调保护睡眠
+  // 其他时间: 过渡效果
+  Color get _backgroundColor {
+    final hour = _now.hour;
+    if (hour >= 8 && hour < 17) {
+      // 白天 - 更亮的暖色
+      return const Color(0xFFBF6B5A);
+    } else if (hour >= 22 || hour < 6) {
+      // 深夜 - 深暗色保护睡眠
+      return const Color(0xFF3D1F1A);
+    } else if (hour >= 17 && hour < 19) {
+      // 傍晚过渡 - 稍暗
+      return const Color(0xFF9A4A3A);
+    } else if (hour >= 19 && hour < 22) {
+      // 夜晚过渡 - 逐渐变暗
+      final progress = (hour - 19) / 3.0;
+      return Color.lerp(
+          const Color(0xFF9A4A3A), const Color(0xFF3D1F1A), progress)!;
+    } else {
+      // 清晨过渡 (6-8点)
+      final progress = (hour - 6) / 2.0;
+      return Color.lerp(
+          const Color(0xFF3D1F1A), const Color(0xFFBF6B5A), progress)!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +117,9 @@ class _ChristmasClockViewState extends ConsumerState<ChristmasClockView>
     final fontSize = size.width > 400 ? 240.0 : 200.0;
     final lineHeight = 0.5;
 
-    return Container(
-      color: const Color(0xFFAA5A4A), // 红棕色背景
+    return AnimatedContainer(
+      duration: const Duration(seconds: 2),
+      color: _backgroundColor,
       child: Stack(
         children: [
           // 圣诞树 - 右侧背景
